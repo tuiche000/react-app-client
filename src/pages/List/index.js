@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import "./index.css"
+import { Button } from 'antd-mobile';
 
 class List extends Component {
     constructor(...args) {
@@ -31,14 +32,16 @@ class List extends Component {
     }
 
     fnGoto() {
-        console.log(this.props.history.push(
+        console.log('fnGoto')
+        this.props.history.push(
             '/'
-        ))
+        )
     }
 
     render() {
         return (
             <div className="innisfree ">
+            <Button onClick={this.fnGoto.bind(this)}>default</Button>
                 <ul>
                     {
                         this.state.list_data.map(item => {
