@@ -1,0 +1,53 @@
+.innisfree  {
+    padding: 10px 15px;
+  }
+  .innisfree .innisfree-lis {
+    margin-top: 15px;
+    border: 1px solid #ebebeb;
+    border-radius: 20px;
+    padding: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .innisfree .innisfree-lis .img {
+    height: 100px;
+  }
+  
+  .innisfree .innisfree-lis .substance {
+    color: #000000;
+    font-size: 14px;
+  }
+  
+  .innisfree .innisfree-lis .amount {
+    font-size: 14px;
+  }
+  
+  .innisfree .innisfree-lis .amount .yen {
+    font-size: 14px;
+    color: #f5a623;
+  }
+  .innisfree .innisfree-lis .amount .num {
+    font-size: 18px;
+    color: #f5a623;
+  }
+  
+  .innisfree .innisfree-lis .amount span:nth-child(4) {
+    margin-left: 8px;
+  }
+  
+  .innisfree .innisfree-lis .amount .num {
+    font-size: 18px;
+    color: #f5a623;
+  }
+  
+  .innisfree .innisfree-lis .immediately {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 5px 10px;
+    background-color: #f5a623;
+    border-radius: 20px 0 0 0;
+    color: #fff;
+    font-size: 14px;
+  }
