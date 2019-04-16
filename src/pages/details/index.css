@@ -1,0 +1,82 @@
+body,
+html,
+main {
+  background-color: #fff;
+}
+
+.income {
+  padding: 0 15px;
+}
+
+.income ul li {
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.income ul li .substance {
+  position: relative;
+  font-size: 13px;
+}
+
+.income ul li .substance .substance-left {
+  float: left;
+  color: #666666;
+}
+
+.income ul li .substance .substance-left p:nth-child(1) {
+  font-size: 14px;
+  color: #000;
+}
+
+.income ul li .substance .substance-right {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  color: #f08404;
+}
+
+.income ul li .substance .substance-right .icon {
+  display: inline-block;
+  margin-left: 10px;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+  -webkit-transform: rotate(-45deg) translate(0, -50%);
+  transform: rotate(45deg) translate(0, -50%);
+}
+
+.income ul li .substance .substance-right span:nth-child(2) {
+  font-size: 18px;
+}
+
+.income ul li .drop-down {
+  background-color: #f8f8f8;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  color: #999999;
+  position: relative;
+}
+
+.income ul li .drop-down .orderID {
+  float: left;
+}
+
+.income ul li .drop-down .replacement {
+  float: right;
+}
+
+.income ul li .drop-down::before {
+  content: "";
+  position: absolute;
+  left: 32px;
+  top: -20px;
+  width: 0;
+  height: 0;
+  border-width: 10px;
+  border-style: solid;
+  border-color:  transparent transparent #f8f8f8 transparent;
+}

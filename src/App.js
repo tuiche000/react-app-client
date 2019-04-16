@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Route} from 'react-router-dom'
-import List from './pages/List'
+import { Route } from 'react-router-dom'
+import StarProducts from './pages/StarProducts'
+import Homepage from "./pages/homepage"
+import Bonus from "./pages/bonus"
+import Details from "./pages/details"
+import LachineProduct from "./pages/lachineProduct"
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <Route path="/" exact component={List} />
-        <Route path="/list" component={List} />
+        <Route path="/" exact component={Homepage} />
+        <Route path="/starProducts" component={StarProducts} />
+        <Route path="/bonus" component={Bonus} />
+        <Route path="/details" component={Details} />
+        <Route path="/lachineProduct" component={LachineProduct} />
       </div>
     );
   }

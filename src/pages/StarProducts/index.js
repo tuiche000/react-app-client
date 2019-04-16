@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "./index.css"
 import { Button } from 'antd-mobile';
 
-class List extends Component {
+class StarProducts extends Component {
     constructor(...args) {
         super(...args)
 
@@ -67,4 +67,4 @@ class List extends Component {
     }
 }
 
-export default List
+export default StarProducts
