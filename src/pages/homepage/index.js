@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { NavBar, Icon } from 'antd-mobile';
+import { Button } from 'antd-mobile';
+import Dialog from "../../components/Dialog";
 
 class Homepage extends Component {
     constructor(...args) {
         super(...args)
 
         this.state = {
-            list_data: []
+            list_data: [],
+            showDialog: false
         }
     }
 
@@ -31,17 +33,23 @@ class Homepage extends Component {
         })
     }
 
+    fnFooterClose() {
+        this.setState({
+            showDialog: !this.state.showDialog
+        })
+    }
+
     render() {
         return (
             <div className="homepage-main">
-                <NavBar
-                    mode="light"
-                    icon={<Icon type="left" color="#f5a623" />}
-                    onLeftClick={() => window.history.go(-1)}
-                    rightContent={
-                        <Icon key="0" type="search" color="#f5a623" />
-                    }
-                ></NavBar>
+                {
+                    this.state.showDialog ? (
+                        <Dialog title="推荐产品成功" footer_close={this.fnFooterClose.bind(this)}>
+                            <h2>dsasdsds</h2>
+                        </Dialog>
+                    ) : ''
+                }
+                <Button onClick={this.fnFooterClose.bind(this)}>customized buttons</Button>
                 <section className="homepage">
                     <header>
                         <ul className="clearfix">
