@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./index.css"
-import { Button } from 'antd-mobile';
+import { Button, NavBar, Icon } from 'antd-mobile';
 
 class StarProducts extends Component {
     constructor(...args) {
@@ -41,7 +41,12 @@ class StarProducts extends Component {
     render() {
         return (
             <div className="innisfree ">
-            <Button onClick={this.fnGoto.bind(this)}>default</Button>
+                <NavBar
+                    mode="light"
+                    icon={<Icon type="left" color="#f5a623" />}
+                    onLeftClick={() => window.history.go(-1)}
+                ><span style={{fontSize:"16px"}}>明星产品</span></NavBar>
+                {/* <Button onClick={this.fnGoto.bind(this)}>default</Button> */}
                 <ul>
                     {
                         this.state.list_data.map(item => {

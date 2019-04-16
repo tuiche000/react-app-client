@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { Modal, Button, WhiteSpace, WingBlank, Toast } from 'antd-mobile';
+import { NavBar, Icon } from 'antd-mobile';
 
 class Homepage extends Component {
     constructor(...args) {
@@ -31,18 +31,17 @@ class Homepage extends Component {
         })
     }
 
-    showAlert() {
-        const alert = Modal.alert
-        const alertInstance = alert('推荐产品成功', '定制师将尽快与您联系，请保持手机畅通', [
-            { text: 'Cancel', onPress: () => console.log('cancel'), style: 'default' },
-            { text: 'OK', onPress: () => console.log('ok') },
-        ]);
-    }
-
     render() {
         return (
             <div className="homepage-main">
-                <Button onClick={this.showAlert.bind(this)}>customized buttons</Button>
+                <NavBar
+                    mode="light"
+                    icon={<Icon type="left" color="#f5a623" />}
+                    onLeftClick={() => window.history.go(-1)}
+                    rightContent={
+                        <Icon key="0" type="search" color="#f5a623" />
+                    }
+                ></NavBar>
                 <section className="homepage">
                     <header>
                         <ul className="clearfix">
