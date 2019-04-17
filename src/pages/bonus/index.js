@@ -37,10 +37,9 @@ class Bonus extends Component {
         })
     }
 
-    fnGoto() {
-        console.log('fnGoto')
+    goToDetails() {
         this.props.history.push(
-            '/'
+            '/details'
         )
     }
 
@@ -54,7 +53,7 @@ class Bonus extends Component {
                     onLeftClick={() => window.history.go(-1)}
                     rightContent={<span style={{ color: '#e9cf8a', fontSize: "14px" }}>支付管理</span>}
                 ><span style={{ fontSize: "16px", color: '#fff' }}>奖励金账户</span></NavBar>
-                <div className="available-balance">
+                <div className="available-balance" onClick={this.goToDetails.bind(this)}>
                     <div className="balance-content clearfix">
                         <div className="content-left">
                             <p className="balance">可用余额</p>
@@ -67,7 +66,7 @@ class Bonus extends Component {
                     </div>
                 </div>
                 <ul className="account">
-                    <li className="clearfix accountLi">
+                    <li className="clearfix accountLi" >
                         <span className="assets">总资产</span>
                         <span className="assets-num">&yen;100000.00</span>
                     </li>

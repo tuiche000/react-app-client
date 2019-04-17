@@ -94,7 +94,6 @@ class Details extends Component {
                               <span>{item.mtime}</span>
                             </p>
                           </div>
-                          {this.state.frameActive[index].id}
                           <div className="substance-right"><span>+</span><span>{item.price}</span><span></span><span className={`icon ${(this.state.frameActive[index].active === true ? 'frameActive' : null)}`} onClick={this.active.bind(this, item.id)}></span></div>
                         </div>
                         <div className={`drop-down clearfix ${(this.state.frameActive[index].active === true ? 'divDeviation' : '')}`} >

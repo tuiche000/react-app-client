@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { Button } from 'antd-mobile';
+// import { Button } from 'antd-mobile';
 import Dialog from "../../components/Dialog";
+import { setShare } from 'fm-ui/lib/utils/share'
 
 class Homepage extends Component {
     constructor(...args) {
@@ -46,17 +47,24 @@ class Homepage extends Component {
     goTolachineProduct() {
         this.props.history.push(
             '/lachineProduct'
-        )   
+        )
     }
     goToBonus() {
         this.props.history.push(
             '/bonus'
         )
     }
-    goToDetails() {
-        this.props.history.push(
-            '/details'
-        )
+    // 分享
+    share() {
+        
+        setShare({
+            title: "测试",
+            text: '测试',
+            link:window.location.href
+        }).then(() => {
+        console.log("1")
+        })
+        console.log(setShare)
     }
     render() {
         return (
@@ -68,7 +76,7 @@ class Homepage extends Component {
                         </Dialog>
                     ) : ''
                 }
-                <Button onClick={this.fnFooterClose.bind(this)}>customized buttons</Button>
+                {/* <Button onClick={this.fnFooterClose.bind(this)}>customized buttons</Button> */}
                 <section className="homepage">
                     <header>
                         <ul className="clearfix">
@@ -92,7 +100,7 @@ class Homepage extends Component {
                                 <p>拉新会员成功数</p>
                                 <p>92312</p>
                             </div>
-                            <div className="success-order" onClick={this.goToDetails.bind(this)}>
+                            <div className="success-order" onClick={this.goTolachineProduct.bind(this)}>
                                 <p>下单成功数</p>
                                 <p>18</p>
                             </div>
@@ -159,7 +167,7 @@ class Homepage extends Component {
                         </ul>
                     </div>
                 </section>
-                <section className="integral recommended-tasks">
+                {/* <section className="integral recommended-tasks">
                     <div className="integral-top  clearfix">
                         <div className="title">
                             <h3>积分排名</h3>
@@ -214,7 +222,7 @@ class Homepage extends Component {
                             </div>
                         </li>
                     </ul>
-                </section>
+                </section> */}
                 <section className="innisfree integral recommended-tasks">
                     <div className="integral-top  clearfix">
                         <div className="title">
@@ -234,7 +242,7 @@ class Homepage extends Component {
                                 <span className="num">200</span>
                                 <span>奖励金</span>
                             </p>
-                            <p className="immediately">立刻推荐</p>
+                            <p className="immediately" onClick={this.share.bind(this)}>立刻推荐</p>
                         </li>
                         <li className="innisfree-lis">
                             <p className="substance">马尔代夫卡尼岛Club Med度假村高级会所2晚豪华水屋，送往返机票</p>
