@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./index.css"
-import { Button, NavBar, Icon } from 'antd-mobile';
+import {  NavBar, Icon } from 'antd-mobile';
 
 class StarProducts extends Component {
     constructor(...args) {

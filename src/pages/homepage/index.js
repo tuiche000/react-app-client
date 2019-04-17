@@ -38,7 +38,26 @@ class Homepage extends Component {
             showDialog: !this.state.showDialog
         })
     }
-
+    goToStartProduct() {
+        this.props.history.push(
+            '/starProducts'
+        )
+    }
+    goTolachineProduct() {
+        this.props.history.push(
+            '/lachineProduct'
+        )   
+    }
+    goToBonus() {
+        this.props.history.push(
+            '/bonus'
+        )
+    }
+    goToDetails() {
+        this.props.history.push(
+            '/details'
+        )
+    }
     render() {
         return (
             <div className="homepage-main">
@@ -61,7 +80,7 @@ class Homepage extends Component {
                         </ul>
                     </header>
                     <section className="aggregation">
-                        <div className="bonus">
+                        <div className="bonus" onClick={this.goToBonus.bind(this)}>
                             <p>我的奖励金</p>
                             <p>
                                 <span>&yen;</span>
@@ -69,11 +88,11 @@ class Homepage extends Component {
                             </p>
                         </div>
                         <div className="success">
-                            <div className="success-lachine">
+                            <div className="success-lachine" onClick={this.goTolachineProduct.bind(this)}>
                                 <p>拉新会员成功数</p>
                                 <p>92312</p>
                             </div>
-                            <div className="success-order ">
+                            <div className="success-order" onClick={this.goToDetails.bind(this)}>
                                 <p>下单成功数</p>
                                 <p>18</p>
                             </div>
@@ -203,7 +222,7 @@ class Homepage extends Component {
                             <p>推荐一下产品获取双倍奖励金</p>
                         </div>
                         <p>
-                            <span>更多产品</span>
+                            <span onClick={this.goToStartProduct.bind(this)}>更多产品</span>
                         </p>
                     </div>
                     <ul>

@@ -1,0 +1,58 @@
+.available-balance {
+  background-color: #322d24;
+  padding: 30px 20px;
+}
+
+.available-balance .balance-content {
+  position: relative;
+}
+
+.available-balance .balance-content .content-left {
+  float: left;
+}
+
+.available-balance .balance-content .content-left .balance {
+  color: #95804f;
+}
+
+.available-balance .balance-content .content-left .data {
+  color: #e9cf8a;
+}
+
+.available-balance .balance-content .content-left .data .num {
+  color: #e9cf8a;
+  font-size: 28px;
+}
+
+.available-balance .balance-content .content-left .data .yen {
+  position: relative;
+  top: -7px;
+  left: 0;
+}
+
+.available-balance .balance-content .content-right {
+  /* float: right; */
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%)
+}
+
+.account {
+  padding: 0 15px;
+}
+.account .accountLi{
+  padding: 15px 15px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.account .assets,
+.account .stayIn {
+  float: left;
+}
+
+.account .assets-num,
+.account .stayIn-num {
+  float: right;
+  color: #ac9987;
+}

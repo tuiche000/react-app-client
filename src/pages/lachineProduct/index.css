@@ -6,7 +6,7 @@ main {
 
 .lachineProduct {
   font-size: 13px;
-  padding: 10px 15px;
+  padding: 0px 15px;
 }
 
 .lachineProduct .Tab {
@@ -100,10 +100,6 @@ main {
   border-bottom: 1px solid #000;
   -webkit-transform: rotate(-45deg) translate(0, -50%);
   transform: rotate(-45deg) translate(0, -50%);
-}
-
-.lachine {
-  display: none;
 }
 
 .lachine .lachine-top .picture,

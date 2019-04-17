@@ -28,6 +28,10 @@ main {
   color: #000;
 }
 
+.income ul li .substance .substance-left p:nth-child(2) span:nth-child(2) {
+  margin-left: 5px;
+}
+
 .income ul li .substance .substance-right {
   position: absolute;
   top: 50%;
@@ -37,6 +41,15 @@ main {
   color: #f08404;
 }
 
+.expenditure ul li .substance .substance-right {
+  /* color: #7ed321; */
+  color: #4a90e2;
+}
+
+.stayIn ul li .substance .substance-right {
+  color: #7ed321;
+}
+
 .income ul li .substance .substance-right .icon {
   display: inline-block;
   margin-left: 10px;
@@ -44,12 +57,24 @@ main {
   height: 7px;
   border-right: 1px solid #000;
   border-bottom: 1px solid #000;
-  -webkit-transform: rotate(-45deg) translate(0, -50%);
-  transform: rotate(45deg) translate(0, -50%);
+  transform: rotate(45deg);
+  transition: transform .3s linear;
+}
+
+.income ul li .substance .substance-right .frameActive {
+  transform: rotate(225deg);
 }
 
 .income ul li .substance .substance-right span:nth-child(2) {
   font-size: 18px;
+}
+
+.stayIn ul li .substance .substance-right span:nth-child(1) {
+  font-size: 18px;
+}
+
+.stayIn ul li .substance .substance-right span:nth-child(2) {
+  font-size: 16px;
 }
 
 .income ul li .drop-down {
@@ -59,10 +84,20 @@ main {
   margin-top: 10px;
   color: #999999;
   position: relative;
+  display: none;
+}
+
+.income ul li .divDeviation {
+  display: block;
 }
 
 .income ul li .drop-down .orderID {
   float: left;
+}
+
+.income ul li .drop-down .orderID span:nth-child(2),
+.income ul li .drop-down .replacement span:nth-child(2) {
+  margin-left: 5px;
 }
 
 .income ul li .drop-down .replacement {
@@ -78,5 +113,5 @@ main {
   height: 0;
   border-width: 10px;
   border-style: solid;
-  border-color:  transparent transparent #f8f8f8 transparent;
+  border-color: transparent transparent #f8f8f8 transparent;
 }
