@@ -8,8 +8,7 @@ class Details extends Component {
 
     this.state = {
       income_data: [],
-      frameActive:false,
-      divDeviation:false,
+      frameActive: []
     }
   }
 
@@ -45,16 +44,29 @@ class Details extends Component {
         bous: '奖励放还'
       }
     ];
+    let arr = []
+    income_data.forEach((item) => {
+      arr = [...arr, {
+        id: item.id,
+        active: false
+      }]
+    })
     this.setState({
+      frameActive: arr,
       income_data,
       tabs
     })
   }
 
   active(e) {
+    let cur = this.state.frameActive.map(item => {
+      if (item.id === e) {
+        item.active = !item.active
+      }
+      return item
+    })
     this.setState({
-      frameActive: e,
-      divDeviation: e
+      frameActive: cur
     })
   }
 
@@ -71,7 +83,7 @@ class Details extends Component {
             <section className="income">
               <ul>
                 {
-                  this.state.income_data.map(item => {
+                  this.state.income_data.map((item, index) => {
                     return (
                       <li key={item.id}>
                         <div className="substance clearfix">
@@ -82,9 +94,10 @@ class Details extends Component {
                               <span>{item.mtime}</span>
                             </p>
                           </div>
-                          <div className="substance-right"><span>+</span><span>{item.price}</span><span></span><span className={`icon ${(this.state.frameActive === item.id ? 'frameActive' : '')}`} onClick={this.active.bind(this,item.id)}></span></div>
+                          {this.state.frameActive[index].id}
+                          <div className="substance-right"><span>+</span><span>{item.price}</span><span></span><span className={`icon ${(this.state.frameActive[index].active === true ? 'frameActive' : null)}`} onClick={this.active.bind(this, item.id)}></span></div>
                         </div>
-                        <div className={`drop-down clearfix ${(this.state.divDeviation === item.id? 'divDeviation' : '')}`} >
+                        <div className={`drop-down clearfix ${(this.state.frameActive[index].active === true ? 'divDeviation' : '')}`} >
                           <p className="orderID">
                             <span>订单ID</span>
                             <span>{item.orderId}</span>
