@@ -1,39 +1,67 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { Tabs, NavBar, Icon } from 'antd-mobile'
+import { Tabs, NavBar, Icon, PullToRefresh } from 'antd-mobile'
 import { income, spending } from '../api/account'
+import { Toast } from 'antd-mobile';
 
 class Details extends Component {
   constructor(...args) {
     super(...args)
 
     this.state = {
-      income_data: [],
-      tabs: [
+      refreshing: false,
+      height: document.documentElement.clientHeight,
+      income_data: [], // 收入列表
+      tabs: [ // tabs名称 
         { title: '收入' },
         { title: '支出' },
         // { title: '待入' },
-      ]
+      ],
+      initialPage: 0,
+      income_pageNo: 1,
+      income_pageSize: 5,
+      income_finished: false, // 是否已经加载全部数据了
+    }
+  }
+
+  // 获取收入列表
+  async getIncome() {
+    let income_data = await income('ACN0gjHRNvIvUOx', {
+      "pageNo": this.state.income_pageNo,
+      "pageSize": this.state.income_pageSize,
+    })
+    let { result, totalResults } = income_data;
+    result.forEach((item) => {
+      item.active = false
+    })
+    this.setState({
+      income_data: [...this.state.income_data, ...result]
+    })
+    if (totalResults <= this.state.income_data.length) {
+      this.setState({
+        income_finished: true
+      })
+      return
     }
   }
 
   async componentDidMount() {
-    let income_data = await income('ACN0gjHRNvIvUOx', {
-      "pageNo": 1,
-      "pageSize": 10,
-    })
-    let { result } = income_data;
-    result.forEach((item, index) => {
-      item.active = false
-      item.id = index
-    })
+    try {
+      this.getIncome()
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  // tabs切换函数
+  onTabsChange = (tab, index) => {
     this.setState({
-      income_data: result
+      initialPage: index
     })
   }
 
+  // 切换箭头，显示更多？
   active(e) {
-    console.log(e)
     let cur = this.state.income_data.map(item => {
       if (item.id === e) {
         item.active = !item.active
@@ -45,6 +73,28 @@ class Details extends Component {
     })
   }
 
+  // 上拉加载更多
+  onRefresh = () => {
+    switch (this.state.initialPage) {
+      case 0:
+        if (this.state.income_finished) {
+          Toast.info('数据已经加载完毕', 1);
+          break;
+        }
+        this.setState({
+          income_pageNo: this.state.income_pageNo + 1
+        })
+        this.getIncome()
+        break;
+      default:
+      //
+    }
+    // this.setState({ refreshing: true });
+    // setTimeout(() => {
+    //   this.setState({ refreshing: false });
+    // }, 1000);
+  }
+
   render() {
     return (
       <div className="details ">
@@ -53,14 +103,51 @@ class Details extends Component {
           icon={<Icon type="left" color="#f5a623" />}
           onLeftClick={() => window.history.go(-1)}
         ><span style={{ fontSize: "14px" }}>收支明细</span></NavBar>
-        <Tabs tabs={this.state.tabs} initialPage={0} tabBarActiveTextColor={'#000000'} tabBarInactiveTextColor={'#999999'} tabBarUnderlineStyle={{ border: '0.5px #ffc147 solid' }}>
+        <Tabs tabs={this.state.tabs} initialPage={this.state.initialPage} tabBarActiveTextColor={'#000000'} tabBarInactiveTextColor={'#999999'} tabBarUnderlineStyle={{ border: '0.5px #ffc147 solid' }} onChange={this.onTabsChange}>
           <div>
             <section className="income">
-              <ul>
+              <PullToRefresh
+                damping={100}
+                ref={el => this.ptr = el}
+                style={{
+                  height: this.state.height,
+                  overflow: 'auto',
+                }}
+                direction="up"
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh}
+              >
+                <ul>
+                  {this.state.income_data.map(item => (
+                    <li key={item.id}>
+                      <div className="substance clearfix">
+                        <div className="substance-left">
+                          <p>{item.typeName}</p>
+                          <p>
+                            <span>{item.createDate}</span>
+                          </p>
+                        </div>
+                        <div className="substance-right"><span>+</span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)}`} onClick={this.active.bind(this, item.id)}></span></div>
+                      </div>
+                      <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')}`} >
+                        <p className="orderID">
+                          <span>订单ID</span>
+                          <span>{item.id}</span>
+                        </p>
+                        <p className="replacement">
+                          <span>{item.typeName}</span>
+                          <span>{item.point}</span>
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </PullToRefresh>
+              {/* <ul>
                 {
                   this.state.income_data.map((item, index) => {
                     return (
-                      <li key={item.id}>
+                      <li key={item.id} key={item.id}>
                         <div className="substance clearfix">
                           <div className="substance-left">
                             <p>{item.typeName}</p>
@@ -84,7 +171,7 @@ class Details extends Component {
                     )
                   })
                 }
-              </ul>
+              </ul> */}
             </section>
           </div>
           <div >
