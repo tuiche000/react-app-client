@@ -56,13 +56,13 @@ class Homepage extends Component {
     }
     // 分享
     share() {
-        
+        alert(setShare)
         setShare({
             title: "测试",
             text: '测试',
             link:window.location.href
         }).then(() => {
-        console.log("1")
+            // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
         })
         console.log(setShare)
     }
