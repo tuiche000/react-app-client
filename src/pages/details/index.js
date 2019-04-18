@@ -73,11 +73,11 @@ class Details extends Component {
                         <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')}`} >
                           <p className="orderID">
                             <span>订单ID</span>
-                            <span>{item.orderId}</span>
+                            <span>{item.id}</span>
                           </p>
                           <p className="replacement">
-                            <span>{item.bous}</span>
-                            <span>{item.price}</span>
+                            <span>{item.typeName}</span>
+                            <span>{item.point}</span>
                           </p>
                         </div>
                       </li>
