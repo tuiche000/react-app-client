@@ -37,7 +37,7 @@ class LachineProduct extends Component {
     }
 
     fnGoto() {
-        console.log('fnGoto')
+        
         this.props.history.push(
             '/'
         )
@@ -52,7 +52,7 @@ class LachineProduct extends Component {
                     onLeftClick={() => window.history.go(-1)}
                 ></NavBar>
                 <div className="lachineProduct ">
-                    <Tabs tabs={this.state.tabs}  initialPage={0} tabBarActiveTextColor={'#000000'} tabBarInactiveTextColor={'#999999'} tabBarUnderlineStyle={{ border: '0.5px #ffc147 solid' }} animated={true} useOnPan={true}>
+                    <Tabs tabs={this.state.tabs} initialPage={0} tabBarActiveTextColor={'#000000'} tabBarInactiveTextColor={'#999999'} tabBarUnderlineStyle={{ border: '0.5px #ffc147 solid' }} animated={true} useOnPan={true}>
                         <div>
                             <section className="lachine" >
                                 <ul>

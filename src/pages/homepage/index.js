@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "./index.css";
-// import { Button } from 'antd-mobile';
-import Dialog from "../../components/Dialog";
+import { Toast } from 'antd-mobile';
+// import Dialog from "../../components/Dialog";
 import { setShare } from 'fm-ui/lib/utils/share'
 
 class Homepage extends Component {
@@ -15,6 +15,15 @@ class Homepage extends Component {
     }
 
     componentDidMount() {
+        setShare({
+            title: '测试',
+            text: '测试',
+            imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
+            link: window.location.href
+        }).then(function () {
+            // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
+            // alert("1")
+        })
         let list_data = [
             {
                 id: 1,
@@ -54,28 +63,20 @@ class Homepage extends Component {
             '/bonus'
         )
     }
-    // 分享
-    share() {
-        
-        setShare({
-            title: "测试",
-            text: '测试',
-            link:window.location.href
-        }).then(() => {
-        console.log("1")
-        })
-        console.log(setShare)
+    showToast() {
+        Toast.info('请点击右上角分享按钮', 2 );
     }
+
     render() {
         return (
             <div className="homepage-main">
-                {
+                {/* {
                     this.state.showDialog ? (
                         <Dialog title="推荐产品成功" footer_close={this.fnFooterClose.bind(this)}>
                             <h2>dsasdsds</h2>
                         </Dialog>
                     ) : ''
-                }
+                } */}
                 {/* <Button onClick={this.fnFooterClose.bind(this)}>customized buttons</Button> */}
                 <section className="homepage">
                     <header>
@@ -242,7 +243,7 @@ class Homepage extends Component {
                                 <span className="num">200</span>
                                 <span>奖励金</span>
                             </p>
-                            <p className="immediately" onClick={this.share.bind(this)}>立刻推荐</p>
+                            <p className="immediately" onClick={this.showToast.bind(this)} >立刻推荐</p>
                         </li>
                         <li className="innisfree-lis">
                             <p className="substance">马尔代夫卡尼岛Club Med度假村高级会所2晚豪华水屋，送往返机票</p>

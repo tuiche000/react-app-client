@@ -8,16 +8,16 @@ class Details extends Component {
 
     this.state = {
       income_data: [],
-      frameActive: []
+      frameActive: [],
+      tabs : [
+        { title: '收入' },
+        { title: '支出' },
+        // { title: '待入' },
+      ]
     }
   }
 
   componentDidMount() {
-    const tabs = [
-      { title: '收入' },
-      { title: '支出' },
-      { title: '待入' },
-    ];
     let income_data = [
       {
         id: 1,
@@ -54,7 +54,6 @@ class Details extends Component {
     this.setState({
       frameActive: arr,
       income_data,
-      tabs
     })
   }
 
