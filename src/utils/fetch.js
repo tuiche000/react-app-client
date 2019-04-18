@@ -19,6 +19,9 @@ function obj2String(obj, arr = [], idx = 0) {
  * @param method 请求方式
  */
 async function commonFetcdh(url, options, method = 'GET') {
+  Toast.loading('Loading...', 0, () => {
+    console.log('Load complete !!!');
+  });
   const searchStr = obj2String(options)
   let initObj = {}
   if (method === 'GET') { // 如果是GET请求，拼接url
@@ -39,9 +42,16 @@ async function commonFetcdh(url, options, method = 'GET') {
   try {
     let res = await fetch((BASE + url), initObj)
     let { code, status, message, data } = await res.json()
-    return data
+    Toast.hide()
+    if (code === "0") {
+      return data
+    } else {
+      Toast.fail(message, 1);
+    }
+    
   } catch (err) {
-    alert(err)
+    Toast.fail(JSON.stringify(err), 1);
+    console.log(err)
   }
 }
 
