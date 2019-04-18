@@ -35,7 +35,8 @@ class Details extends Component {
       item.active = false
     })
     this.setState({
-      income_data: [...this.state.income_data, ...result]
+      income_data: [...this.state.income_data, ...result],
+      refreshing: false
     })
     if (totalResults <= this.state.income_data.length) {
       this.setState({
@@ -75,10 +76,12 @@ class Details extends Component {
 
   // 上拉加载更多
   onRefresh = () => {
+    this.setState({ refreshing: true });
     switch (this.state.initialPage) {
       case 0:
         if (this.state.income_finished) {
           Toast.info('数据已经加载完毕', 1);
+          this.setState({ refreshing: false });
           break;
         }
         this.setState({
@@ -87,12 +90,9 @@ class Details extends Component {
         this.getIncome()
         break;
       default:
+        this.setState({ refreshing: false });
       //
     }
-    // this.setState({ refreshing: true });
-    // setTimeout(() => {
-    //   this.setState({ refreshing: false });
-    // }, 1000);
   }
 
   render() {
