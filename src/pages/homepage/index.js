@@ -3,6 +3,7 @@ import "./index.css";
 import { Toast } from 'antd-mobile';
 // import Dialog from "../../components/Dialog";
 import { setShare } from 'fm-ui/lib/utils/share'
+import { productList } from '../api/product'
 
 class Homepage extends Component {
     constructor(...args) {
@@ -10,11 +11,19 @@ class Homepage extends Component {
 
         this.state = {
             list_data: [],
-            showDialog: false
+            showDialog: false,
+            product_data: []
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        let product_data = await productList({
+            "pageNo": 1,
+            "pageSize": 10,
+        })
+        let { result } = product_data
+
+        // 设置分享功能
         setShare({
             title: '测试',
             text: '测试',
@@ -24,6 +33,7 @@ class Homepage extends Component {
             // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
             // alert("1")
         })
+
         let list_data = [
             {
                 id: 1,
@@ -39,7 +49,8 @@ class Homepage extends Component {
             }
         ]
         this.setState({
-            list_data
+            list_data,
+            product_data: result
         })
     }
 
@@ -64,7 +75,7 @@ class Homepage extends Component {
         )
     }
     showToast() {
-        Toast.info('请点击右上角分享按钮', 2 );
+        Toast.info('请点击右上角分享按钮', 2);
     }
 
     render() {
@@ -235,26 +246,22 @@ class Homepage extends Component {
                         </p>
                     </div>
                     <ul>
-                        <li className="innisfree-lis">
-                            <p className="substance">马尔代夫卡尼岛Club Med度假村高级会所2晚豪华水屋，送往返机票</p>
-                            <p className="amount">
-                                <span className="num">&yen;6600</span>
-                                <span>起</span>
-                                <span className="num">200</span>
-                                <span>奖励金</span>
-                            </p>
-                            <p className="immediately" onClick={this.showToast.bind(this)} >立刻推荐</p>
-                        </li>
-                        <li className="innisfree-lis">
-                            <p className="substance">马尔代夫卡尼岛Club Med度假村高级会所2晚豪华水屋，送往返机票</p>
-                            <p className="amount">
-                                <span className="num">&yen;6600</span>
-                                <span>起</span>
-                                <span className="num">200</span>
-                                <span>奖励金</span>
-                            </p>
-                            <p className="immediately">立刻推荐</p>
-                        </li>
+                        {
+                            this.state.product_data.map(item => {
+                                return (
+                                    <li className="innisfree-lis" key={item.productId}>
+                                        <p className="substance">{item.productSubTittle}</p>
+                                        <p className="amount">
+                                            <span className="num">&yen;{item.productPrice}</span>
+                                            <span>起</span>
+                                            <span className="num">{item.productType}</span>
+                                            <span>奖励金</span>
+                                        </p>
+                                        <p className="immediately" onClick={this.showToast.bind(this)} >立刻推荐</p>
+                                    </li>
+                                )
+                            })
+                        }
                     </ul>
                 </section>
             </div>

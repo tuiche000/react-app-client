@@ -9,11 +9,14 @@ class Details extends Component {
 
     this.state = {
       income_data: [],
+      spending_data: [],
       tabs: [
         { title: '收入' },
         { title: '支出' },
         // { title: '待入' },
-      ]
+      ],
+      spending_pageNo: 1,
+      spending_pageSize: 10
     }
   }
 
@@ -23,17 +26,25 @@ class Details extends Component {
       "pageSize": 10,
     })
     let { result } = income_data;
-    result.forEach((item, index) => {
+    let spending_data = await spending("ACN0gjHRNvIvUOx", {
+      "pageNo": this.state.spending_pageNo,
+      "pageSize": this.state.spending_pageSize,
+    })
+    let spending_result = spending_data.result
+    result.forEach((item) => {
       item.active = false
-      item.id = index
+    })
+    spending_result.forEach((item) => {
+      item.active = false
     })
     this.setState({
-      income_data: result
+      income_data: result,
+      spending_data: spending_result
     })
   }
 
   active(e) {
-    console.log(e)
+    
     let cur = this.state.income_data.map(item => {
       if (item.id === e) {
         item.active = !item.active
@@ -42,6 +53,18 @@ class Details extends Component {
     })
     this.setState({
       income_data: cur
+    })
+  }
+
+  spending_active(e) {
+    let cur = this.state.spending_data.map(item => {
+      if (item.id === e) {
+        item.active = !item.active
+      }
+      return item
+    })
+    this.setState({
+      spending_data: cur
     })
   }
 
@@ -90,50 +113,33 @@ class Details extends Component {
           <div >
             <section className="income expenditure">
               <ul>
-                <li>
-                  <div className="substance clearfix">
-                    <div className="substance-left">
-                      <p>奖励金抵扣</p>
-                      <p>
-                        <span>2019-12-77</span>
-                        <span>09-00</span>
-                      </p>
-                    </div>
-                    <div className="substance-right"><span>-</span><span>60.</span><span>00</span><span className="icon"></span></div>
-                  </div>
-                  <div className="drop-down clearfix">
-                    <p className="orderID">
-                      <span>订单ID</span>
-                      <span>「</span>
-                    </p>
-                    <p className="replacement">
-                      <span>奖励发放</span>
-                      <span>60.00</span>
-                    </p>
-                  </div>
-                </li>
-                <li>
-                  <div className="substance clearfix">
-                    <div className="substance-left">
-                      <p>推荐奖励</p>
-                      <p>
-                        <span>2019-12-77</span>
-                        <span>09-00</span>
-                      </p>
-                    </div>
-                    <div className="substance-right"><span>+</span><span>60.</span><span>00</span><span className="icon"></span></div>
-                  </div>
-                  <div className="drop-down clearfix">
-                    <p className="orderID">
-                      <span>订单ID</span>
-                      <span>1246464654653</span>
-                    </p>
-                    <p className="replacement">
-                      <span>补发奖励</span>
-                      <span>60.00</span>
-                    </p>
-                  </div>
-                </li>
+                {
+                  this.state.spending_data.map((item) => {
+                    return (
+                      <li key={item.id}>
+                        <div className="substance clearfix">
+                          <div className="substance-left">
+                            <p>{item.typeName}</p>
+                            <p>
+                              <span>{item.createDate}</span>
+                            </p>
+                          </div>
+                          <div className="substance-right"><span></span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)}`} onClick={this.spending_active.bind(this, item.id)}></span></div>
+                        </div>
+                        <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')}`}>
+                          <p className="orderID">
+                            <span>订单ID</span>
+                            <span>{item.id}</span>
+                          </p>
+                          <p className="replacement">
+                            <span>奖励发放</span>
+                            <span>{item.point}</span>
+                          </p>
+                        </div>
+                      </li>
+                    )
+                  })
+                }
               </ul>
             </section>
           </div>
