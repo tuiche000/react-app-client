@@ -6,6 +6,8 @@ import Homepage from "./pages/homepage"
 import Bonus from "./pages/bonus"
 import Details from "./pages/details"
 import LachineProduct from "./pages/lachineProduct"
+import { Prius } from 'foliday-bridge'
+window.Prius = Prius
 
 class App extends Component {
   render() {
