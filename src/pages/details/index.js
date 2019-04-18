@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "./index.css";
 import { Tabs, NavBar, Icon } from 'antd-mobile'
+import { income, spending } from '../api/account'
 
 class Details extends Component {
   constructor(...args) {
@@ -8,8 +9,7 @@ class Details extends Component {
 
     this.state = {
       income_data: [],
-      frameActive: [],
-      tabs : [
+      tabs: [
         { title: '收入' },
         { title: '支出' },
         // { title: '待入' },
@@ -17,55 +17,31 @@ class Details extends Component {
     }
   }
 
-  componentDidMount() {
-    let income_data = [
-      {
-        id: 1,
-        orderId: 24366688,
-        price: "60.00",
-        time: "2019-12-07",
-        mtime: '09.00',
-        bous: '奖励发放'
-      },
-      {
-        id: 2,
-        orderId: 4654651,
-        price: "70.00",
-        time: "2019-12-15",
-        mtime: '10.00',
-        bous: '补发奖励'
-      },
-      {
-        id: 3,
-        orderId: 54654135,
-        price: "100.00",
-        time: "2019-12-27",
-        mtime: '12.00',
-        bous: '奖励放还'
-      }
-    ];
-    let arr = []
-    income_data.forEach((item) => {
-      arr = [...arr, {
-        id: item.id,
-        active: false
-      }]
+  async componentDidMount() {
+    let income_data = await income('ACN0gjHRNvIvUOx', {
+      "pageNo": 1,
+      "pageSize": 10,
+    })
+    let { result } = income_data;
+    result.forEach((item, index) => {
+      item.active = false
+      item.id = index
     })
     this.setState({
-      frameActive: arr,
-      income_data,
+      income_data: result
     })
   }
 
   active(e) {
-    let cur = this.state.frameActive.map(item => {
+    console.log(e)
+    let cur = this.state.income_data.map(item => {
       if (item.id === e) {
         item.active = !item.active
       }
       return item
     })
     this.setState({
-      frameActive: cur
+      income_data: cur
     })
   }
 
@@ -87,15 +63,14 @@ class Details extends Component {
                       <li key={item.id}>
                         <div className="substance clearfix">
                           <div className="substance-left">
-                            <p>推荐奖励</p>
+                            <p>{item.typeName}</p>
                             <p>
-                              <span>{item.time}</span>
-                              <span>{item.mtime}</span>
+                              <span>{item.createDate}</span>
                             </p>
                           </div>
-                          <div className="substance-right"><span>+</span><span>{item.price}</span><span></span><span className={`icon ${(this.state.frameActive[index].active === true ? 'frameActive' : null)}`} onClick={this.active.bind(this, item.id)}></span></div>
+                          <div className="substance-right"><span>+</span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)}`} onClick={this.active.bind(this, item.id)}></span></div>
                         </div>
-                        <div className={`drop-down clearfix ${(this.state.frameActive[index].active === true ? 'divDeviation' : '')}`} >
+                        <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')}`} >
                           <p className="orderID">
                             <span>订单ID</span>
                             <span>{item.orderId}</span>
@@ -129,7 +104,7 @@ class Details extends Component {
                   <div className="drop-down clearfix">
                     <p className="orderID">
                       <span>订单ID</span>
-                      <span>1246464654653</span>
+                      <span>「</span>
                     </p>
                     <p className="replacement">
                       <span>奖励发放</span>
