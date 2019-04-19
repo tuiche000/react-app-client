@@ -12,14 +12,17 @@ class Details extends Component {
       refreshing: false,
       height: document.documentElement.clientHeight,
       income_data: [], // 收入列表
+      spending_data: [],//支出列表
       tabs: [ // tabs名称 
         { title: '收入' },
         { title: '支出' },
         // { title: '待入' },
       ],
       initialPage: 0,
-      income_pageNo: 1,
-      income_pageSize: 5,
+      income_pageNo: 1, //收入列表页数
+      income_pageSize: 5, //收入列表单页显示数目
+      spending_pageNo: 1, //支出列表页数
+      spending_pageSize: 10, //支出列表单页显示数目
       income_finished: false, // 是否已经加载全部数据了
     }
   }
@@ -45,13 +48,37 @@ class Details extends Component {
       return
     }
   }
+  
+  // 获取支出列表
+  async getSpending() {
+    let spending_data = await spending("ACN0gjHRNvIvUOx", {
+      "pageNo": this.state.spending_pageNo,
+      "pageSize": this.state.spending_pageSize,
+    })
+    console.log(spending_data)
+    // let spending_result = spending_data.result
+    // console.log(spending_result)
+    // spending_result.forEach((item) => {
+    //   item.active = false
+    // })
+    // this.setState({
+    //   spending_data:spending_result
+    // })
+  }
 
   async componentDidMount() {
     try {
       this.getIncome()
+      this.getSpending()
     } catch (e) {
       console.log(e)
     }
+
+    // try {
+    //   this.getSpending()
+    // } catch (e) {
+    //   console.log(e)
+    // }
   }
 
   // tabs切换函数
