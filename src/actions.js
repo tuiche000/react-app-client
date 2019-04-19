@@ -1,8 +1,9 @@
-export const SET_LOGIN='set_login';
+export const SET_FOLIDAY_TOKEN='folidayToken';
 
-export function setLogin(succ){
+export function setFolidayToken(folidayToken){
+  console.log(folidayToken)
   return {
-    type: SET_LOGIN,
-    value: succ
+    type: SET_FOLIDAY_TOKEN,
+    value: folidayToken
   };
 }

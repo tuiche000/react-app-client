@@ -10,7 +10,7 @@ import './Dialog.css';
 class Dialog extends Component {
     constructor(...args) {
         super(...args);
-        document.querySelector('body').style = "overflow: hidden;"
+        document.querySelector('body').style = "overflow: hidden;height: 100vh;"
     }
 
     componentWillUnmount() {
