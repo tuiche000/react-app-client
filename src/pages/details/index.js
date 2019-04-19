@@ -55,21 +55,24 @@ class Details extends Component {
       "pageNo": this.state.spending_pageNo,
       "pageSize": this.state.spending_pageSize,
     })
-    console.log(spending_data)
-    // let spending_result = spending_data.result
+    // console.log(spending_data)
+    let spending_result = spending_data.result
     // console.log(spending_result)
-    // spending_result.forEach((item) => {
-    //   item.active = false
-    // })
-    // this.setState({
-    //   spending_data:spending_result
-    // })
+    spending_result.forEach((item) => {
+      item.active = false
+    })
+    this.setState({
+      spending_data:spending_result
+    })
   }
 
   async componentDidMount() {
     try {
       // Promise.all(this.getIncome(), this.getIncome()).then(res => {
       //   console.log(res)
+      // })
+      // new Promise((resolve, reject) => {
+      //   Promise.all()
       // })
       this.getIncome()
       this.getSpending()

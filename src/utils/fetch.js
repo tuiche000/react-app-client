@@ -13,15 +13,30 @@ function obj2String(obj, arr = [], idx = 0) {
 }
 
 /**
+ * 请求队列里面是没有请求 开始加载或者停止加载
+ */
+let requestTaskArray = []
+let showOrHideLoad = (show = true) => {
+  const requestLength = requestTaskArray.length;
+  if (show && requestLength === 0) {
+    return Toast.loading('加载中...', 20, () => {
+      requestTaskArray = []
+      Toast.fail('请求超时', 2);
+    });
+  } else if (!show && requestLength === 0) {
+    return Toast.hide();
+  }
+  return;
+}
+
+/**
  * 真正的请求
  * @param url 请求地址
  * @param options 请求参数
  * @param method 请求方式
  */
 async function commonFetcdh(url, options, method = 'GET') {
-  Toast.loading('Loading...', 0, () => {
-    console.log('Load complete !!!');
-  });
+  showOrHideLoad();
   const searchStr = obj2String(options)
   let initObj = {}
   if (method === 'GET') { // 如果是GET请求，拼接url
@@ -40,18 +55,17 @@ async function commonFetcdh(url, options, method = 'GET') {
     }
   }
   try {
+    requestTaskArray.push(fetch((BASE + url), initObj))
     let res = await fetch((BASE + url), initObj)
     let { code, message, data } = await res.json()
-    Toast.hide()
     if (code === "0") {
       return data
-    } else {
-      Toast.fail(message, 1);
     }
-
   } catch (err) {
-    Toast.fail(JSON.stringify(err), 1);
     console.log(err)
+  } finally {
+    requestTaskArray.shift();
+    showOrHideLoad(false)
   }
 }
 
