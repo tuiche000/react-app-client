@@ -6,5 +6,5 @@ export async function income(code, options) {
 }
 
 export async function spending(code ,options) {
-    return _GET(`/balance/account/${code}/spending` ,options);
+    return await _GET(`/balance/account/${code}/spending` ,options);
 }

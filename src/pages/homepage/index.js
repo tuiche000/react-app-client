@@ -21,8 +21,8 @@ class Homepage extends Component {
             "pageNo": 1,
             "pageSize": 10,
         })
+        console.log(product_data)
         let { result } = product_data
-
         // 设置分享功能
         setShare({
             title: '测试',
