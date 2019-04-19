@@ -48,6 +48,9 @@ class Details extends Component {
 
   async componentDidMount() {
     try {
+      // Promise.all(this.getIncome(), this.getIncome()).then(res => {
+      //   console.log(res)
+      // })
       this.getIncome()
     } catch (e) {
       console.log(e)
@@ -143,35 +146,6 @@ class Details extends Component {
                   ))}
                 </ul>
               </PullToRefresh>
-              {/* <ul>
-                {
-                  this.state.income_data.map((item, index) => {
-                    return (
-                      <li key={item.id} key={item.id}>
-                        <div className="substance clearfix">
-                          <div className="substance-left">
-                            <p>{item.typeName}</p>
-                            <p>
-                              <span>{item.createDate}</span>
-                            </p>
-                          </div>
-                          <div className="substance-right"><span>+</span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)}`} onClick={this.active.bind(this, item.id)}></span></div>
-                        </div>
-                        <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')}`} >
-                          <p className="orderID">
-                            <span>订单ID</span>
-                            <span>{item.id}</span>
-                          </p>
-                          <p className="replacement">
-                            <span>{item.typeName}</span>
-                            <span>{item.point}</span>
-                          </p>
-                        </div>
-                      </li>
-                    )
-                  })
-                }
-              </ul> */}
             </section>
           </div>
           <div >

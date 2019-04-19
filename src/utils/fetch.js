@@ -41,14 +41,14 @@ async function commonFetcdh(url, options, method = 'GET') {
   }
   try {
     let res = await fetch((BASE + url), initObj)
-    let { code, status, message, data } = await res.json()
+    let { code, message, data } = await res.json()
     Toast.hide()
     if (code === "0") {
       return data
     } else {
       Toast.fail(message, 1);
     }
-    
+
   } catch (err) {
     Toast.fail(JSON.stringify(err), 1);
     console.log(err)
@@ -72,3 +72,7 @@ export async function _GET(url, options) {
 export async function _POST(url, options) {
   return commonFetcdh(url, options, 'POST')
 }
+
+// export async function getAll() {
+//   Promise.all()
+// }

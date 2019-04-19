@@ -50,7 +50,7 @@ class Homepage extends Component {
         ]
         this.setState({
             list_data,
-            product_data: result
+            product_data: result || []
         })
     }
 
