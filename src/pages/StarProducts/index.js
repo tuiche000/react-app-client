@@ -1,41 +1,35 @@
 import React, { Component } from 'react';
-import "./index.css"
-import {  NavBar, Icon } from 'antd-mobile';
+import "./index.css";
+import { NavBar, Icon } from 'antd-mobile';
+import { productList } from '../api/product';
 
 class StarProducts extends Component {
     constructor(...args) {
         super(...args)
 
         this.state = {
-            list_data: []
+            product_data: [], // 明星产品列表数据
+            productPageNo: 1, // 明星产品列表页数
+            productPageSize: 2, // 明星产品列表单页显示数据
         }
     }
-
-    componentDidMount() {
-        let list_data = [
-            {
-                id: 1,
-                title: '马尔代夫卡尼岛Club Med度假村高级会所2晚豪华水屋，送往返机票1',
-                price: 6600,
-                price2: 200
-            },
-            {
-                id: 2,
-                title: '马尔代夫卡尼岛Club Med度假村高级会所2晚豪华水屋，送往返机票2',
-                price: 3333,
-                price2: 200
-            }
-        ]
+    async getProduct() {
+        let product_data = await productList({
+            "pageNo": this.state.productPageNo,
+            "pageSize": this.state.productPageSize,
+        })
+        let { result } = product_data
         this.setState({
-            list_data
+            product_data: result || [],
         })
     }
 
-    fnGoto() {
-        console.log('fnGoto')
-        this.props.history.push(
-            '/'
-        )
+    async componentDidMount() {
+        try {
+            this.getProduct()
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     render() {
@@ -45,20 +39,21 @@ class StarProducts extends Component {
                     mode="light"
                     icon={<Icon type="left" color="#f5a623" />}
                     onLeftClick={() => window.history.go(-1)}
-                ><span style={{fontSize:"16px"}}>明星产品</span></NavBar>
-                {/* <Button onClick={this.fnGoto.bind(this)}>default</Button> */}
+                ><span style={{ fontSize: "16px" }}>明星产品</span></NavBar>
                 <ul>
                     {
-                        this.state.list_data.map(item => {
+                        this.state.product_data.map(item => {
                             return (
-                                <li className="innisfree-lis" key={item.id} onClick={this.fnGoto.bind(this)}>
-                                    <div className="img"></div>
-                                    <p className="substance">{item.title}</p>
+                                <li className="innisfree-list" key={item.productId} >
+                                    <div className="img">
+                                    <img src={item.productImgUrl} alt="" />
+                                    </div>
+                                    <p className="substance" style={{ WebkitBoxOrient: "vertical" }}>{item.productSubTittle}</p>
                                     <p className="amount">
                                         <span className="yen">&yen;</span>
-                                        <span className="num">{item.price}</span>
+                                        <span className="num">{item.productPrice}</span>
                                         <span>起</span>
-                                        <span className="num">{item.price2}</span>
+                                        <span className="num">{item.productType}</span>
                                         <span>奖励金</span>
                                     </p>
                                     <p className="immediately">立刻推荐</p>

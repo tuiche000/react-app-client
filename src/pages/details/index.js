@@ -20,9 +20,9 @@ class Details extends Component {
       ],
       initialPage: 0,
       income_pageNo: 1, //收入列表页数
-      income_pageSize: 5, //收入列表单页显示数目
+      income_pageSize: 5, //收入列表单页显示数据
       spending_pageNo: 1, //支出列表页数
-      spending_pageSize: 10, //支出列表单页显示数目
+      spending_pageSize: 10, //支出列表单页显示数据
       income_finished: false, // 是否已经加载全部数据了
     }
   }
