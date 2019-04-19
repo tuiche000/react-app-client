@@ -12,17 +12,28 @@ class Homepage extends Component {
         this.state = {
             list_data: [],
             showDialog: false,
-            product_data: []
+            product_data: [], // 明星产品列表数据
+            productPageNo: 1, // 明星产品列表页数
+            productPageSize: 2, // 明星产品列表单页显示数据
         }
     }
-
-    async componentDidMount() {
+    async getProduct() {
         let product_data = await productList({
-            "pageNo": 1,
-            "pageSize": 10,
+            "pageNo": this.state.productPageNo,
+            "pageSize": this.state.productPageSize,
         })
-        console.log(product_data)
         let { result } = product_data
+        this.setState({
+            product_data: result || [],
+        })
+    }
+    async componentDidMount() {
+        try {
+            this.getProduct()
+        } catch (e) {
+            console.log(e)
+        }
+
         // 设置分享功能
         setShare({
             title: '测试',
@@ -34,24 +45,7 @@ class Homepage extends Component {
             // alert("1")
         })
 
-        let list_data = [
-            {
-                id: 1,
-                title: '马尔代夫卡尼岛Club Med度假村高级会所2晚豪华水屋，送往返机票1',
-                price: 6600,
-                price2: 200
-            },
-            {
-                id: 2,
-                title: '马尔代夫卡尼岛Club Med度假村高级会所2晚豪华水屋，送往返机票2',
-                price: 3333,
-                price2: 200
-            }
-        ]
-        this.setState({
-            list_data,
-            product_data: result || []
-        })
+
     }
 
     fnFooterClose() {
@@ -59,21 +53,25 @@ class Homepage extends Component {
             showDialog: !this.state.showDialog
         })
     }
+    // 跳转明星产品页面
     goToStartProduct() {
         this.props.history.push(
             '/starProducts'
         )
     }
+    // 跳转拉新产品页面
     goTolachineProduct() {
         this.props.history.push(
             '/lachineProduct'
         )
     }
+    // 跳转奖励金账户页面
     goToBonus() {
         this.props.history.push(
             '/bonus'
         )
     }
+    // 轻提示
     showToast() {
         Toast.info('请点击右上角分享按钮', 2);
     }
@@ -250,7 +248,7 @@ class Homepage extends Component {
                             this.state.product_data.map(item => {
                                 return (
                                     <li className="innisfree-lis" key={item.productId}>
-                                        <p className="substance">{item.productSubTittle}</p>
+                                        <p className="substance" style={{ WebkitBoxOrient: "vertical" }}>{item.productSubTittle}</p>
                                         <p className="amount">
                                             <span className="num">&yen;{item.productPrice}</span>
                                             <span>起</span>

@@ -7,48 +7,59 @@ body {
   padding: 10px 15px;
 }
 
-.innisfree .innisfree-lis {
-  margin-top: 15px;
+.innisfree .innisfree-list {
+  margin-top:15px;
   border: 1px solid #ebebeb;
   border-radius: 20px;
-  padding: 10px;
   overflow: hidden;
+  padding:0;
   position: relative;
 }
 
-.innisfree .innisfree-lis .img {
-  height: 100px;
+.innisfree .innisfree-list .img img {
+  width: 100%;
+  height: auto;
+  position: relative;
 }
 
-.innisfree .innisfree-lis .substance {
+.innisfree .innisfree-list .substance {
   color: #000000;
   font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 7px;
+  padding: 0 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
-.innisfree .innisfree-lis .amount {
+.innisfree .innisfree-list .amount {
   font-size: 14px;
+  padding: 0 10px;
 }
 
-.innisfree .innisfree-lis .amount .yen {
+.innisfree .innisfree-list .amount .yen {
   font-size: 14px;
   color: #f5a623;
 }
 
-.innisfree .innisfree-lis .amount .num {
+.innisfree .innisfree-list .amount .num {
   font-size: 18px;
   color: #f5a623;
 }
 
-.innisfree .innisfree-lis .amount span:nth-child(4) {
+.innisfree .innisfree-list .amount span:nth-child(4) {
   margin-left: 8px;
 }
 
-.innisfree .innisfree-lis .amount .num {
+.innisfree .innisfree-list .amount .num {
   font-size: 18px;
   color: #f5a623;
 }
 
-.innisfree .innisfree-lis .immediately {
+.innisfree .innisfree-list .immediately {
   position: absolute;
   bottom: 0;
   right: 0;
