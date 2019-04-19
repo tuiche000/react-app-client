@@ -55,7 +55,7 @@ async function commonFetcdh(url, options, method = 'GET') {
     }
   }
   try {
-    requestTaskArray.push(fetch((BASE + url), initObj))
+    requestTaskArray.push(((BASE + url), initObj))
     let res = await fetch((BASE + url), initObj)
     let { code, message, data } = await res.json()
     if (code === "0") {

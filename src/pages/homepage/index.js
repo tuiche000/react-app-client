@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "./index.css";
 import { Toast } from 'antd-mobile';
-// import Dialog from "../../components/Dialog";
+import Dialog from "../../components/Dialog";
 import { setShare } from 'fm-ui/lib/utils/share'
 import { productList } from '../api/product'
 
@@ -15,6 +15,7 @@ class Homepage extends Component {
             product_data: [], // 明星产品列表数据
             productPageNo: 1, // 明星产品列表页数
             productPageSize: 2, // 明星产品列表单页显示数据
+            QR_code:"https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=fa9140accd95d143ce7bec711299e967/2934349b033b5bb571dc8c5133d3d539b600bc12.jpg", // 二维码图片
         }
     }
     async getProduct() {
@@ -79,13 +80,13 @@ class Homepage extends Component {
     render() {
         return (
             <div className="homepage-main">
-                {/* {
+                {
                     this.state.showDialog ? (
-                        <Dialog title="推荐产品成功" footer_close={this.fnFooterClose.bind(this)}>
-                            <h2>dsasdsds</h2>
+                        <Dialog title="长按图片保存" footer_close={this.fnFooterClose.bind(this)}>
+                            <img src={this.state.QR_code} alt=""/>
                         </Dialog>
                     ) : ''
-                } */}
+                }
                 {/* <Button onClick={this.fnFooterClose.bind(this)}>customized buttons</Button> */}
                 <section className="homepage">
                     <header>
@@ -132,7 +133,7 @@ class Homepage extends Component {
                                         <p>邀请一位好友注册成功，送两个奖励金</p>
                                     </div>
                                 </div>
-                                <span>已完成</span>
+                                <span onClick={this.fnFooterClose.bind(this)}>已完成</span>
                             </li>
                             <li className="frist-lachine">
                                 <div className="frist-lachine-right">

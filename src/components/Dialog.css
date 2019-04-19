@@ -42,6 +42,10 @@
     height: 100%;
     overflow: inherit;
 }
+.am-modal-content img{
+    width: 100%;
+    height: auto;
+}
 .am-modal-header {
     padding: 6px 15px 15px;
 }
