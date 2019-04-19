@@ -14,7 +14,7 @@ class LachineProduct extends Component {
     componentDidMount() {
         const tabs = [
             { title: '拉新会员' },
-            { title: '产品推荐' }
+            { title: '产品推荐' },
         ];
         let list_data = [
             {

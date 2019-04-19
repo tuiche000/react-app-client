@@ -20,10 +20,11 @@ class Details extends Component {
       ],
       initialPage: 0,
       income_pageNo: 1, //收入列表页数
-      income_pageSize: 5, //收入列表单页显示数据
+      income_pageSize: 10, //收入列表单页显示数据
+      income_finished: false, // 是否收入列表已经加载全部数据了
       spending_pageNo: 1, //支出列表页数
       spending_pageSize: 10, //支出列表单页显示数据
-      income_finished: false, // 是否已经加载全部数据了
+      spending_finished: false, // 是否支出列表已经加载全部数据了
     }
   }
 
@@ -48,43 +49,40 @@ class Details extends Component {
       return
     }
   }
-  
+
   // 获取支出列表
   async getSpending() {
     let spending_data = await spending("ACN0gjHRNvIvUOx", {
       "pageNo": this.state.spending_pageNo,
       "pageSize": this.state.spending_pageSize,
     })
-    // console.log(spending_data)
+
     let spending_result = spending_data.result
-    // console.log(spending_result)
+    let spending_totalResults = spending_data.totalResults
     spending_result.forEach((item) => {
       item.active = false
     })
     this.setState({
-      spending_data:spending_result
+      spending_data: [...this.state.spending_data, ...spending_result],
+      refreshing: false
     })
+    if (spending_totalResults <= this.state.spending_data.length) {
+      this.setState({
+        spending_finished: true
+      })
+      return
+    }
   }
 
   async componentDidMount() {
     try {
-      // Promise.all(this.getIncome(), this.getIncome()).then(res => {
-      //   console.log(res)
-      // })
-      // new Promise((resolve, reject) => {
-      //   Promise.all()
-      // })
+
       this.getIncome()
       this.getSpending()
     } catch (e) {
       console.log(e)
     }
 
-    // try {
-    //   this.getSpending()
-    // } catch (e) {
-    //   console.log(e)
-    // }
   }
 
   // tabs切换函数
@@ -94,7 +92,7 @@ class Details extends Component {
     })
   }
 
-  // 切换箭头，显示更多？
+  // （收入）切换箭头，显示更多？
   active(e) {
     let cur = this.state.income_data.map(item => {
       if (item.id === e) {
@@ -107,10 +105,23 @@ class Details extends Component {
     })
   }
 
+  // （支出）切换箭头，显示更多？
+  spending_active(e) {
+    let cur = this.state.spending_data.map(item => {
+      if (item.id === e) {
+        item.active = !item.active
+      }
+      return item
+    })
+    this.setState({
+      spending_data: cur
+    })
+  }
   // 上拉加载更多
   onRefresh = () => {
     this.setState({ refreshing: true });
     switch (this.state.initialPage) {
+      // 收入上拉加载更多
       case 0:
         if (this.state.income_finished) {
           Toast.info('数据已经加载完毕', 1);
@@ -121,6 +132,18 @@ class Details extends Component {
           income_pageNo: this.state.income_pageNo + 1
         })
         this.getIncome()
+        break;
+      // 支出上拉加载更多
+      case 1:
+        if (this.state.spending_finished) {
+          Toast.info('数据已经加载完毕', 1);
+          this.setState({ refreshing: false });
+          break;
+        }
+        this.setState({
+          spending_pageNo: this.state.spending_pageNo + 1
+        })
+        this.getSpending()
         break;
       default:
         this.setState({ refreshing: false });
@@ -178,57 +201,52 @@ class Details extends Component {
               </PullToRefresh>
             </section>
           </div>
-          <div >
+          <div>
             <section className="income expenditure">
-              <ul>
-                <li>
-                  <div className="substance clearfix">
-                    <div className="substance-left">
-                      <p>奖励金抵扣</p>
-                      <p>
-                        <span>2019-12-77</span>
-                        <span>09-00</span>
-                      </p>
-                    </div>
-                    <div className="substance-right"><span>-</span><span>60.</span><span>00</span><span className="icon"></span></div>
-                  </div>
-                  <div className="drop-down clearfix">
-                    <p className="orderID">
-                      <span>订单ID</span>
-                      <span>「</span>
-                    </p>
-                    <p className="replacement">
-                      <span>奖励发放</span>
-                      <span>60.00</span>
-                    </p>
-                  </div>
-                </li>
-                <li>
-                  <div className="substance clearfix">
-                    <div className="substance-left">
-                      <p>推荐奖励</p>
-                      <p>
-                        <span>2019-12-77</span>
-                        <span>09-00</span>
-                      </p>
-                    </div>
-                    <div className="substance-right"><span>+</span><span>60.</span><span>00</span><span className="icon"></span></div>
-                  </div>
-                  <div className="drop-down clearfix">
-                    <p className="orderID">
-                      <span>订单ID</span>
-                      <span>1246464654653</span>
-                    </p>
-                    <p className="replacement">
-                      <span>补发奖励</span>
-                      <span>60.00</span>
-                    </p>
-                  </div>
-                </li>
-              </ul>
+              <PullToRefresh
+                damping={100}
+                ref={el => this.ptr = el}
+                style={{
+                  height: this.state.height,
+                  overflow: 'auto',
+                }}
+                direction="up"
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh}
+              >
+                <ul>
+                  {
+                    this.state.spending_data.map((item) => {
+                      return (
+                        <li key={item.id}>
+                          <div className="substance clearfix">
+                            <div className="substance-left">
+                              <p>{item.typeName}</p>
+                              <p>
+                                <span>{item.createDate}</span>
+                              </p>
+                            </div>
+                            <div className="substance-right"><span></span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)}`} onClick={this.spending_active.bind(this, item.id)}></span></div>
+                          </div>
+                          <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')}`}>
+                            <p className="orderID">
+                              <span>订单ID</span>
+                              <span>{item.id}</span>
+                            </p>
+                            <p className="replacement">
+                              <span>奖励发放</span>
+                              <span>{item.point}</span>
+                            </p>
+                          </div>
+                        </li>
+                      )
+                    })
+                  }
+                </ul>
+              </PullToRefresh>
             </section>
           </div>
-          <div>
+          {/* <div>
             <section className="income stayIn">
               <ul>
                 <li>
@@ -244,9 +262,9 @@ class Details extends Component {
                 </li>
               </ul>
             </section>
-          </div>
+          </div> */}
         </Tabs>
-      </div>
+      </div >
     );
   }
 }
