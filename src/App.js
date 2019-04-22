@@ -12,7 +12,6 @@ import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo } from './actions';
 import { Prius } from 'foliday-bridge'
 import { getQueryVariable } from './utils/util'
 import { account_current } from './pages/api/account'
-import store from '@/store'
 window.Prius = Prius
 
 @connect((state, props) => Object.assign({}, props, state), {
