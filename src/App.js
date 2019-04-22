@@ -49,7 +49,7 @@ class App extends Component {
         <Route path="/bonus" component={Bonus} />
         <Route path="/details" component={Details} />
         <Route path="/lachineProduct" component={LachineProduct} />
-        <Route render={} />
+        {/* <Route render={} /> */}
       </div>
     );
   }

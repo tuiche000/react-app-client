@@ -44,6 +44,9 @@ async function commonFetcdh(url, options, method = 'GET') {
     url += '?' + searchStr
     initObj = {
       method: method,
+      headers: new Headers({
+        'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmb3N1biIsIm1lbSI6IjE4NTE2NjY2NDczIiwiY3JlYXRlZCI6MTU1NTY2NjE1MDE2NywiZXhwIjoxNTg3MjAyMTUwfQ.pwjogX_t4_4vwhwap9-cZpXVU3IAAT6Sawgf_PA4kD5KnqcfwqqDrAomVixK6SglkczXrEmhgLlyAkz3o5FNpw'
+      })
     }
   } else {
     initObj = {
@@ -51,6 +54,7 @@ async function commonFetcdh(url, options, method = 'GET') {
       headers: new Headers({
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmb3N1biIsIm1lbSI6IjE4NTE2NjY2NDczIiwiY3JlYXRlZCI6MTU1NTY2NjE1MDE2NywiZXhwIjoxNTg3MjAyMTUwfQ.pwjogX_t4_4vwhwap9-cZpXVU3IAAT6Sawgf_PA4kD5KnqcfwqqDrAomVixK6SglkczXrEmhgLlyAkz3o5FNpw'
       }),
       body: searchStr
     }
