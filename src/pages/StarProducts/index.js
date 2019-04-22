@@ -13,7 +13,7 @@ class StarProducts extends Component {
             height: document.documentElement.clientHeight,
             product_data: [], // 明星产品列表数据
             product_pageNo: 1, // 明星产品列表页数
-            product_pageSize: 2, // 明星产品列表单页显示数据
+            product_pageSize: 10, // 明星产品列表单页显示数据
             product_finnished: false, // 是否明星产品列表已经加载玩全部数据
         }
     }
