@@ -5,18 +5,19 @@ import Dialog from "@/components/Dialog";
 import { setShare } from 'fm-ui/lib/utils/share'
 import { productList } from '@/pages/api/product'
 import { create_qrCode } from '@/pages/api/member'
+import { connect } from 'react-redux'
 
+@connect((state, props) => Object.assign({}, props, state), {})
 class Homepage extends Component {
     constructor(...args) {
         super(...args)
-
         this.state = {
             list_data: [],
             showDialog: false,
             product_data: [], // 明星产品列表数据
             productPageNo: 1, // 明星产品列表页数
             productPageSize: 2, // 明星产品列表单页显示数据
-            QR_code:"https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=fa9140accd95d143ce7bec711299e967/2934349b033b5bb571dc8c5133d3d539b600bc12.jpg", // 二维码图片
+            QR_code: "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=fa9140accd95d143ce7bec711299e967/2934349b033b5bb571dc8c5133d3d539b600bc12.jpg", // 二维码图片
         }
     }
     // 根据手机号创建二维码分享链接
@@ -34,6 +35,7 @@ class Homepage extends Component {
         })
     }
     async componentDidMount() {
+        console.log(this.props)
         try {
             this.getProduct()
         } catch (e) {
@@ -88,7 +90,7 @@ class Homepage extends Component {
                 {
                     this.state.showDialog ? (
                         <Dialog title="长按图片保存" footer_close={this.fnFooterClose.bind(this)}>
-                            <img src={this.state.QR_code} alt=""/>
+                            <img src={this.state.QR_code} alt="" />
                         </Dialog>
                     ) : ''
                 }

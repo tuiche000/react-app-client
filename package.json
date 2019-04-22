@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-decorators": "^7.4.0",
     "fm-ui": "^1.1.27",
     "foliday-bridge": "^1.0.23",
     "react": "^16.8.6",

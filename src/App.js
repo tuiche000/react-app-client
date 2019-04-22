@@ -14,6 +14,9 @@ import { getQueryVariable } from './utils/util'
 import { account_current } from './pages/api/account'
 window.Prius = Prius
 
+@connect((state, props) => Object.assign({}, props, state), {
+  setFolidayToken, setUserInfo
+})
 class App extends Component {
   // constructor(...args) {
   //   super(...args)
@@ -62,6 +65,4 @@ class App extends Component {
   }
 }
 
-export default connect((state, props) => Object.assign({}, props, state), {
-  setFolidayToken, setUserInfo
-})(App);
+export default App
