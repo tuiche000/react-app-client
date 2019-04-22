@@ -1,5 +1,5 @@
 import { Toast } from 'antd-mobile';
-const BASE = 'http://unitest.fosunholiday.com/api/mms/spread';
+const BASE = 'http://unitest.fosunholiday.com';
 
 
 /**
@@ -62,8 +62,9 @@ async function commonFetcdh(url, options, method = 'GET') {
   try {
     requestTaskArray.push(((BASE + url), initObj))
     let res = await fetch((BASE + url), initObj)
-    let { code, data } = await res.json()
-    if (code === "0") {
+    let { code, data, responseCode } = await res.json()
+    console.log()
+    if (code === "0" || responseCode === "0") {
       return data
     }
   } catch (err) {

@@ -23,7 +23,7 @@ class Homepage extends Component {
             "pageNo": this.state.productPageNo,
             "pageSize": this.state.productPageSize,
         })
-        let { result } = product_data
+        let { result } = product_data || []
         this.setState({
             product_data: result || [],
         })

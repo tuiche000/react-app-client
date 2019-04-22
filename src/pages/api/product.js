@@ -2,5 +2,5 @@
 import { _GET } from '../../utils/fetch';
 
 export async function productList(options) {
-    return await _GET(`/product/recommendlist`, options);
+    return await _GET(`/api/mms/spread/product/recommendlist`, options);
 }

@@ -6,17 +6,23 @@ import Homepage from "./pages/homepage"
 import Bonus from "./pages/bonus"
 import Details from "./pages/details"
 import LachineProduct from "./pages/lachineProduct"
+import NotFound from './pages/NotFound'
 import { connect } from 'react-redux'
-import { setFolidayToken } from './actions';
+import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo } from './actions';
 import { Prius } from 'foliday-bridge'
 import { getQueryVariable } from './utils/util'
-import { SET_FOLIDAY_TOKEN } from './actions';
+import { account_current } from './pages/api/account'
 window.Prius = Prius
 
 class App extends Component {
   // constructor(...args) {
   //   super(...args)
   // }
+
+  async account_current() {
+    let userInfo = await account_current()
+    this.props.setUserInfo(userInfo)
+  }
 
   checkLogin() {
     let token = getQueryVariable('token')
@@ -39,6 +45,7 @@ class App extends Component {
 
   componentDidMount() {
     this.checkLogin();
+    this.account_current()
   }
 
   render() {
@@ -49,12 +56,12 @@ class App extends Component {
         <Route path="/bonus" component={Bonus} />
         <Route path="/details" component={Details} />
         <Route path="/lachineProduct" component={LachineProduct} />
-        {/* <Route render={} /> */}
+        {/* <Route render={() => <NotFound />} /> */}
       </div>
     );
   }
 }
 
 export default connect((state, props) => Object.assign({}, props, state), {
-  setFolidayToken
+  setFolidayToken, setUserInfo
 })(App);

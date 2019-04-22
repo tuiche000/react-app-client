@@ -2,8 +2,8 @@
 import { _GET } from '../../utils/fetch';
 
 export async function lachinList(options) {
-    return await _GET(`/recommends/members`, options);
+    return await _GET(`/api/mms/spread/recommends/members`, options);
 }
 export async function recommendList(options) {
-    return await _GET(`/recommends/products`, options);
+    return await _GET(`/api/mms/spread/recommends/products`, options);
 }
