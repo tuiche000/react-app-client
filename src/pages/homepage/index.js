@@ -6,6 +6,8 @@ import { setShare } from 'fm-ui/lib/utils/share'
 import { productList } from '@/pages/api/product'
 import { create_qrCode } from '@/pages/api/member'
 import { connect } from 'react-redux'
+import store from '@/store'
+import { reCount } from '@/pages/api/homePage'
 
 @connect((state, props) => Object.assign({}, props, state), {})
 class Homepage extends Component {
@@ -14,16 +16,26 @@ class Homepage extends Component {
         this.state = {
             list_data: [],
             showDialog: false,
+            code_data: {}, //二维码数据
             product_data: [], // 明星产品列表数据
             productPageNo: 1, // 明星产品列表页数
             productPageSize: 2, // 明星产品列表单页显示数据
-            QR_code: "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=fa9140accd95d143ce7bec711299e967/2934349b033b5bb571dc8c5133d3d539b600bc12.jpg", // 二维码图片
+            QR_code: "", // 二维码图片
+            recMemberCount: 0, // 推荐会员数
+            recOrderCount: 0, // 推荐下单数
+            totalPrize: 0, // 用户奖励金
+            userPhone: 0, // 用户手机号码
         }
     }
     // 根据手机号创建二维码分享链接
-    async create_qrCode() {
-        let product_data = await create_qrCode()
+    async create_qrCode(phone) {
+        let code_data = await create_qrCode(phone)
+        let { qrUrl } = code_data
+        this.setState({
+            QR_code: qrUrl,
+        })
     }
+    // 获取明星列表数据
     async getProduct() {
         let product_data = await productList({
             "pageNo": this.state.productPageNo,
@@ -34,10 +46,25 @@ class Homepage extends Component {
             product_data: result || [],
         })
     }
+    // 获取拉新会员数以及下单成功数
+    async getReConut() {
+        let Recount = await reCount('ACN0gjHRNvIvUOx')
+        let { recMemberCount, recOrderCount, totalPrize } = Recount
+        this.setState({
+            recMemberCount,
+            recOrderCount,
+            totalPrize,
+        })
+    }
     async componentDidMount() {
-        console.log(this.props)
+        store.subscribe(() => {
+            this.setState({
+                userPhone: store.getState().user.userInfo.phone
+            })
+        })
         try {
             this.getProduct()
+            this.getReConut()
         } catch (e) {
             console.log(e)
         }
@@ -57,6 +84,11 @@ class Homepage extends Component {
     }
 
     fnFooterClose() {
+        try {
+            this.create_qrCode(this.state.userPhone)
+        } catch (e) {
+            console.log(e)
+        }
         this.setState({
             showDialog: !this.state.showDialog
         })
@@ -88,7 +120,7 @@ class Homepage extends Component {
         return (
             <div className="homepage-main">
                 {
-                    this.state.showDialog ? (
+                    (this.state.showDialog && this.state.QR_code) ? (
                         <Dialog title="长按图片保存" footer_close={this.fnFooterClose.bind(this)}>
                             <img src={this.state.QR_code} alt="" />
                         </Dialog>
@@ -110,17 +142,17 @@ class Homepage extends Component {
                             <p>我的奖励金</p>
                             <p>
                                 <span>&yen;</span>
-                                <span className="num">25191</span>
+                                <span className="num">{this.state.totalPrize}</span>
                             </p>
                         </div>
                         <div className="success">
                             <div className="success-lachine" onClick={this.goTolachineProduct.bind(this)}>
                                 <p>拉新会员成功数</p>
-                                <p>92312</p>
+                                <p>{this.state.recMemberCount}</p>
                             </div>
                             <div className="success-order" onClick={this.goTolachineProduct.bind(this)}>
                                 <p>下单成功数</p>
-                                <p>18</p>
+                                <p>{this.state.recOrderCount}</p>
                             </div>
                         </div>
                     </section>
@@ -140,7 +172,7 @@ class Homepage extends Component {
                                         <p>邀请一位好友注册成功，送两个奖励金</p>
                                     </div>
                                 </div>
-                                <span onClick={this.fnFooterClose.bind(this)}>已完成</span>
+                                <span>已完成</span>
                             </li>
                             <li className="frist-lachine">
                                 <div className="frist-lachine-right">
@@ -263,7 +295,7 @@ class Homepage extends Component {
                                             <span className="num">{item.productType}</span>
                                             <span>奖励金</span>
                                         </p>
-                                        <p className="immediately" onClick={this.showToast.bind(this)} >立刻推荐</p>
+                                        <p className="immediately"  onClick={this.fnFooterClose.bind(this)} >立刻推荐</p>
                                     </li>
                                 )
                             })

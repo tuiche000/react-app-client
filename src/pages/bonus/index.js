@@ -30,7 +30,7 @@ class Bonus extends Component {
                     style={{ backgroundColor: "#322d24" }}
                     icon={<Icon type="left" color="#f5a623" />}
                     onLeftClick={() => window.history.go(-1)}
-                    rightContent={<span style={{ color: '#e9cf8a', fontSize: "14px" }}>支付管理</span>}
+                    rightContent={<span style={{ color: '#e9cf8a', fontSize: "14px" }}></span>}
                 ><span style={{ fontSize: "16px", color: '#fff' }}>奖励金账户</span></NavBar>
                 <div className="available-balance" onClick={this.goToDetails.bind(this)}>
                     <div className="balance-content clearfix">
