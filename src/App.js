@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Lifecycle } from 'react-router'
 import { Route } from 'react-router-dom'
 import StarProducts from './pages/StarProducts'
 import Homepage from "./pages/homepage"
@@ -18,27 +19,29 @@ window.Prius = Prius
   setFolidayToken, setUserInfo
 })
 class App extends Component {
-  // constructor(...args) {
-  //   super(...args)
-  // }
+  constructor(...args) {
+    super(...args)
+  }
 
   async account_current() {
     let userInfo = await account_current()
     this.props.setUserInfo(userInfo)
   }
 
-  checkLogin() {
+  // 检测是否登录有用户信息？
+  async checkLogin() {
     let token = getQueryVariable('token')
     let folidayToken = this.props.user.folidayToken || localStorage.getItem(SET_FOLIDAY_TOKEN)
-    // if (!Object.keys(this.props.user.userInfo).length) {
-    if (!folidayToken) {
-      // http://localhost:3000/?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmb3N1biIsIm1lbSI6IjE1MjE2NzA3NjI3IiwiY3JlYXRlZCI6MTU1NTQwNzY1OTc3MiwiZXhwIjoxNTg2OTQzNjU5fQ.tgnPlIoZFsVlZmfhtQU8VhcvZ7K-sP8CqmjSoeGfHbkAksMAFPxW2OyJxsGw36NmgMfmfmbYHXSnppWFAWBIXg
-      if (token) {
-        this.props.setFolidayToken(token)
-        this.props.history.replace(this.props.location.pathname)
-        return
+    if (!Object.keys(this.props.user.userInfo).length) {
+      if (!folidayToken) {
+        if (token) {
+          this.props.setFolidayToken(token)
+          await this.account_current()
+          this.props.history.replace(this.props.location.pathname)
+          return
+        }
+        window.location = `http://h5test.gofoliday.com/fyh/login?redirect=${window.location.href}`
       }
-      window.location = `http://h5test.gofoliday.com/fyh/login?redirect=${window.location.href}`
     }
   }
 

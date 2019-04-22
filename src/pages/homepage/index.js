@@ -35,7 +35,7 @@ class Homepage extends Component {
         })
     }
     async componentDidMount() {
-        console.log(this.props)
+        console.log(this.props.user)
         try {
             this.getProduct()
         } catch (e) {
