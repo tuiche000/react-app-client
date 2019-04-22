@@ -35,7 +35,7 @@ class Homepage extends Component {
         })
     }
     async componentDidMount() {
-        console.log(this.props.user)
+        console.log(this.props.user.userInfo)
         try {
             this.getProduct()
         } catch (e) {
@@ -185,7 +185,7 @@ class Homepage extends Component {
                         </ul>
                     </div>
                 </section>
-                {/* <section className="integral recommended-tasks">
+                <section className="integral recommended-tasks">
                     <div className="integral-top  clearfix">
                         <div className="title">
                             <h3>积分排名</h3>
@@ -240,7 +240,7 @@ class Homepage extends Component {
                             </div>
                         </li>
                     </ul>
-                </section> */}
+                </section>
                 <section className="innisfree integral recommended-tasks">
                     <div className="integral-top  clearfix">
                         <div className="title">
