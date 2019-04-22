@@ -63,7 +63,6 @@ async function commonFetcdh(url, options, method = 'GET') {
     requestTaskArray.push(((BASE + url), initObj))
     let res = await fetch((BASE + url), initObj)
     let { code, data, responseCode } = await res.json()
-    console.log()
     if (code === "0" || responseCode === "0") {
       return data
     }

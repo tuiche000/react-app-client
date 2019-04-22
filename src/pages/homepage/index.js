@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import "./index.css";
 import { Toast } from 'antd-mobile';
-import Dialog from "../../components/Dialog";
+import Dialog from "@/components/Dialog";
 import { setShare } from 'fm-ui/lib/utils/share'
-import { productList } from '../api/product'
+import { productList } from '@/pages/api/product'
+import { create_qrCode } from '@/pages/api/member'
 
 class Homepage extends Component {
     constructor(...args) {
@@ -17,6 +18,10 @@ class Homepage extends Component {
             productPageSize: 2, // 明星产品列表单页显示数据
             QR_code:"https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=fa9140accd95d143ce7bec711299e967/2934349b033b5bb571dc8c5133d3d539b600bc12.jpg", // 二维码图片
         }
+    }
+    // 根据手机号创建二维码分享链接
+    async create_qrCode() {
+        let product_data = await create_qrCode()
     }
     async getProduct() {
         let product_data = await productList({
