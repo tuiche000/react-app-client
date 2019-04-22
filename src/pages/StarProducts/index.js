@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import "./index.css";
 import { NavBar, Icon, PullToRefresh, Toast } from 'antd-mobile';
-import { productList } from '../api/product';
-import { connect } from 'react-redux'
+import { productList } from '@/pages/api/product';
+// import { connect } from 'react-redux'
 
 class StarProducts extends Component {
     constructor(...args) {
@@ -13,7 +13,7 @@ class StarProducts extends Component {
             height: document.documentElement.clientHeight,
             product_data: [], // 明星产品列表数据
             product_pageNo: 1, // 明星产品列表页数
-            product_pageSize: 10, // 明星产品列表单页显示数据
+            product_pageSize: 2, // 明星产品列表单页显示数据
             product_finnished: false, // 是否明星产品列表已经加载玩全部数据
         }
     }
@@ -42,6 +42,8 @@ class StarProducts extends Component {
         } catch (e) {
             console.log(e)
         }
+        // 将页面滑动到顶部
+        document.body.scrollTop = document.documentElement.scrollTop = 0
     }
     onRefresh = () => {
         
@@ -68,7 +70,7 @@ class StarProducts extends Component {
                     damping={100}
                     ref={el => this.ptr = el}
                     style={{
-                        // height: this.state.height,
+                        height: this.state.height,
                         overflow: 'auto',
                     }}
                     direction="up"

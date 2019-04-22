@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "./index.css";
 import { Tabs, NavBar, Icon, Toast ,PullToRefresh} from 'antd-mobile'
-import { lachineList, recommendList } from '../api/lachineProduct'
+import { lachineList, recommendList } from '@/pages/api/lachineProduct'
 
 class LachineProduct extends Component {
     constructor(...args) {

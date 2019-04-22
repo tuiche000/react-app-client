@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "./index.css";
 import { Tabs, NavBar, Icon, PullToRefresh } from 'antd-mobile'
-import { income, spending } from '../api/account'
+import { income, spending } from '@/pages/api/account'
 import { Toast } from 'antd-mobile';
 
 class Details extends Component {
