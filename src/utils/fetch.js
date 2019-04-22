@@ -1,5 +1,6 @@
 import { Toast } from 'antd-mobile';
-const BASE = 'http://101.132.27.104:7077/api/mms/spread';
+const BASE = 'http://unitest.fosunholiday.com/api/mms/spread';
+
 
 /**
  * 将对象转成 a=1&b=2的形式

@@ -7,6 +7,11 @@ export default function (state = {
 }, action) {
   switch (action.type) {
     case SET_FOLIDAY_TOKEN:
+      localStorage.setItem(SET_FOLIDAY_TOKEN, action.value)
+      return {
+        ...state,
+        folidayToken: action.value
+      };
     default:
       return state;
   }
