@@ -42,14 +42,14 @@ async function commonFetcdh(url, options, method = 'GET') {
   if (method === 'GET') { // 如果是GET请求，拼接url
     url += '?' + searchStr
     initObj = {
-      method: method
+      method: method,
     }
   } else {
     initObj = {
       method: method,
       headers: new Headers({
         'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
       }),
       body: searchStr
     }
