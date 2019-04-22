@@ -6,7 +6,6 @@ import { setShare } from 'fm-ui/lib/utils/share'
 import { productList } from '@/pages/api/product'
 import { create_qrCode } from '@/pages/api/member'
 import { connect } from 'react-redux'
-import store from '@/store'
 import { reCount } from '@/pages/api/homePage'
 
 @connect((state, props) => Object.assign({}, props, state), {})
@@ -24,7 +23,6 @@ class Homepage extends Component {
             recMemberCount: 0, // 推荐会员数
             recOrderCount: 0, // 推荐下单数
             totalPrize: 0, // 用户奖励金
-            userPhone: 0, // 用户手机号码
         }
     }
     // 根据手机号创建二维码分享链接
@@ -57,11 +55,7 @@ class Homepage extends Component {
         })
     }
     async componentDidMount() {
-        store.subscribe(() => {
-            this.setState({
-                userPhone: store.getState().user.userInfo.phone
-            })
-        })
+        console.log(this.props.user.userInfo.phone)
         try {
             this.getProduct()
             this.getReConut()
@@ -85,7 +79,7 @@ class Homepage extends Component {
 
     fnFooterClose() {
         try {
-            this.create_qrCode(this.state.userPhone)
+            this.create_qrCode(this.props.user.userInfo.phone)
         } catch (e) {
             console.log(e)
         }
