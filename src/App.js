@@ -49,11 +49,11 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    // this.checkLogin();
+    this.checkLogin();
   }
 
   componentDidMount() {
-    // this.checkLogin();
+    this.checkLogin();
     this.account_current()
   }
 
