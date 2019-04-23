@@ -40,8 +40,11 @@ class Homepage extends Component {
             "pageSize": this.state.productPageSize,
         })
         let { result } = product_data || []
-        this.setState({
-            product_data: result || [],
+        this.setState((prevState) => {
+            console.log('prevState', prevState)
+            return {
+                product_data: result || [],
+            }
         })
     }
     // 获取拉新会员数以及下单成功数
@@ -289,7 +292,7 @@ class Homepage extends Component {
                                             <span className="num">{item.productType}</span>
                                             <span>奖励金</span>
                                         </p>
-                                        <p className="immediately"  onClick={this.fnFooterClose.bind(this)} >立刻推荐</p>
+                                        <p className="immediately" onClick={this.fnFooterClose.bind(this)} >立刻推荐</p>
                                     </li>
                                 )
                             })
