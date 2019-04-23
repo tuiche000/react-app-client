@@ -21,7 +21,7 @@ class LachineProduct extends Component {
             lachine_pageSize: 10, // 拉新列表单页显示数据量
             lachine_finished: false, // 拉新列表是否加载全部数据 
             recommend_pageNo: 1, // 产品列表页数
-            recommend_pageSize: 2, // 产品列表单页显示数据量
+            recommend_pageSize: 10, // 产品列表单页显示数据量
             recommend_finished: false, // 产品列表是否加载全部数据
         }
     }
