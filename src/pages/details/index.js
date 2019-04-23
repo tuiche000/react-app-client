@@ -34,7 +34,7 @@ class Details extends Component {
       "pageNo": this.state.income_pageNo,
       "pageSize": this.state.income_pageSize,
     })
-    let { result, totalResults } = income_data;
+    let { result, totalResults } = income_data
     result.forEach((item) => {
       item.active = false
     })
@@ -56,7 +56,6 @@ class Details extends Component {
       "pageNo": this.state.spending_pageNo,
       "pageSize": this.state.spending_pageSize,
     })
-
     let spending_result = spending_data.result
     let spending_totalResults = spending_data.totalResults
     spending_result.forEach((item) => {

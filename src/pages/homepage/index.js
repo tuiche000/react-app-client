@@ -58,7 +58,6 @@ class Homepage extends Component {
         })
     }
     async componentDidMount() {
-        console.log(this.props.user.userInfo.phone)
         try {
             this.getProduct()
             this.getReConut()

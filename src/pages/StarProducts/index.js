@@ -43,6 +43,7 @@ class StarProducts extends Component {
             console.log(e)
         }
         // 将页面滑动到顶部
+        console.log("1")
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
     onRefresh = () => {
