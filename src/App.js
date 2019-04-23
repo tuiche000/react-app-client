@@ -43,7 +43,7 @@ class App extends Component {
           return
         }
         // 啥都没有就滚去登录页面
-        window.location = `http://h5test.gofoliday.com/fyh/login?redirect=${window.location.href}`
+        window.location = `http://h5test.gofoliday.com/logins?redirect=${window.location.href}`
       }
     }
   }
