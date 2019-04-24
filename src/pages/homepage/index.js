@@ -51,7 +51,8 @@ class Homepage extends Component {
     // 获取拉新会员数以及下单成功数
     async getReConut() {
         let Recount = await reCount('ACN0gjHRNvIvUOx')
-        let { recMemberCount, recOrderCount, totalPrize } = Recount
+        let { recMemberCount, recOrderCount, totalPrize , nameCh , iconurl} = Recount
+        console.log(Recount)
         this.setState({
             recMemberCount,
             recOrderCount,
@@ -67,7 +68,7 @@ class Homepage extends Component {
         this.setState({
             share_url: share_url.shareUrl,
         })
-        
+        console.log(share_url)
         // 设置分享功能
         setShare({
             title: '测试',
@@ -138,8 +139,8 @@ class Homepage extends Component {
                     <header>
                         <ul className="clearfix">
                             <li>
-                                <img src="assets/imgs/header-portrait.jpg" alt="" />
-                                <span>爱旅行</span>
+                                <img src={this.props.user.userInfo.iconurl} alt="" />
+                                <span>{this.props.user.userInfo.nameCh}</span>
                             </li>
                             <li >推荐规则</li>
                         </ul>
