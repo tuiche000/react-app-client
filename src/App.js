@@ -42,8 +42,8 @@ class App extends Component {
           this.props.history.replace(this.props.location.pathname)
           return
         }
-        // 啥都没有就滚去登录页面
-        window.location = `http://h5test.gofoliday.com/fyh/login?redirect=${window.location.href}`
+        // 啥都没有就滚去(测试)登录页面
+        window.location = `http://h5test.gofoliday.com/logins?redirect=${window.location.href}`
       }
     }
   }

@@ -6,7 +6,7 @@ import { setShare } from 'fm-ui/lib/utils/share'
 import { productList } from '@/pages/api/product'
 import { create_qrCode } from '@/pages/api/member'
 import { connect } from 'react-redux'
-import { reCount } from '@/pages/api/homePage'
+import { reCount, shareUrl } from '@/pages/api/homePage'
 
 @connect((state, props) => Object.assign({}, props, state), {})
 class Homepage extends Component {
@@ -18,11 +18,12 @@ class Homepage extends Component {
             code_data: {}, //二维码数据
             product_data: [], // 明星产品列表数据
             productPageNo: 1, // 明星产品列表页数
-            productPageSize: 2, // 明星产品列表单页显示数据
+            productPageSize: 3, // 明星产品列表单页显示数据
             QR_code: "", // 二维码图片
             recMemberCount: 0, // 推荐会员数
             recOrderCount: 0, // 推荐下单数
             totalPrize: 0, // 用户奖励金
+            share_url: "aa", // 分享地址
         }
     }
     // 根据手机号创建二维码分享链接
@@ -57,25 +58,35 @@ class Homepage extends Component {
             totalPrize,
         })
     }
-    async componentDidMount() {
-        try {
-            this.getProduct()
-            this.getReConut()
-        } catch (e) {
-            console.log(e)
-        }
-
+    // 获取分享地址
+    async getShareUrl() {
+        let share_url = await shareUrl({
+            url: window.location.href,
+            mode: 5,
+        })
+        this.setState({
+            share_url: share_url.shareUrl,
+        })
+        
         // 设置分享功能
         setShare({
             title: '测试',
             text: '测试',
             imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
-            link: window.location.href
+            link: this.state.share_url
         }).then(function () {
             // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
             // alert("1")
         })
-
+    }
+    async componentDidMount() {
+        try {
+            this.getProduct()
+            this.getReConut()
+            this.getShareUrl()
+        } catch (e) {
+            console.log(e)
+        }
 
     }
 
@@ -130,7 +141,7 @@ class Homepage extends Component {
                                 <img src="assets/imgs/header-portrait.jpg" alt="" />
                                 <span>爱旅行</span>
                             </li>
-                            <li>推荐规则</li>
+                            <li >推荐规则</li>
                         </ul>
                     </header>
                     <section className="aggregation">
@@ -153,7 +164,7 @@ class Homepage extends Component {
                         </div>
                     </section>
                 </section>
-                <section className="recommended-tasks">
+                {/* <section className="recommended-tasks">
                     <div className="title">
                         <h3>推荐任务</h3>
                         <p>做任务拿奖励金</p>
@@ -268,7 +279,7 @@ class Homepage extends Component {
                             </div>
                         </li>
                     </ul>
-                </section>
+                </section> */}
                 <section className="innisfree integral recommended-tasks">
                     <div className="integral-top  clearfix">
                         <div className="title">

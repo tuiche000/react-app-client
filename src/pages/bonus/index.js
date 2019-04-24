@@ -1,19 +1,36 @@
 import React, { Component } from 'react';
 import "./index.css";
 import { NavBar, Icon } from 'antd-mobile'
+import { reCount } from '@/pages/api/homePage'
 
 class Bonus extends Component {
     constructor(...args) {
         super(...args)
 
         this.state = {
-            
+            recMemberCount: 0, // 推荐会员数
+            recOrderCount: 0, // 推荐下单数
+            totalPrize: 0, // 用户奖励金
         }
+    }
+    // 获取拉新会员数以及下单成功数
+    async getReConut() {
+        let Recount = await reCount('ACN0gjHRNvIvUOx')
+        let { recMemberCount, recOrderCount, totalPrize } = Recount
+        this.setState({
+            recMemberCount,
+            recOrderCount,
+            totalPrize,
+        })
     }
 
     componentDidMount() {
-        
-        
+        try {
+            this.getReConut()
+        } catch (e) {
+            console.log(e)
+        }
+
     }
 
     goToDetails() {
@@ -37,8 +54,8 @@ class Bonus extends Component {
                         <div className="content-left">
                             <p className="balance">可用余额</p>
                             <p className="data">
-                            <span className="yen">&yen;</span>
-                            <span className="num">100000</span>
+                                <span className="yen">&yen;</span>
+                                <span className="num">{this.state.totalPrize}</span>
                             </p>
                         </div>
                         <Icon type="right" color="#705c2f" className="content-right" />
@@ -47,12 +64,12 @@ class Bonus extends Component {
                 <ul className="account">
                     <li className="clearfix accountLi" >
                         <span className="assets">总资产</span>
-                        <span className="assets-num">&yen;100000.00</span>
+                        <span className="assets-num">&yen;{this.state.totalPrize}</span>
                     </li>
-                    <li className="clearfix accountLi">
+                    {/* <li className="clearfix accountLi">
                         <span className="stayIn">待入帐</span>
                         <span className="stayIn-num">&yen;100000.00</span>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
         );

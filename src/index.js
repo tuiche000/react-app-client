@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 ReactDOM.render((
     <Provider store={store}>
-        <Router>
+        <Router basename="/fyRcommend">
             <Route component={App} />
         </Router>
     </Provider>
