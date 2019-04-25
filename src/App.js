@@ -42,18 +42,33 @@ class App extends Component {
       // 如果在app里
       if (window.Prius.isInsideApp) {
         let _this = this
-        // 如果app登录了直接取token取拿用户信息
-        Prius.appEventCallback({
-          callId: "TOKEN",
-          data: {},
+        // 没登录取登录然后取token
+        window.Prius.addCallback({
+          callId: "login_in",
           listener: async function (data) {
-            // 有token
-            let { token } = data
-            Token = token
-            _this.props.setFolidayToken(Token)
-            await _this.account_current()
+            if (data.code == 0) {
+              // 有token
+              let { token } = data
+              Token = token
+              _this.props.setFolidayToken(Token)
+              await _this.account_current()
+            }
           }
         });
+        // 如果app登录了直接取token取拿用户信息
+        window.Prius.appEventCallback({
+          callId: "LOGIN",
+          data: {},
+          listener: async function (data) {
+            if (data.token) {
+              // 有token
+              let { token } = data
+              Token = token
+              _this.props.setFolidayToken(Token)
+              await _this.account_current()
+            }
+          }
+        })
       }
       // 不在app里
       else {
@@ -70,9 +85,11 @@ class App extends Component {
           window.location = `http://h5test.gofoliday.com/logins?redirect=${window.location.href}`
         }
         // redux有folidayToken 或者 storeage有folidayToken
-        await this.account_current()
-        // 清除query上的token
-        Token && this.props.history.replace(this.props.location.pathname)
+        else {
+          await this.account_current()
+          // 清除query上的token
+          Token && this.props.history.replace(this.props.location.pathname)
+        }
       }
     }
   }
