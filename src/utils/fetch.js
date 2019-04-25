@@ -1,6 +1,19 @@
 import { Toast } from 'antd-mobile';
-const BASE = 'http://unitest.fosunholiday.com';
 
+let BASE = ""
+switch (process.env.NODE_ENV) {
+  case "development": // 开发
+    BASE = 'http://unitest.fosunholiday.com';
+    break;
+  case "production": // 生产
+    BASE = 'http://unitest.fosunholiday.com';
+    break;
+  case "test": // 测试
+    BASE = 'http://unitest.fosunholiday.com?mode=test';
+    break;
+  default:
+  //
+}
 
 /**
  * 将对象转成 a=1&b=2的形式

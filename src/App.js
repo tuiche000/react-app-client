@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Route } from 'react-router-dom'
-import StarProducts from './pages/StarProducts'
-import Homepage from "./pages/homepage"
-import Bonus from "./pages/bonus"
-import Details from "./pages/details"
-import LachineProduct from "./pages/lachineProduct"
-import Rules from "./pages/rules"
-import NotFound from './pages/NotFound'
+import Routes from './routes'
 import { connect } from 'react-redux'
 import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo } from './actions';
 import { Prius } from 'foliday-bridge'
 import { getQueryVariable } from './utils/util'
 import { account_current } from './pages/api/account'
+import { Route } from 'react-router-dom'
 window.Prius = Prius
 
 @connect((state, props) => Object.assign({}, props, state), {
@@ -25,6 +19,11 @@ class App extends Component {
 
   async account_current() {
     let userInfo = await account_current()
+    // 判断isStaff 是不是员工
+    if (userInfo.isStaff !== 1) {
+      alert('不是员工！')
+      return
+    }
     this.props.setUserInfo(userInfo)
   }
 
@@ -62,12 +61,13 @@ class App extends Component {
     if (Object.keys(this.props.user.userInfo).length) {
       return (
         <div className="App">
-          <Route path="/" exact component={Homepage} />
-          <Route path="/starProducts" component={StarProducts} />
-          <Route path="/bonus" component={Bonus} />
-          <Route path="/details" component={Details} />
-          <Route path="/lachineProduct" component={LachineProduct} />
-          <Route path="/rules" component={Rules} />
+          {
+            Routes.map(item => {
+              return (
+                <Route path={item.path} exact component={item.component} />
+              )
+            })
+          }
         </div>
       )
     } else {
