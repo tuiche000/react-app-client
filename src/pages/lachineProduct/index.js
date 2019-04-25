@@ -74,10 +74,10 @@ class LachineProduct extends Component {
         }
 
     }
-    // 跳转奖励金账户页面
-    goToBonus() {
+    // 跳转奖励金收支明细页面
+    goToDetails() {
         this.props.history.push(
-            '/bonus'
+            '/details'
         )
     }
     // tabs切换函数
@@ -193,7 +193,7 @@ class LachineProduct extends Component {
                                                     </div>
                                                     <div className="product-bottom">
                                                         <span className="bonus-issued">奖励金已发放</span>
-                                                        <span className="icon" onClick={this.goToBonus.bind(this)}></span>
+                                                        <span className="icon" onClick={this.goToDetails.bind(this)}></span>
                                                     </div>
                                                 </li>
                                             ))

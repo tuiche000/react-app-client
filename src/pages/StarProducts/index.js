@@ -5,6 +5,9 @@ import { productList } from '@/pages/api/product';
 import { create_qrCode } from '@/pages/api/member'
 import Dialog from "@/components/Dialog";
 import { connect } from 'react-redux'
+import { shareUrl } from '@/pages/api/homePage'
+import { Prius } from 'foliday-bridge'
+window.Prius = Prius
 
 @connect((state, props) => Object.assign({}, props, state), {})
 class StarProducts extends Component {
@@ -48,6 +51,50 @@ class StarProducts extends Component {
             QR_code: qrUrl,
         })
     }
+    // 创建二维码分享链接
+    async getQrCode(productId) {
+        let code_data = await shareUrl({
+            url: "http://h5test.gofoliday.com/product?productId=" + productId,
+            mode: 0,
+        })
+        this.setState({
+            QR_code: code_data.shareUrl,
+        })
+    }
+    async getShareUrl(productId) {
+        let share_url = await shareUrl({
+            url: "http://h5test.gofoliday.com/product?productId=" + productId,
+            mode: 5,
+        })
+        this.setState({
+            share_url: share_url.shareUrl,
+        })
+        // 设置app右上角分享功能
+
+        // setShare({
+        //     title: '测试',
+        //     text: '测试',
+        //     imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
+        //     link: this.state.share_url
+        // }).then(function () {
+        //     // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
+        //     // alert("1")
+        // })
+
+        // 设置分享功能
+        Prius.appEventCallback({
+            callId: 'POP_SHARE',
+            data: {
+                title: '标题',
+                url: this.state.share_url,
+                description: '描述',
+                iconUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/72.png'
+            },
+            listener: function (data) {
+                console.log(JSON.stringify(data))
+            }
+        })
+    }
     async componentDidMount() {
         try {
             this.getProduct()
@@ -57,9 +104,13 @@ class StarProducts extends Component {
         // 将页面滑动到顶部
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
-    fnFooterClose() {
+    fnFooterClose(productId) {
         try {
-            this.create_qrCode(this.props.user.userInfo.phone)
+            if (window.Prius.isInsideApp) {
+                this.getShareUrl(productId)
+            } else {
+                this.getQrCode(productId)
+            }
         } catch (e) {
             console.log(e)
         }
@@ -122,7 +173,7 @@ class StarProducts extends Component {
                                             <span className="num">{item.productType}</span>
                                             <span>奖励金</span>
                                         </p>
-                                        <p className="immediately" onClick={this.fnFooterClose.bind(this)}>立刻推荐</p>
+                                        <p className="immediately" onClick={this.fnFooterClose.bind(this, item.productId)}>立刻推荐</p>
                                     </li>
                                 )
                             })

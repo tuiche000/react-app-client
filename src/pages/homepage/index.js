@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { Toast } from 'antd-mobile';
+import { Toast, Button } from 'antd-mobile';
 import Dialog from "@/components/Dialog";
 import { setShare } from 'fm-ui/lib/utils/share'
 import { productList } from '@/pages/api/product'
 import { create_qrCode } from '@/pages/api/member'
 import { connect } from 'react-redux'
 import { reCount, shareUrl } from '@/pages/api/homePage'
+import { Prius } from 'foliday-bridge'
+window.Prius = Prius
 
 @connect((state, props) => Object.assign({}, props, state), {})
 class Homepage extends Component {
@@ -23,15 +25,26 @@ class Homepage extends Component {
             recMemberCount: 0, // 推荐会员数
             recOrderCount: 0, // 推荐下单数
             totalPrize: 0, // 用户奖励金
-            share_url: "aa", // 分享地址
+            share_url: "", // 分享地址
         }
     }
     // 根据手机号创建二维码分享链接
-    async create_qrCode(phone) {
-        let code_data = await create_qrCode(phone)
-        let { qrUrl } = code_data
+    // async create_qrCode(phone) {
+    //     let code_data = await create_qrCode(phone)
+    //     let { qrUrl } = code_data
+    //     this.setState({
+    //         QR_code: qrUrl,
+    //     })
+    // }
+
+    // 创建二维码分享链接
+    async getQrCode(productId) {
+        let code_data = await shareUrl({
+            url: "http://h5test.gofoliday.com/product?productId=" + productId,
+            mode: 0,
+        })
         this.setState({
-            QR_code: qrUrl,
+            QR_code: code_data.shareUrl,
         })
     }
     // 获取明星列表数据
@@ -51,8 +64,7 @@ class Homepage extends Component {
     // 获取拉新会员数以及下单成功数
     async getReConut() {
         let Recount = await reCount('ACN0gjHRNvIvUOx')
-        let { recMemberCount, recOrderCount, totalPrize , nameCh , iconurl} = Recount
-        console.log(Recount)
+        let { recMemberCount, recOrderCount, totalPrize, } = Recount
         this.setState({
             recMemberCount,
             recOrderCount,
@@ -60,40 +72,56 @@ class Homepage extends Component {
         })
     }
     // 获取分享地址
-    async getShareUrl() {
+    async getShareUrl(productId) {
         let share_url = await shareUrl({
-            url: window.location.href,
+            url: "http://h5test.gofoliday.com/product?productId=" + productId,
             mode: 5,
         })
         this.setState({
             share_url: share_url.shareUrl,
         })
-        console.log(share_url)
+        // 设置app右上角分享功能
+        // setShare({
+        //     title: '测试',
+        //     text: '测试',
+        //     imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
+        //     link: this.state.share_url
+        // }).then(function () {
+        //     // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
+        //     // alert("1")
+        // })
+
         // 设置分享功能
-        setShare({
-            title: '测试',
-            text: '测试',
-            imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
-            link: this.state.share_url
-        }).then(function () {
-            // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
-            // alert("1")
+        Prius.appEventCallback({
+            callId: 'POP_SHARE',
+            data: {
+                title: '标题',
+                url: this.state.share_url,
+                description: '描述',
+                iconUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/72.png'
+            },
+            listener: function (data) {
+                console.log(JSON.stringify(data))
+            }
         })
     }
     async componentDidMount() {
         try {
             this.getProduct()
             this.getReConut()
-            this.getShareUrl()
         } catch (e) {
             console.log(e)
         }
 
     }
 
-    fnFooterClose() {
+    fnFooterClose(productId) {
         try {
-            this.create_qrCode(this.props.user.userInfo.phone)
+            if (window.Prius.isInsideApp) {
+                this.getShareUrl(productId)
+            } else {
+                this.getQrCode(productId)
+            }
         } catch (e) {
             console.log(e)
         }
@@ -119,6 +147,12 @@ class Homepage extends Component {
             '/bonus'
         )
     }
+    // 跳转推荐规则页面
+    goToRules() {
+        this.props.history.push(
+            '/rules'
+        )
+    }
     // 轻提示
     showToast() {
         Toast.info('请点击右上角分享按钮', 2);
@@ -142,7 +176,7 @@ class Homepage extends Component {
                                 <img src={this.props.user.userInfo.iconurl} alt="" />
                                 <span>{this.props.user.userInfo.nameCh}</span>
                             </li>
-                            <li >推荐规则</li>
+                            <li onClick={this.goToRules.bind(this)}>推荐规则</li>
                         </ul>
                     </header>
                     <section className="aggregation">
@@ -303,13 +337,17 @@ class Homepage extends Component {
                                             <span className="num">{item.productType}</span>
                                             <span>奖励金</span>
                                         </p>
-                                        <p className="immediately" onClick={this.fnFooterClose.bind(this)} >立刻推荐</p>
+                                        <p className="immediately" onClick={this.fnFooterClose.bind(this, item.productId)} >立刻推荐</p>
                                     </li>
                                 )
                             })
                         }
                     </ul>
                 </section>
+                <p onClick={() => {
+                    localStorage.clear()
+                    window.location.reload()
+                }}>推出登陆</p>
             </div>
         );
     }

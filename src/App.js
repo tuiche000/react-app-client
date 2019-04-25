@@ -6,6 +6,7 @@ import Homepage from "./pages/homepage"
 import Bonus from "./pages/bonus"
 import Details from "./pages/details"
 import LachineProduct from "./pages/lachineProduct"
+import Rules from "./pages/rules"
 import NotFound from './pages/NotFound'
 import { connect } from 'react-redux'
 import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo } from './actions';
@@ -66,6 +67,7 @@ class App extends Component {
           <Route path="/bonus" component={Bonus} />
           <Route path="/details" component={Details} />
           <Route path="/lachineProduct" component={LachineProduct} />
+          <Route path="/rules" component={Rules} />
         </div>
       )
     } else {
