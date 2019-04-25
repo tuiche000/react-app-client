@@ -5,6 +5,7 @@ import Dialog from "@/components/Dialog";
 import { setShare } from 'fm-ui/lib/utils/share'
 import { productList } from '@/pages/api/product'
 import { create_qrCode } from '@/pages/api/member'
+import { tasklist } from '@/pages/api/tasklist'
 import { connect } from 'react-redux'
 import { reCount, shareUrl } from '@/pages/api/homePage'
 import { Prius } from 'foliday-bridge'
@@ -105,10 +106,19 @@ class Homepage extends Component {
             }
         })
     }
+    // 获取推荐任务
+    async getTasklist() {
+        let task_list = await tasklist({
+            "pageNo": 1,
+            "pageSize": 10,
+        })
+        console.log(task_list)
+    }
     async componentDidMount() {
         try {
             this.getProduct()
             this.getReConut()
+            this.getTasklist()
         } catch (e) {
             console.log(e)
         }
@@ -199,7 +209,7 @@ class Homepage extends Component {
                         </div>
                     </section>
                 </section>
-                {/* <section className="recommended-tasks">
+                <section className="recommended-tasks">
                     <div className="title">
                         <h3>推荐任务</h3>
                         <p>做任务拿奖励金</p>
@@ -259,7 +269,7 @@ class Homepage extends Component {
                         </ul>
                     </div>
                 </section>
-                <section className="integral recommended-tasks">
+                {/* <section className="integral recommended-tasks">
                     <div className="integral-top  clearfix">
                         <div className="title">
                             <h3>积分排名</h3>
