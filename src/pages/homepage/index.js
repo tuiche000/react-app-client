@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { Toast, Button } from 'antd-mobile';
+import { Toast } from 'antd-mobile';
 import Dialog from "@/components/Dialog";
-import { setShare } from 'fm-ui/lib/utils/share'
+// import { setShare } from 'fm-ui/lib/utils/share'
 import { productList } from '@/pages/api/product'
 import { tasklist } from '@/pages/api/tasklist'
 import { connect } from 'react-redux'
@@ -57,13 +57,18 @@ class Homepage extends Component {
     }
     // 获取拉新会员数以及下单成功数
     async getReConut() {
-        let Recount = await reCount('ACN0gjHRNvIvUOx')
-        let { recMemberCount, recOrderCount, totalPrize, } = Recount
-        this.setState({
-            recMemberCount,
-            recOrderCount,
-            totalPrize,
-        })
+        try {
+            let Recount = await reCount()
+            let { recMemberCount, recOrderCount, totalPrize, } = Recount
+            this.setState({
+                recMemberCount,
+                recOrderCount,
+                totalPrize,
+            })
+        }
+        catch (e) {
+
+        }
     }
     // 获取分享地址
     async getShareUrl(item) {
@@ -93,7 +98,7 @@ class Homepage extends Component {
                 title: item.productName,
                 url: this.state.share_url,
                 description: item.productSubTittle,
-                iconUrl: item.productImgUrl,
+                iconUrl: 'http:' + item.productImgUrl,
             },
             listener: function (data) {
                 console.log(JSON.stringify(data))
@@ -225,8 +230,8 @@ class Homepage extends Component {
                     </div>
                     <div className="tasks-list">
                         <ul>
-                            {this.state.task_list.map(item => (
-                                <li className="frist-lachine">
+                            {this.state.task_list.map((item, index) => (
+                                <li className="frist-lachine" key={index}>
                                     <div className="frist-lachine-right">
                                         <img src="./imgs/header-portrait.jpg" alt="" />
                                         <div className="content">

@@ -13,9 +13,9 @@ window.Prius = Prius
   setFolidayToken, setUserInfo
 })
 class App extends Component {
-  constructor(...args) {
-    super(...args)
-  }
+  // constructor(...args) {
+  //   super(...args)
+  // }
 
   async account_current() {
     let userInfo = await account_current()
@@ -62,9 +62,9 @@ class App extends Component {
       return (
         <div className="App">
           {
-            Routes.map(item => {
+            Routes.map((item, index) => {
               return (
-                <Route path={item.path} exact component={item.component} />
+                <Route key={index} path={item.path} exact component={item.component} />
               )
             })
           }

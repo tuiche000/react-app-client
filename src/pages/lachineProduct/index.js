@@ -28,40 +28,53 @@ class LachineProduct extends Component {
 
     // 获取拉新列表
     async getLachineList() {
-        let Lachine_list = await lachineList({
-            "pageNo": this.state.lachine_pageNo,
-            "pageSize": this.state.lachine_pageSize,
-        })
-        let { result, totalResults } = Lachine_list
-        this.setState({
-            Lachine_list: [...this.state.Lachine_list, ...result] || [],
-            refreshing: false,
-        })
-        if (totalResults <= this.state.Lachine_list.length) {
-            this.setState({
-                lachine_finished: true,
+        try {
+            let Lachine_list = await lachineList({
+                "pageNo": this.state.lachine_pageNo,
+                "pageSize": this.state.lachine_pageSize,
             })
-            return
+            if (!Lachine_list) {
+                return
+            }
+            let { result, totalResults } = Lachine_list
+            this.setState({
+                Lachine_list: [...this.state.Lachine_list, ...result] || [],
+                refreshing: false,
+            })
+            if (totalResults <= this.state.Lachine_list.length) {
+                this.setState({
+                    lachine_finished: true,
+                })
+                return
+            }
+        }
+        catch (e) {
+
         }
     }
 
     // 获取产品推荐列表数据
     async getRecommendList() {
-        let recommend_list = await recommendList({
-            "pageNo": this.state.recommend_pageNo,
-            "pageSize": this.state.recommend_pageSize,
-        })
-        let { result } = recommend_list
-        let recommend_totalResults = recommend_list.totalResults
-        this.setState({
-            recommend_list: [...this.state.recommend_list, ...result] || [],
-            refreshing: false,
-        })
-        if (recommend_totalResults <= this.state.recommend_list.length) {
-            this.setState({
-                recommend_finished: true,
+        try {
+            let recommend_list = await recommendList({
+                "pageNo": this.state.recommend_pageNo,
+                "pageSize": this.state.recommend_pageSize,
             })
-            return
+            let { result } = recommend_list
+            let recommend_totalResults = recommend_list.totalResults
+            this.setState({
+                recommend_list: [...this.state.recommend_list, ...result] || [],
+                refreshing: false,
+            })
+            if (recommend_totalResults <= this.state.recommend_list.length) {
+                this.setState({
+                    recommend_finished: true,
+                })
+                return
+            }
+        }
+        catch (e) {
+
         }
     }
 
@@ -85,7 +98,7 @@ class LachineProduct extends Component {
         this.setState({
             initialPage: index
         })
-        
+
     }
     onRefresh = () => {
         this.setState({ refreshing: true });

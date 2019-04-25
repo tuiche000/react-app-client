@@ -15,13 +15,18 @@ class Bonus extends Component {
     }
     // 获取拉新会员数以及下单成功数
     async getReConut() {
-        let Recount = await reCount('ACN0gjHRNvIvUOx')
-        let { recMemberCount, recOrderCount, totalPrize } = Recount
-        this.setState({
-            recMemberCount,
-            recOrderCount,
-            totalPrize,
-        })
+        try {
+            let Recount = await reCount()
+            let { recMemberCount, recOrderCount, totalPrize } = Recount
+            this.setState({
+                recMemberCount,
+                recOrderCount,
+                totalPrize,
+            })
+        }
+        catch (e) {
+
+        }
     }
 
     componentDidMount() {
