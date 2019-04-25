@@ -7,6 +7,7 @@ import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo } from './actions';
 import { Prius } from 'foliday-bridge'
 import { getQueryVariable } from './utils/util'
 import { account_current } from './pages/api/account'
+import { Toast } from 'antd-mobile';
 window.Prius = Prius
 
 @connect((state, props) => Object.assign({}, props, state), {
@@ -19,43 +20,59 @@ class App extends Component {
 
   // 获取用户信息
   async account_current() {
-    let userInfo = await account_current()
-    // 判断isStaff 是不是员工
-    if (userInfo.isStaff !== 1) {
-      alert('不是员工！')
-      return
+    try {
+      let userInfo = await account_current()
+      // 判断isStaff 是不是员工
+      if (userInfo.isStaff !== 1) {
+        Toast.fail('您不是复星员工！', 2);
+        // return
+      }
+      this.props.setUserInfo(userInfo)
     }
-    this.props.setUserInfo(userInfo)
+    catch (e) {
+      //
+    }
   }
 
   // 检测是否登录
   async checkLogin() {
-    // 是否有用户信息
+    // 如果没有用户信息在redux中
     if (!Object.keys(this.props.user.userInfo).length) {
-      let token = getQueryVariable('token')
-      let folidayToken = this.props.user.folidayToken || localStorage.getItem(SET_FOLIDAY_TOKEN)
-      // 没有token或者storeage的token
-      if (!folidayToken) {
-        // query上有token就存token并且存用户信息
-        if (token) {
-          this.props.setFolidayToken(token)
-          await this.account_current()
-          this.props.history.replace(this.props.location.pathname)
-          return
+      let Token = getQueryVariable('token')
+      // 如果在app里
+      if (window.Prius.isInsideApp) {
+        let _this = this
+        // 如果app登录了直接取token取拿用户信息
+        Prius.appEventCallback({
+          callId: "TOKEN",
+          data: {},
+          listener: async function (data) {
+            // 有token
+            let { token } = data
+            Token = token
+            _this.props.setFolidayToken(Token)
+            await _this.account_current()
+          }
+        });
+      }
+      // 不在app里
+      else {
+        let folidayToken = this.props.user.folidayToken || localStorage.getItem(SET_FOLIDAY_TOKEN)
+        // redux上没有folidayToken 或者 storeage里没有 folidayToken
+        if (!folidayToken) {
+          // query上有token
+          if (Token) {
+            this.props.setFolidayToken(Token)
+            await this.account_current()
+            return
+          }
+          // 啥都没有就滚去(测试)登录页面
+          window.location = `http://h5test.gofoliday.com/logins?redirect=${window.location.href}`
         }
-        // 如果在app里
-        if (window.Prius.isInsideApp) {
-          window.Prius.appEventCallback({
-            callId: "TOKEN",
-            data: {},
-            listener: function (data) {
-              alert(data)
-            }
-          });
-          return;
-        }
-        // 啥都没有就滚去(测试)登录页面
-        window.location = `http://h5test.gofoliday.com/logins?redirect=${window.location.href}`
+        // redux有folidayToken 或者 storeage有folidayToken
+        await this.account_current()
+        // 清除query上的token
+        Token && this.props.history.replace(this.props.location.pathname)
       }
     }
   }
@@ -66,7 +83,6 @@ class App extends Component {
 
   componentDidMount() {
     this.checkLogin();
-    this.account_current()
   }
 
   render() {
