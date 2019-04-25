@@ -33,9 +33,6 @@ class LachineProduct extends Component {
                 "pageNo": this.state.lachine_pageNo,
                 "pageSize": this.state.lachine_pageSize,
             })
-            if (!Lachine_list) {
-                return
-            }
             let { result, totalResults } = Lachine_list
             this.setState({
                 Lachine_list: [...this.state.Lachine_list, ...result] || [],
