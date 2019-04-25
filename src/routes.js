@@ -8,10 +8,10 @@ import Rules from "./pages/rules"
 // import NotFound from './pages/NotFound'
 
 export default [
-    {path: '/', component: Homepage},
-    {path: '/starProducts', component: StarProducts},
-    {path: '/bonus', component: Bonus},
-    {path: '/details', component: Details},
-    {path: '/lachineProduct', component: LachineProduct},
-    {path: '/rules', component: Rules},
+    { path: '/', component: Homepage },
+    { path: '/starProducts', component: StarProducts },
+    { path: '/bonus', component: Bonus },
+    { path: '/details', component: Details },
+    { path: '/lachineProduct', component: LachineProduct },
+    { path: '/rules', component: Rules },
 ]
