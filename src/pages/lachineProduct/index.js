@@ -9,7 +9,7 @@ class LachineProduct extends Component {
 
         this.state = {
             refreshing: false,
-            height: document.documentElement.clientHeight,
+            height: document.documentElement.clientHeight - 55,
             Lachine_list: [], // 拉新列表数据
             recommend_list: [], // 产品列表数据
             tabs: [             // tab栏标题

@@ -17,7 +17,7 @@ class StarProducts extends Component {
         this.state = {
             refreshing: false,
             showDialog: false,
-            height: document.documentElement.clientHeight,
+            height: document.documentElement.clientHeight - 55,
             product_data: [], // 明星产品列表数据
             product_pageNo: 1, // 明星产品列表页数
             product_pageSize: 10, // 明星产品列表单页显示数据
@@ -106,15 +106,15 @@ class StarProducts extends Component {
     }
     fnFooterClose(item) {
         // console.log(item.productId)
-            try {
-                if (window.Prius.isInsideApp) {
-                    this.getShareUrl(item)
-                } else {
-                    this.getQrCode(item.productId)
-                }
-            } catch (e) {
-                console.log(e)
+        try {
+            if (window.Prius.isInsideApp) {
+                this.getShareUrl(item)
+            } else {
+                this.getQrCode(item.productId)
             }
+        } catch (e) {
+            console.log(e)
+        }
 
         this.setState({
             showDialog: !this.state.showDialog

@@ -10,7 +10,7 @@ class Details extends Component {
 
     this.state = {
       refreshing: false,
-      height: document.documentElement.clientHeight,
+      height: document.documentElement.clientHeight - 55,
       income_data: [], // 收入列表
       spending_data: [],//支出列表
       tabs: [ // tabs名称 
@@ -20,7 +20,7 @@ class Details extends Component {
       ],
       initialPage: 0,
       income_pageNo: 1, //收入列表页数
-      income_pageSize: 10, //收入列表单页显示数据
+      income_pageSize: 2, //收入列表单页显示数据
       income_finished: false, // 是否收入列表已经加载全部数据了
       spending_pageNo: 1, //支出列表页数
       spending_pageSize: 10, //支出列表单页显示数据
@@ -233,7 +233,7 @@ class Details extends Component {
                               <span>{item.id}</span>
                             </p>
                             <p className="replacement">
-                              <span>奖励发放</span>
+                              <span>奖励抵扣</span>
                               <span>{item.point}</span>
                             </p>
                           </div>
