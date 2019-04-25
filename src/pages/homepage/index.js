@@ -33,27 +33,37 @@ class Homepage extends Component {
 
     // 创建二维码分享链接
     async getQrCode(productId) {
-        let code_data = await shareUrl({
-            url: "http://h5test.gofoliday.com/product?productId=" + productId,
-            mode: 0,
-        })
-        this.setState({
-            QR_code: code_data.shareUrl,
-        })
+        try {
+            let code_data = await shareUrl({
+                url: "http://h5test.gofoliday.com/product?productId=" + productId,
+                mode: 0,
+            })
+            this.setState({
+                QR_code: code_data.shareUrl,
+            })
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
     // 获取明星列表数据
     async getProduct() {
-        let productData = await productList({
-            "pageNo": this.state.productPageNo,
-            "pageSize": this.state.productPageSize,
-        })
-        let { result } = productData || []
-        this.setState((prevState) => {
-            // console.log('prevState', prevState)
-            return {
-                product_data: result || [],
-            }
-        })
+        try {
+            let productData = await productList({
+                "pageNo": this.state.productPageNo,
+                "pageSize": this.state.productPageSize,
+            })
+            let { result } = productData || []
+            this.setState((prevState) => {
+                // console.log('prevState', prevState)
+                return {
+                    product_data: result || [],
+                }
+            })
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
     // 获取拉新会员数以及下单成功数
     async getReConut() {
@@ -72,49 +82,58 @@ class Homepage extends Component {
     }
     // 获取分享地址
     async getShareUrl(item) {
-        let url = "http://h5test.gofoliday.com/product?productId=" + item.productId
-        let share_url = await shareUrl({
-            url,
-            mode: 5,
-        })
-        this.setState({
-            share_url: share_url.shareUrl,
-        })
-        // 设置app右上角分享功能
-        // setShare({
-        //     title: '测试',
-        //     text: '测试',
-        //     imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
-        //     link: this.state.share_url
-        // }).then(function () {
-        //     // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
-        //     // alert("1")
-        // })
+        try {
+            let share_url = await shareUrl({
+                url: "http://h5test.gofoliday.com/product?productId=" + item.productId,
+                mode: 5,
+            })
+            this.setState({
+                share_url: share_url.shareUrl,
+            })
+            // 设置app右上角分享功能
+            // setShare({
+            //     title: '测试',
+            //     text: '测试',
+            //     imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
+            //     link: this.state.share_url
+            // }).then(function () {
+            //     // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
+            //     // alert("1")
+            // })
 
-        // 设置分享功能
-        Prius.appEventCallback({
-            callId: 'POP_SHARE',
-            data: {
-                title: item.productName,
-                url: this.state.share_url,
-                description: item.productSubTittle,
-                iconUrl: 'http:' + item.productImgUrl,
-            },
-            listener: function (data) {
-                console.log(JSON.stringify(data))
-            }
-        })
+            // 设置分享功能
+            Prius.appEventCallback({
+                callId: 'POP_SHARE',
+                data: {
+                    title: item.productName,
+                    url: this.state.share_url,
+                    description: item.productSubTittle,
+                    iconUrl: 'http:' + item.productImgUrl,
+                },
+                listener: function (data) {
+                    console.log(JSON.stringify(data))
+                }
+            })
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
     // 获取推荐任务
     async getTasklist() {
-        let task_list = await tasklist({
-            "pageNo": 1,
-            "pageSize": 10,
-        })
-        let { result } = task_list
-        this.setState({
-            task_list: result,
-        })
+        try {
+            let task_list = await tasklist({
+                "pageNo": 1,
+                "pageSize": 10,
+            })
+            let { result } = task_list
+            this.setState({
+                task_list: result,
+            })
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
     async componentDidMount() {
         try {

@@ -106,7 +106,6 @@ class StarProducts extends Component {
     }
     fnFooterClose(item) {
         // console.log(item.productId)
-        if (!this.state.showDialog) {
             try {
                 if (window.Prius.isInsideApp) {
                     this.getShareUrl(item)
@@ -116,7 +115,7 @@ class StarProducts extends Component {
             } catch (e) {
                 console.log(e)
             }
-        }
+
         this.setState({
             showDialog: !this.state.showDialog
         })
