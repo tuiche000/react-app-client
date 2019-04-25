@@ -13,9 +13,9 @@ window.Prius = Prius
   setFolidayToken, setUserInfo
 })
 class App extends Component {
-  constructor(...args) {
-    super(...args)
-  }
+  // constructor(...args) {
+  //   super(...args)
+  // }
 
   // 获取用户信息
   async account_current() {
