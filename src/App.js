@@ -94,15 +94,18 @@ class App extends Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
+    console.log('DidMount')
     this.checkLogin();
   }
 
-  componentDidMount() {
-    this.checkLogin();
+  componentDidUpdate() {
+    // console.log('DidUpdate')
+    // this.checkLogin();
   }
 
   render() {
+    console.log('render')
     if (Object.keys(this.props.user.userInfo).length) {
       return (
         <div className="App">
