@@ -96,6 +96,7 @@ class App extends Component {
               )
             })
           }
+          <div style={{ height: "30px" }}></div>
         </div>
       )
     } else {
