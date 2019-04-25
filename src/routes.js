@@ -1,12 +1,11 @@
 // import React from 'react'
-import { Route } from 'react-router-dom'
 import StarProducts from './pages/StarProducts'
 import Homepage from "./pages/homepage"
 import Bonus from "./pages/bonus"
 import Details from "./pages/details"
 import LachineProduct from "./pages/lachineProduct"
 import Rules from "./pages/rules"
-import NotFound from './pages/NotFound'
+// import NotFound from './pages/NotFound'
 
 export default [
     {path: '/', component: Homepage},
