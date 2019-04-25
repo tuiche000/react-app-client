@@ -45,8 +45,8 @@ class LachineProduct extends Component {
                 return
             }
         }
-        catch (e) {
-
+        catch (err) {
+            console.log(err)
         }
     }
 
@@ -80,7 +80,7 @@ class LachineProduct extends Component {
             this.getLachineList()
             this.getRecommendList()
         } catch (e) {
-            console.log(e)
+            alert(JSON.stringify(e))
         }
 
     }

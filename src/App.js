@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import Routes from './routes'
+import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo } from './actions';
 import { Prius } from 'foliday-bridge'
 import { getQueryVariable } from './utils/util'
 import { account_current } from './pages/api/account'
-import { Route } from 'react-router-dom'
 window.Prius = Prius
 
 @connect((state, props) => Object.assign({}, props, state), {
@@ -17,6 +17,7 @@ class App extends Component {
   //   super(...args)
   // }
 
+  // 获取用户信息
   async account_current() {
     let userInfo = await account_current()
     // 判断isStaff 是不是员工
@@ -27,20 +28,31 @@ class App extends Component {
     this.props.setUserInfo(userInfo)
   }
 
-  // 检测是否登录有用户信息？
+  // 检测是否登录
   async checkLogin() {
     // 是否有用户信息
     if (!Object.keys(this.props.user.userInfo).length) {
       let token = getQueryVariable('token')
       let folidayToken = this.props.user.folidayToken || localStorage.getItem(SET_FOLIDAY_TOKEN)
-      // 是否有token或者storeage的token
+      // 没有token或者storeage的token
       if (!folidayToken) {
-        // 有token就存token并且存用户信息
+        // query上有token就存token并且存用户信息
         if (token) {
           this.props.setFolidayToken(token)
           await this.account_current()
           this.props.history.replace(this.props.location.pathname)
           return
+        }
+        // 如果在app里
+        if (window.Prius.isInsideApp) {
+          window.Prius.appEventCallback({
+            callId: "TOKEN",
+            data: {},
+            listener: function (data) {
+              alert(data)
+            }
+          });
+          return;
         }
         // 啥都没有就滚去(测试)登录页面
         window.location = `http://h5test.gofoliday.com/logins?redirect=${window.location.href}`

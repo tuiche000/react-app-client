@@ -30,6 +30,7 @@ function obj2String(obj, arr = [], idx = 0) {
  * 请求队列里面是没有请求 开始加载或者停止加载
  */
 let requestTaskArray = []
+let hideLoading = false
 let showOrHideLoad = (show = true) => {
   const requestLength = requestTaskArray.length;
   if (show && requestLength === 0) {
@@ -37,7 +38,7 @@ let showOrHideLoad = (show = true) => {
       requestTaskArray = []
       Toast.fail('请求超时', 2);
     });
-  } else if (!show && requestLength === 0) {
+  } else if (!show && requestLength === 0 && !hideLoading) {
     return Toast.hide();
   }
   return;
@@ -51,6 +52,7 @@ let showOrHideLoad = (show = true) => {
  */
 async function commonFetcdh(url, options, method = 'GET') {
   showOrHideLoad();
+  hideLoading = false
   const searchStr = obj2String(options)
   let initObj = {}
   if (method === 'GET') { // 如果是GET请求，拼接url
@@ -76,12 +78,17 @@ async function commonFetcdh(url, options, method = 'GET') {
   try {
     requestTaskArray.push(((BASE + url), initObj))
     let res = await fetch((BASE + url), initObj)
-    let { code, data, responseCode } = await res.json()
+    let { code, data, responseCode, message } = await res.json()
     if (code === "0" || responseCode === "0") {
       return data
+    } else {
+      showOrHideLoad(false)
+      hideLoading = true
+      Toast.fail(message, 2);
+      throw new Error(message);
     }
-  } catch (err) {
-    console.log(err)
+  } catch (e) {
+    console.log(e)
   } finally {
     requestTaskArray.shift();
     showOrHideLoad(false)
@@ -105,7 +112,3 @@ export async function _GET(url, options) {
 export async function _POST(url, options) {
   return commonFetcdh(url, options, 'POST')
 }
-
-// export async function getAll() {
-//   Promise.all()
-// }
