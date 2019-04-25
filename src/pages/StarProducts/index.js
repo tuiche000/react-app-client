@@ -61,9 +61,9 @@ class StarProducts extends Component {
             QR_code: code_data.shareUrl,
         })
     }
-    async getShareUrl(productId) {
+    async getShareUrl(item) {
         let share_url = await shareUrl({
-            url: "http://h5test.gofoliday.com/product?productId=" + productId,
+            url: "http://h5test.gofoliday.com/product?productId=" + item.productId,
             mode: 5,
         })
         this.setState({
@@ -85,10 +85,10 @@ class StarProducts extends Component {
         Prius.appEventCallback({
             callId: 'POP_SHARE',
             data: {
-                title: '标题',
+                title: item.productName,
                 url: this.state.share_url,
-                description: '描述',
-                iconUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/72.png'
+                description: item.productSubTittle,
+                iconUrl: item.productImgUrl,
             },
             listener: function (data) {
                 console.log(JSON.stringify(data))
@@ -104,15 +104,18 @@ class StarProducts extends Component {
         // 将页面滑动到顶部
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
-    fnFooterClose(productId) {
-        try {
-            if (window.Prius.isInsideApp) {
-                this.getShareUrl(productId)
-            } else {
-                this.getQrCode(productId)
+    fnFooterClose(item) {
+        // console.log(item.productId)
+        if (!this.state.showDialog) {
+            try {
+                if (window.Prius.isInsideApp) {
+                    this.getShareUrl(item)
+                } else {
+                    this.getQrCode(item.productId)
+                }
+            } catch (e) {
+                console.log(e)
             }
-        } catch (e) {
-            console.log(e)
         }
         this.setState({
             showDialog: !this.state.showDialog
@@ -173,7 +176,7 @@ class StarProducts extends Component {
                                             <span className="num">{item.productType}</span>
                                             <span>奖励金</span>
                                         </p>
-                                        <p className="immediately" onClick={this.fnFooterClose.bind(this, item.productId)}>立刻推荐</p>
+                                        <p className="immediately" onClick={this.fnFooterClose.bind(this, item)}>立刻推荐</p>
                                     </li>
                                 )
                             })

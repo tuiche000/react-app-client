@@ -4,7 +4,6 @@ import { Toast, Button } from 'antd-mobile';
 import Dialog from "@/components/Dialog";
 import { setShare } from 'fm-ui/lib/utils/share'
 import { productList } from '@/pages/api/product'
-import { create_qrCode } from '@/pages/api/member'
 import { tasklist } from '@/pages/api/tasklist'
 import { connect } from 'react-redux'
 import { reCount, shareUrl } from '@/pages/api/homePage'
@@ -27,16 +26,10 @@ class Homepage extends Component {
             recOrderCount: 0, // 推荐下单数
             totalPrize: 0, // 用户奖励金
             share_url: "", // 分享地址
+            task_list: [], // 推荐任务列表数据
+            iconurl: '',// 用户icon地址 
         }
     }
-    // 根据手机号创建二维码分享链接
-    // async create_qrCode(phone) {
-    //     let code_data = await create_qrCode(phone)
-    //     let { qrUrl } = code_data
-    //     this.setState({
-    //         QR_code: qrUrl,
-    //     })
-    // }
 
     // 创建二维码分享链接
     async getQrCode(productId) {
@@ -50,13 +43,13 @@ class Homepage extends Component {
     }
     // 获取明星列表数据
     async getProduct() {
-        let product_data = await productList({
+        let productData = await productList({
             "pageNo": this.state.productPageNo,
             "pageSize": this.state.productPageSize,
         })
-        let { result } = product_data || []
+        let { result } = productData || []
         this.setState((prevState) => {
-            console.log('prevState', prevState)
+            // console.log('prevState', prevState)
             return {
                 product_data: result || [],
             }
@@ -73,9 +66,10 @@ class Homepage extends Component {
         })
     }
     // 获取分享地址
-    async getShareUrl(productId) {
+    async getShareUrl(item) {
+        let url = "http://h5test.gofoliday.com/product?productId=" + item.productId
         let share_url = await shareUrl({
-            url: "http://h5test.gofoliday.com/product?productId=" + productId,
+            url,
             mode: 5,
         })
         this.setState({
@@ -96,10 +90,10 @@ class Homepage extends Component {
         Prius.appEventCallback({
             callId: 'POP_SHARE',
             data: {
-                title: '标题',
+                title: item.productName,
                 url: this.state.share_url,
-                description: '描述',
-                iconUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/72.png'
+                description: item.productSubTittle,
+                iconUrl: item.productImgUrl,
             },
             listener: function (data) {
                 console.log(JSON.stringify(data))
@@ -112,32 +106,47 @@ class Homepage extends Component {
             "pageNo": 1,
             "pageSize": 10,
         })
-        console.log(task_list)
+        let { result } = task_list
+        this.setState({
+            task_list: result,
+        })
     }
     async componentDidMount() {
         try {
             this.getProduct()
             this.getReConut()
             this.getTasklist()
+            this.getTasklist()
         } catch (e) {
             console.log(e)
         }
-
+        this.getIconurl()
     }
 
-    fnFooterClose(productId) {
-        try {
-            if (window.Prius.isInsideApp) {
-                this.getShareUrl(productId)
-            } else {
-                this.getQrCode(productId)
+    fnFooterClose(item) {
+        if (!this.state.showDialog) {
+            try {
+                if (window.Prius.isInsideApp) {
+                    this.getShareUrl(item)
+                } else {
+                    this.getQrCode(item.productId)
+                }
+            } catch (e) {
+                console.log(e)
             }
-        } catch (e) {
-            console.log(e)
         }
         this.setState({
             showDialog: !this.state.showDialog
         })
+    }
+    // 修改用户icon
+    getIconurl() {
+        let url = this.props.user.userInfo.iconurl
+        if (url) {
+            return this.setState({
+                iconUrl: url.indexOf('http:') > -1 ? url : 'http://unitest.fosunholiday.com/' + url
+            })
+        }
     }
     // 跳转明星产品页面
     goToStartProduct() {
@@ -183,7 +192,7 @@ class Homepage extends Component {
                     <header>
                         <ul className="clearfix">
                             <li>
-                                <img src={this.props.user.userInfo.iconurl} alt="" />
+                                <img src={this.state.iconUrl} alt="" />
                                 <span>{this.props.user.userInfo.nameCh}</span>
                             </li>
                             <li onClick={this.goToRules.bind(this)}>推荐规则</li>
@@ -216,17 +225,19 @@ class Homepage extends Component {
                     </div>
                     <div className="tasks-list">
                         <ul>
-                            <li className="frist-lachine">
-                                <div className="frist-lachine-right">
-                                    <img src="./imgs/header-portrait.jpg" alt="" />
-                                    <div className="content">
-                                        <p>首次拉新送奖励<span className="icon"></span></p>
-                                        <p>邀请一位好友注册成功，送两个奖励金</p>
+                            {this.state.task_list.map(item => (
+                                <li className="frist-lachine">
+                                    <div className="frist-lachine-right">
+                                        <img src="./imgs/header-portrait.jpg" alt="" />
+                                        <div className="content">
+                                            <p>{item.activityName}<span className="icon"></span></p>
+                                            <p>{item.activityDestription}</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <span>已完成</span>
-                            </li>
-                            <li className="frist-lachine">
+                                    <span>已完成</span>
+                                </li>
+                            ))}
+                            {/* <li className="frist-lachine">
                                 <div className="frist-lachine-right">
                                     <img src="./imgs/header-portrait.jpg" alt="" />
                                     <div className="content">
@@ -265,7 +276,7 @@ class Homepage extends Component {
                                     </div>
                                 </div>
                                 <span>领取任务</span>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                 </section>
@@ -347,7 +358,7 @@ class Homepage extends Component {
                                             <span className="num">{item.productType}</span>
                                             <span>奖励金</span>
                                         </p>
-                                        <p className="immediately" onClick={this.fnFooterClose.bind(this, item.productId)} >立刻推荐</p>
+                                        <p className="immediately" onClick={this.fnFooterClose.bind(this, item)} >立刻推荐</p>
                                     </li>
                                 )
                             })
