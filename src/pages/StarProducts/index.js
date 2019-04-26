@@ -20,7 +20,7 @@ class StarProducts extends Component {
             height: document.documentElement.clientHeight - 55,
             product_data: [], // 明星产品列表数据
             product_pageNo: 1, // 明星产品列表页数
-            product_pageSize: 10, // 明星产品列表单页显示数据
+            product_pageSize: 5, // 明星产品列表单页显示数据
             product_finnished: false, // 是否明星产品列表已经加载玩全部数据
         }
     }
@@ -192,7 +192,7 @@ class StarProducts extends Component {
                                             <span className="yen">&yen;</span>
                                             <span className="num">{item.productPrice}</span>
                                             <span>起</span>
-                                            <span className="num">{item.productType}</span>
+                                            <span className="num">{item.productPrize}</span>
                                             <span>奖励金</span>
                                         </p>
                                         <p className="immediately" onClick={this.fnFooterClose.bind(this, item)}>立刻推荐</p>

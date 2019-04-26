@@ -202,7 +202,15 @@ class LachineProduct extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="product-bottom">
-                                                        <span className="bonus-issued">奖励金已发放</span>
+                                                    {
+                                                        item.status === 1 && <span className="bonus-pending">奖励金待发放</span>
+                                                    }
+                                                    {
+                                                        item.status === 2 && <span className="bonus-issued">奖励金已发放</span>
+                                                    }
+                                                    {
+                                                        item.status === 3 && <span className="bonus-fail">审核失败 奖励金1.00取消发放</span>
+                                                    }
                                                         <span className="icon" onClick={this.goToDetails.bind(this)}></span>
                                                     </div>
                                                 </li>

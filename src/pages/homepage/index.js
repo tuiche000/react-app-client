@@ -27,6 +27,7 @@ class Homepage extends Component {
             recOrderCount: 0, // 推荐下单数
             totalPrize: 0, // 用户奖励金
             share_url: "", // 分享地址
+            Activityshare_url: '',
             task_list: [], // 推荐任务列表数据
             iconurl: '',// 用户icon地址 
         }
@@ -128,8 +129,14 @@ class Homepage extends Component {
                 "pageSize": 10,
             })
             let { result } = task_list
+            let last_result = result.map( item => {
+                if(item.activityStatus !== 3) {
+                    item.activityPrize = 0
+                }
+                return item
+            })
             this.setState({
-                task_list: result,
+                task_list: last_result,
             })
         }
         catch (e) {
@@ -140,7 +147,6 @@ class Homepage extends Component {
         try {
             this.getProduct()
             this.getReConut()
-            this.getTasklist()
             this.getTasklist()
         } catch (e) {
             console.log(e)
@@ -174,15 +180,84 @@ class Homepage extends Component {
         }
     }
     // 修改推荐任务状态
-    fnChangeActivityStatus(index) {
-        this.setState(old => {
-            old.task_list[index].activityStatus = 2
-            return (
-                {
-                    task_list: old.task_list
+    async getActivityQrCode() {
+        try {
+            let code_data = await shareUrl({
+                url: hostConfig.mBase + 'logins',
+                mode: 0,
+            })
+            this.setState({
+                QR_code: code_data.shareUrl,
+            })
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
+
+    async getActivityShareUrl() {
+        try {
+            let share_url = await shareUrl({
+                url: hostConfig.mBase + 'logins',
+                mode: 5,
+            })
+            this.setState({
+                Activityshare_url: share_url.shareUrl,
+            })
+            // 设置app右上角分享功能
+            // setShare({
+            //     title: '测试',
+            //     text: '测试',
+            //     imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
+            //     link: this.state.share_url
+            // }).then(function () {
+            //     // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
+            //     // alert("1")
+            // })
+
+            // 设置分享功能
+            Prius.appEventCallback({
+                callId: 'POP_SHARE',
+                data: {
+                    title: "测试",
+                    url: this.state.Activityshare_url,
+                    description: "测试",
+                    iconUrl: "https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png",
+                },
+                listener: function (data) {
+                    console.log(JSON.stringify(data))
                 }
-            )
+            })
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
+
+    fnChangeActivityStatus(index) {
+        if (!this.state.showDialog) {
+            try {
+                if (window.Prius.isInsideApp) {
+                    this.getActivityShareUrl()
+                } else {
+                    this.getActivityQrCode()
+                }
+                this.setState(old => {
+                    old.task_list[index].activityStatus = 2
+                    return (
+                        {
+                            task_list: old.task_list
+                        }
+                    )
+                })
+            } catch (e) {
+                console.log()
+            }
+        }
+        this.setState({
+            showDialog: !this.state.showDialog
         })
+
     }
     // 跳转明星产品页面
     goToStartProduct() {
@@ -227,7 +302,6 @@ class Homepage extends Component {
                         </Dialog>
                     ) : ''
                 }
-                {/* <Button onClick={this.fnFooterClose.bind(this)}>customized buttons</Button> */}
                 <Icon type="left" color="#f5a623" style={{ marginLeft: "15px", marginTop: "15px" }} onClick={this.goPersonalCenter.bind(this)} />
                 <section className="homepage">
                     <header>
@@ -272,7 +346,15 @@ class Homepage extends Component {
                                         <img src="./imgs/header-portrait.jpg" alt="" />
                                         <div className="content">
                                             <p>{item.activityName}<span className="icon"></span></p>
-                                            <p>{item.activityDestription}</p>
+                                            {
+                                                item.activityPrize === 1 && <span>奖励金待入账</span>
+                                            }
+                                            {
+                                                item.activityPrize === 2 && <span>奖励金已发放</span>
+                                            }
+                                            {
+                                                item.activityPrize === 3 && <span>奖励金取消</span>
+                                            }
                                         </div>
                                     </div>
                                     {
@@ -282,7 +364,7 @@ class Homepage extends Component {
                                         item.activityStatus === 2 && <span><span>{item.activityStart}</span><span>/{item.activityEnd}</span><span>进行中</span></span>
                                     }
                                     {
-                                        item.activityStatus === 3 && <span >已完成</span>
+                                        item.activityStatus === 3 && <span>已完成</span>
                                     }
                                 </li>
                             ))}
@@ -404,7 +486,7 @@ class Homepage extends Component {
                                         <p className="amount">
                                             <span className="num">&yen;{item.productPrice}</span>
                                             <span>起</span>
-                                            <span className="num">{item.productType}</span>
+                                            <span className="num">{item.productPrize}</span>
                                             <span>奖励金</span>
                                         </p>
                                         <p className="immediately" onClick={this.fnFooterClose.bind(this, item)} >立刻推荐</p>
