@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { Toast } from 'antd-mobile';
+import { Toast , Icon} from 'antd-mobile';
 import Dialog from "@/components/Dialog";
 // import { setShare } from 'fm-ui/lib/utils/share'
 import { productList } from '@/pages/api/product'
@@ -108,7 +108,7 @@ class Homepage extends Component {
                     title: item.productName,
                     url: this.state.share_url,
                     description: item.productSubTittle,
-                    iconUrl: 'http:' + item.productImgUrl,
+                    iconUrl: "https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png",
                 },
                 listener: function (data) {
                     console.log(JSON.stringify(data))
@@ -196,6 +196,10 @@ class Homepage extends Component {
             '/rules'
         )
     }
+    // 跳转M站个人中心页面
+    goPersonalCenter() {
+        alert("1")
+    }
     // 轻提示
     showToast() {
         Toast.info('请点击右上角分享按钮', 2);
@@ -212,6 +216,7 @@ class Homepage extends Component {
                     ) : ''
                 }
                 {/* <Button onClick={this.fnFooterClose.bind(this)}>customized buttons</Button> */}
+                <Icon type="left" color="#f5a623"  style={{marginLeft: "15px",marginTop:"15px"}} onClick={this.goPersonalCenter.bind(this)} />
                 <section className="homepage">
                     <header>
                         <ul className="clearfix">
@@ -249,7 +254,7 @@ class Homepage extends Component {
                     </div>
                     <div className="tasks-list">
                         <ul>
-                            {this.state.task_list.map((item, index) => (
+                            {this.state.task_list && this.state.task_list.map((item, index) => (
                                 <li className="frist-lachine" key={index}>
                                     <div className="frist-lachine-right">
                                         <img src="./imgs/header-portrait.jpg" alt="" />

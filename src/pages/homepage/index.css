@@ -15,7 +15,7 @@ main {
 }
 
 .homepage header ul {
-    line-height: 40px;
+    line-height: 30px;
 }
 
 .homepage header ul li:nth-child(1) img {
@@ -36,7 +36,7 @@ main {
     height: 180px;
     background-color: #4a4138;
     border-radius: 15px;
-    margin-top: 10px;
+    margin-top: 5px;
     color: #725f33;
 }
 
