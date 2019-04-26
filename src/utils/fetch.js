@@ -1,4 +1,5 @@
 import { Toast } from 'antd-mobile';
+import querystring from 'querystring'
 
 let BASE = ""
 switch (process.env.NODE_ENV) {
@@ -13,17 +14,6 @@ switch (process.env.NODE_ENV) {
     break;
   default:
   //
-}
-
-/**
- * 将对象转成 a=1&b=2的形式
- * @param obj 对象
- */
-function obj2String(obj, arr = [], idx = 0) {
-  for (let item in obj) {
-    arr[idx++] = [item, obj[item]]
-  }
-  return new URLSearchParams(arr).toString()
 }
 
 /**
@@ -53,7 +43,7 @@ let showOrHideLoad = (show = true) => {
 async function commonFetcdh(url, options, method = 'GET') {
   showOrHideLoad();
   hideLoading = false
-  const searchStr = obj2String(options)
+  const searchStr = querystring(options)
   let initObj = {}
   if (method === 'GET') { // 如果是GET请求，拼接url
     url += '?' + searchStr

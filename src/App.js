@@ -46,7 +46,7 @@ class App extends Component {
         window.Prius.addCallback({
           callId: "login_in",
           listener: async function (data) {
-            if (data.code == 0) {
+            if (data.code === 0) {
               // 有token
               let { token } = data
               Token = token
