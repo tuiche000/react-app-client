@@ -8152,8 +8152,8 @@ qs@6.5.2, qs@~6.5.2:
 
 query-string@^6.4.2:
   version "6.4.2"
-  resolved "http://h5test.gofoliday.com:4873/query-string/-/query-string-6.4.2.tgz#8be1dbd105306aebf86022144f575a29d516b713"
-  integrity sha512-DfJqAen17LfLA3rQ+H5S4uXphrF+ANU1lT2ijds4V/Tj4gZxA3gx5/tg1bz7kYCmwna7LyJNCYqO7jNRzo3aLw==
+  resolved "https://registry.npm.taobao.org/query-string/download/query-string-6.4.2.tgz#8be1dbd105306aebf86022144f575a29d516b713"
+  integrity sha1-i+Hb0QUwauv4YCIUT1daKdUWtxM=
   dependencies:
     decode-uri-component "^0.2.0"
     split-on-first "^1.0.0"
