@@ -21,13 +21,13 @@ class Rules extends Component {
     render() {
         return (
             <div className="rules ">
-                <NavBar
+                {/* <NavBar
                     mode="light"
                     style={{ backgroundColor: "#fff" }}
                     icon={<Icon type="left" color="#f5a623" />}
                     onLeftClick={() => window.history.go(-1)}
                     rightContent={<span style={{ color: '#e9cf8a', fontSize: "14px" }}></span>}
-                ><span style={{ fontSize: "16px", color: '#fff' }}></span></NavBar>
+                ><span style={{ fontSize: "16px", color: '#fff' }}></span></NavBar> */}
                 <section className="Re-award">
                     <h2 className="plan">复游推荐奖励金计划</h2>
                     <div>

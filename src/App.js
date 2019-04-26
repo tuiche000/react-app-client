@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
-import Routes from './routes'
-import { Route } from 'react-router-dom'
 import Layout from './Layout'
+import { Route } from 'react-router-dom'
+import Routes from './routes'
 import { connect } from 'react-redux'
-import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo } from './actions';
+import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo, setNotLayout } from './actions';
 import { Prius } from 'foliday-bridge'
 import { getQueryVariable } from './utils/util'
 import { account_current } from './pages/api/account'
@@ -12,12 +12,12 @@ import { Toast } from 'antd-mobile';
 window.Prius = Prius
 
 @connect((state, props) => Object.assign({}, props, state), {
-  setFolidayToken, setUserInfo
+  setFolidayToken, setUserInfo, setNotLayout
 })
 class App extends Component {
-  // constructor(...args) {
-  //   super(...args)
-  // }
+  constructor(...args) {
+    super(...args)
+  }
 
   // 获取用户信息
   async fnAccount_current() {
@@ -35,8 +35,20 @@ class App extends Component {
     }
   }
 
+  fnNotLayout() {
+    const notLayout = Routes.find(item => {
+      return item.path === this.props.location.pathname && item.notLayout === true
+    })
+    if (notLayout) {
+      this.props.setNotLayout(true)
+    }
+    else {
+      this.props.setNotLayout(false)
+    }
+  }
+
   // 检测是否登录
-  async checkLogin() {
+  async fnCheckLogin() {
     // 如果没有用户信息在redux中
     if (!Object.keys(this.props.user.userInfo).length) {
       let Token = getQueryVariable('token')
@@ -96,29 +108,29 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // console.log(this.props)
-    console.log('DidMount')
-    this.checkLogin();
+    this.fnCheckLogin();
+    this.fnNotLayout();
   }
 
   componentDidUpdate() {
-    console.log('DidUpdate')
-    // this.checkLogin();
+    console.log('componentDidUpdate')
+    this.fnNotLayout();
   }
 
   render() {
     if (Object.keys(this.props.user.userInfo).length) {
       return (
         <div className="App">
-        {/* <Layout /> */}
           {
             Routes.map((item, index) => {
-              return (
-                <Route key={index} path={item.path} exact component={item.component} />
-              )
+              if (item.notLayout) {
+                return (
+                  <Route key={index} path={item.path} exact component={item.component} />
+                )
+              }
             })
           }
-          <div style={{ height: "30px" }}></div>
+          <Layout />
         </div>
       )
     } else {

@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { Toast, Icon } from 'antd-mobile';
+import { Toast } from 'antd-mobile';
 import Dialog from "@/components/Dialog";
 // import { setShare } from 'fm-ui/lib/utils/share'
 import { productList } from '@/pages/api/product'
 import { tasklist } from '@/pages/api/tasklist'
 import { connect } from 'react-redux'
 import { reCount, shareUrl } from '@/pages/api/homePage'
-import hostConfig from '@/hostConfig'
 import { Prius } from 'foliday-bridge'
 import head_defult from '@/pages/assets/imgs/head_defult.png'
 
@@ -208,10 +207,7 @@ class Homepage extends Component {
             '/rules'
         )
     }
-    // 跳转M站个人中心页面
-    goPersonalCenter() {
-        window.location.href = hostConfig.mBase + 'center'
-    }
+
     // 轻提示
     showToast() {
         Toast.info('请点击右上角分享按钮', 2);
@@ -228,7 +224,6 @@ class Homepage extends Component {
                     ) : ''
                 }
                 {/* <Button onClick={this.fnFooterClose.bind(this)}>customized buttons</Button> */}
-                <Icon type="left" color="#f5a623" style={{ marginLeft: "15px", marginTop: "15px" }} onClick={this.goPersonalCenter.bind(this)} />
                 <section className="homepage">
                     <header>
                         <ul className="clearfix">
@@ -414,10 +409,6 @@ class Homepage extends Component {
                         }
                     </ul>
                 </section>
-                <p onClick={() => {
-                    localStorage.clear()
-                    window.location.reload()
-                }}>推出登陆</p>
             </div>
         );
     }
