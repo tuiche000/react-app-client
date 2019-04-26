@@ -3,7 +3,10 @@ import "./index.css";
 import { Tabs, NavBar, Icon, PullToRefresh } from 'antd-mobile'
 import { income, spending } from '@/pages/api/account'
 import { Toast } from 'antd-mobile';
+import { connect } from 'react-redux'
 
+@connect((state, props) => Object.assign({}, props, state), {
+})
 class Details extends Component {
   constructor(...args) {
     super(...args)
@@ -164,7 +167,7 @@ class Details extends Component {
       <div className="details ">
         <NavBar
           mode="light"
-          icon={<Icon type="left" color="#f5a623" />}
+          icon={this.props.other.isInsideApp ? "" : <Icon type="left" color="#f5a623" />}
           onLeftClick={() => window.history.go(-1)}
         ><span style={{ fontSize: "14px" }}>收支明细</span></NavBar>
         <Tabs tabs={this.state.tabs} initialPage={this.state.initialPage} tabBarActiveTextColor={'#000000'} tabBarInactiveTextColor={'#999999'} tabBarUnderlineStyle={{ border: '0.5px #ffc147 solid' }} onChange={this.onTabsChange}>

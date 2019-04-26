@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import "./index.css";
 import { Tabs, NavBar, Icon, Toast, PullToRefresh } from 'antd-mobile'
 import { lachineList, recommendList } from '@/pages/api/lachineProduct'
+import { connect } from 'react-redux'
 
+@connect((state, props) => Object.assign({}, props, state), {
+})
 class LachineProduct extends Component {
     constructor(...args) {
         super(...args)
@@ -133,11 +136,16 @@ class LachineProduct extends Component {
     render() {
         return (
             <div className="main ">
-                <NavBar
-                    mode="light"
-                    icon={<Icon type="left" color="#f5a623" />}
-                    onLeftClick={() => window.history.go(-1)}
-                ></NavBar>
+                {
+                    this.props.other.isInsideApp ? "" : (
+                        <NavBar
+                            mode="light"
+                            icon={<Icon type="left" color="#f5a623" />}
+                            onLeftClick={() => window.history.go(-1)}
+                        ></NavBar>
+                    )
+                }
+
                 <div className="lachineProduct ">
                     <Tabs tabs={this.state.tabs} initialPage={this.state.initialPage} tabBarActiveTextColor={'#000000'} tabBarInactiveTextColor={'#999999'} tabBarUnderlineStyle={{ border: '0.5px #ffc147 solid' }} animated={true} useOnPan={true} onChange={this.onTabsChange}>
                         <div>
@@ -202,15 +210,15 @@ class LachineProduct extends Component {
                                                         </div>
                                                     </div>
                                                     <div className="product-bottom">
-                                                    {
-                                                        item.status === 1 && <span className="bonus-pending">奖励金待发放</span>
-                                                    }
-                                                    {
-                                                        item.status === 2 && <span className="bonus-issued">奖励金已发放</span>
-                                                    }
-                                                    {
-                                                        item.status === 3 && <span className="bonus-fail">审核失败 奖励金1.00取消发放</span>
-                                                    }
+                                                        {
+                                                            item.status === 1 && <span className="bonus-pending">奖励金待发放</span>
+                                                        }
+                                                        {
+                                                            item.status === 2 && <span className="bonus-issued">奖励金已发放</span>
+                                                        }
+                                                        {
+                                                            item.status === 3 && <span className="bonus-fail">审核失败 奖励金1.00取消发放</span>
+                                                        }
                                                         <span className="icon" onClick={this.goToDetails.bind(this)}></span>
                                                     </div>
                                                 </li>

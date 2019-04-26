@@ -20,7 +20,6 @@ class Layout extends React.Component {
     }
     render = () => {
         const style = this.props.other.notLayout ? { display: 'none' } : null
-        console.log(this.props.other.isInsideApp)
         return (
             <div style={style}>
                 <header>

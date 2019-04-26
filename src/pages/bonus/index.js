@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import "./index.css";
 import { NavBar, Icon } from 'antd-mobile'
 import { reCount } from '@/pages/api/homePage'
+import { connect } from 'react-redux'
 
+@connect((state, props) => Object.assign({}, props, state), {
+})
 class Bonus extends Component {
     constructor(...args) {
         super(...args)
@@ -50,7 +53,7 @@ class Bonus extends Component {
                 <NavBar
                     mode="light"
                     style={{ backgroundColor: "#322d24" }}
-                    icon={<Icon type="left" color="#f5a623" />}
+                    icon={this.props.other.isInsideApp ? "" : <Icon type="left" color="#f5a623" />}
                     onLeftClick={() => window.history.go(-1)}
                     rightContent={<span style={{ color: '#e9cf8a', fontSize: "14px" }}></span>}
                 ><span style={{ fontSize: "16px", color: '#fff' }}>奖励金账户</span></NavBar>

@@ -7,7 +7,6 @@ import Dialog from "@/components/Dialog";
 import { connect } from 'react-redux'
 import { shareUrl } from '@/pages/api/homePage'
 import { Prius } from 'foliday-bridge'
-window.Prius = Prius
 
 @connect((state, props) => Object.assign({}, props, state), {})
 class StarProducts extends Component {
@@ -165,7 +164,7 @@ class StarProducts extends Component {
                 }
                 <NavBar
                     mode="light"
-                    icon={<Icon type="left" color="#f5a623" />}
+                    icon={this.props.other.isInsideApp ? "" : <Icon type="left" color="#f5a623" />}
                     onLeftClick={() => window.history.go(-1)}
                 ><span style={{ fontSize: "16px" }}>明星产品</span></NavBar>
                 <PullToRefresh
