@@ -53,7 +53,7 @@ class App extends Component {
         // 没登录取登录然后取token
         Prius.addCallback({
           callId: "login_in",
-          listener: async function (data) {
+          listener: function (data) {
             if (data.code === "0") {
               fnLoginBoth(data)
             }
@@ -63,7 +63,7 @@ class App extends Component {
         window.Prius.appEventCallback({
           callId: "LOGIN",
           data: {},
-          listener: async function (data) {
+          listener: function (data) {
             if (data.token) {
               fnLoginBoth(data)
             }
