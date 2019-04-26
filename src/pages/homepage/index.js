@@ -249,7 +249,7 @@ class Homepage extends Component {
                     </div>
                     <div className="tasks-list">
                         <ul>
-                            {this.state.task_list.map((item, index) => (
+                            {this.state.task_list && this.state.task_list.map((item, index) => (
                                 <li className="frist-lachine" key={index}>
                                     <div className="frist-lachine-right">
                                         <img src="./imgs/header-portrait.jpg" alt="" />

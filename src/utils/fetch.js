@@ -1,20 +1,8 @@
 import { Toast } from 'antd-mobile';
+import hostConfig from '@/hostConfig'
 import queryString from 'query-string'
 
-let BASE = ""
-switch (process.env.NODE_ENV) {
-  case "development": // 开发
-    BASE = 'http://unitest.fosunholiday.com';
-    break;
-  case "production": // 生产
-    BASE = 'http://unitest.fosunholiday.com';
-    break;
-  case "test": // 测试
-    BASE = 'http://unitest.fosunholiday.com?mode=test';
-    break;
-  default:
-  //
-}
+let BASE = hostConfig.apiBase
 
 /**
  * 请求队列里面是没有请求 开始加载或者停止加载
