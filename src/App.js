@@ -42,22 +42,19 @@ class App extends Component {
       // 如果在app里
       if (window.Prius.isInsideApp) {
         let _this = this
-        
-        const forward = _this.props.location.pathname
         const fnLoginBoth = async (data) => {
           // 有token
           let { token } = data
           Token = token
           _this.props.setFolidayToken(Token)
           await _this.account_current()
-          _this.props.history.replace(forward);
         }
 
         // 没登录取登录然后取token
-        window.Prius.addCallback({
+        Prius.addCallback({
           callId: "login_in",
-          listener: function (data) {
-            if (data.code === 0) {
+          listener: async function (data) {
+            if (data.code === "0") {
               fnLoginBoth(data)
             }
           }
@@ -66,13 +63,12 @@ class App extends Component {
         window.Prius.appEventCallback({
           callId: "LOGIN",
           data: {},
-          listener: function (data) {
+          listener: async function (data) {
             if (data.token) {
               fnLoginBoth(data)
             }
           }
         })
-        _this.props.history.goBack()
       }
       // 不在app里
       else {
