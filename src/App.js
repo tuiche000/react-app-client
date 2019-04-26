@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Routes from './routes'
 import { Route } from 'react-router-dom'
+import Layout from './Layout'
 import { connect } from 'react-redux'
 import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo } from './actions';
 import { Prius } from 'foliday-bridge'
@@ -19,7 +20,7 @@ class App extends Component {
   // }
 
   // 获取用户信息
-  async account_current() {
+  async fnAccount_current() {
     try {
       let userInfo = await account_current()
       // 判断isStaff 是不是员工
@@ -47,7 +48,7 @@ class App extends Component {
           let { token } = data
           Token = token
           _this.props.setFolidayToken(Token)
-          await _this.account_current()
+          await _this.fnAccount_current()
         }
 
         // 没登录取登录然后取token
@@ -78,7 +79,7 @@ class App extends Component {
           // query上有token
           if (Token) {
             this.props.setFolidayToken(Token)
-            await this.account_current()
+            await this.fnAccount_current()
             return
           }
           // 啥都没有就滚去(测试)登录页面
@@ -86,7 +87,7 @@ class App extends Component {
         }
         // redux有folidayToken 或者 storeage有folidayToken
         else {
-          await this.account_current()
+          await this.fnAccount_current()
           // 清除query上的token
           Token && this.props.history.replace(this.props.location.pathname)
         }
@@ -106,10 +107,10 @@ class App extends Component {
   }
 
   render() {
-    console.log('render')
     if (Object.keys(this.props.user.userInfo).length) {
       return (
         <div className="App">
+        {/* <Layout /> */}
           {
             Routes.map((item, index) => {
               return (
