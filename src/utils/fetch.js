@@ -38,8 +38,8 @@ async function commonFetcdh(url, options, method = 'GET') {
     initObj = {
       method: method,
       headers: new Headers({
-        // 'Authorization': `Bearer ${localStorage.getItem('folidayToken')}`
-        'Authorization': `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmb3N1biIsIm1lbSI6IjE1MDEwMTUyMDU2IiwiY3JlYXRlZCI6MTU1NjI2NDMyNTAwNCwiZXhwIjoxNTg3ODAwMzI1fQ.toxTryIQ08PBw7j67deZrGyJYBqomBaFBv8WLE5CJOBVdFwnsadTu_cz4i7-Tixqs_Z5XU-vShyO_p0QICkrvA`
+        'Authorization': `Bearer ${localStorage.getItem('folidayToken')}`
+        // 'Authorization': `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmb3N1biIsIm1lbSI6IjE1MDEwMTUyMDU2IiwiY3JlYXRlZCI6MTU1NjI2NDMyNTAwNCwiZXhwIjoxNTg3ODAwMzI1fQ.toxTryIQ08PBw7j67deZrGyJYBqomBaFBv8WLE5CJOBVdFwnsadTu_cz4i7-Tixqs_Z5XU-vShyO_p0QICkrvA`
       })
     }
   } else {
@@ -48,8 +48,8 @@ async function commonFetcdh(url, options, method = 'GET') {
       headers: new Headers({
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        // 'Authorization': `Bearer ${localStorage.getItem('folidayToken')}`,
-        'Authorization': `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmb3N1biIsIm1lbSI6IjE1MDEwMTUyMDU2IiwiY3JlYXRlZCI6MTU1NjI2NDMyNTAwNCwiZXhwIjoxNTg3ODAwMzI1fQ.toxTryIQ08PBw7j67deZrGyJYBqomBaFBv8WLE5CJOBVdFwnsadTu_cz4i7-Tixqs_Z5XU-vShyO_p0QICkrvA`
+        'Authorization': `Bearer ${localStorage.getItem('folidayToken')}`,
+        // 'Authorization': `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmb3N1biIsIm1lbSI6IjE1MDEwMTUyMDU2IiwiY3JlYXRlZCI6MTU1NjI2NDMyNTAwNCwiZXhwIjoxNTg3ODAwMzI1fQ.toxTryIQ08PBw7j67deZrGyJYBqomBaFBv8WLE5CJOBVdFwnsadTu_cz4i7-Tixqs_Z5XU-vShyO_p0QICkrvA`
       }),
       body: searchStr
     }
