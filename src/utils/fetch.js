@@ -1,4 +1,5 @@
 import { Toast } from 'antd-mobile';
+import querystring from 'querystring'
 
 let BASE = ""
 switch (process.env.NODE_ENV) {
@@ -14,31 +15,6 @@ switch (process.env.NODE_ENV) {
   default:
   //
 }
-
-/**
- * 将对象转成 a=1&b=2的形式
- * @param obj 对象
- */
-function obj2String(param, key, encode) {
-  if (param == null) return '';
-  var paramStr = '';
-  var t = typeof (param);
-  if (t == 'string' || t == 'number' || t == 'boolean') {
-    paramStr += '&' + key + '=' + ((encode == null || encode) ? encodeURIComponent(param) : param);
-  } else {
-    for (var i in param) {
-      var k = key == null ? i : key + (param instanceof Array ? '[' + i + ']' : '.' + i)
-      paramStr += obj2String(param[i], k, encode)
-    }
-  }
-  return paramStr;
-}
-// function obj2String(obj, arr = [], idx = 0) {
-//   for (let item in obj) {
-//     arr[idx++] = [item, obj[item]]
-//   }
-//   return new URLSearchParams(arr).toString()
-// }
 
 /**
  * 请求队列里面是没有请求 开始加载或者停止加载
@@ -67,7 +43,7 @@ let showOrHideLoad = (show = true) => {
 async function commonFetcdh(url, options, method = 'GET') {
   showOrHideLoad();
   hideLoading = false
-  const searchStr = obj2String(options)
+  const searchStr = querystring(options)
   let initObj = {}
   if (method === 'GET') { // 如果是GET请求，拼接url
     url += '?' + searchStr
