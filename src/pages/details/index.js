@@ -182,9 +182,9 @@ class Details extends Component {
                             <span>{item.createDate}</span>
                           </p>
                         </div>
-                        <div className="substance-right"><span>+</span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)}`} onClick={this.active.bind(this, item.id)}></span></div>
+                        <div className="substance-right"><span>+</span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)} ${(item.id  ? '' : 'hide')} `} onClick={this.active.bind(this, item.id)}></span></div>
                       </div>
-                      <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')}`} >
+                      <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id  ? '' : 'hide')}`} >
                         <p className="orderID">
                           <span>订单ID</span>
                           <span>{item.id}</span>
@@ -225,9 +225,9 @@ class Details extends Component {
                                 <span>{item.createDate}</span>
                               </p>
                             </div>
-                            <div className="substance-right"><span></span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)}`} onClick={this.spending_active.bind(this, item.id)}></span></div>
+                            <div className="substance-right"><span></span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)} ${(item.id  ? '' : 'hide')}`} onClick={this.spending_active.bind(this, item.id)}></span></div>
                           </div>
-                          <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')}`}>
+                          <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id  ? '' : 'hide')} `}>
                             <p className="orderID">
                               <span>订单ID</span>
                               <span>{item.id}</span>
