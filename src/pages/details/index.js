@@ -30,52 +30,61 @@ class Details extends Component {
 
   // 获取收入列表
   async getIncome() {
-    let income_data = await income('ACN0gjHRNvIvUOx', {
-      "pageNo": this.state.income_pageNo,
-      "pageSize": this.state.income_pageSize,
-    })
-    let { result, totalResults } = income_data
-    result.forEach((item) => {
-      item.active = false
-    })
-    this.setState({
-      income_data: [...this.state.income_data, ...result],
-      refreshing: false
-    })
-    if (totalResults <= this.state.income_data.length) {
-      this.setState({
-        income_finished: true
+    try {
+      let income_data = await income('ACN0gjHRNvIvUOx', {
+        "pageNo": this.state.income_pageNo,
+        "pageSize": this.state.income_pageSize,
       })
-      return
+      let { result, totalResults } = income_data
+      result.forEach((item) => {
+        item.active = false
+      })
+      this.setState({
+        income_data: [...this.state.income_data, ...result],
+        refreshing: false
+      })
+      if (totalResults <= this.state.income_data.length) {
+        this.setState({
+          income_finished: true
+        })
+        return
+      }
+    }
+    catch (e) {
+      console.log(e)
     }
   }
 
   // 获取支出列表
   async getSpending() {
-    let spending_data = await spending("ACN0gjHRNvIvUOx", {
-      "pageNo": this.state.spending_pageNo,
-      "pageSize": this.state.spending_pageSize,
-    })
-    let spending_result = spending_data.result
-    let spending_totalResults = spending_data.totalResults
-    spending_result.forEach((item) => {
-      item.active = false
-    })
-    this.setState({
-      spending_data: [...this.state.spending_data, ...spending_result],
-      refreshing: false
-    })
-    if (spending_totalResults <= this.state.spending_data.length) {
-      this.setState({
-        spending_finished: true
+    try {
+      let spending_data = await spending("ACN0gjHRNvIvUOx", {
+        "pageNo": this.state.spending_pageNo,
+        "pageSize": this.state.spending_pageSize,
       })
-      return
+      let spending_result = spending_data.result
+      let spending_totalResults = spending_data.totalResults
+      spending_result.forEach((item) => {
+        item.active = false
+      })
+      this.setState({
+        spending_data: [...this.state.spending_data, ...spending_result],
+        refreshing: false
+      })
+      if (spending_totalResults <= this.state.spending_data.length) {
+        this.setState({
+          spending_finished: true
+        })
+        return
+      }
+    }
+    catch (e) {
+      console.log(e)
     }
   }
 
   async componentDidMount() {
     try {
-
       this.getIncome()
       this.getSpending()
     } catch (e) {
@@ -182,9 +191,9 @@ class Details extends Component {
                             <span>{item.createDate}</span>
                           </p>
                         </div>
-                        <div className="substance-right"><span>+</span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)} ${(item.id  ? '' : 'hide')} `} onClick={this.active.bind(this, item.id)}></span></div>
+                        <div className="substance-right"><span>+</span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)} ${(item.id ? '' : 'hide')} `} onClick={this.active.bind(this, item.id)}></span></div>
                       </div>
-                      <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id  ? '' : 'hide')}`} >
+                      <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id ? '' : 'hide')}`} >
                         <p className="orderID">
                           <span>订单ID</span>
                           <span>{item.id}</span>
@@ -225,9 +234,9 @@ class Details extends Component {
                                 <span>{item.createDate}</span>
                               </p>
                             </div>
-                            <div className="substance-right"><span></span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)} ${(item.id  ? '' : 'hide')}`} onClick={this.spending_active.bind(this, item.id)}></span></div>
+                            <div className="substance-right"><span></span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)} ${(item.id ? '' : 'hide')}`} onClick={this.spending_active.bind(this, item.id)}></span></div>
                           </div>
-                          <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id  ? '' : 'hide')} `}>
+                          <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id ? '' : 'hide')} `}>
                             <p className="orderID">
                               <span>订单ID</span>
                               <span>{item.id}</span>
