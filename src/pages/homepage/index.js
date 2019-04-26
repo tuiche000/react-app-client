@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { Toast , Icon} from 'antd-mobile';
+import { Toast, Icon } from 'antd-mobile';
 import Dialog from "@/components/Dialog";
 // import { setShare } from 'fm-ui/lib/utils/share'
 import { productList } from '@/pages/api/product'
 import { tasklist } from '@/pages/api/tasklist'
 import { connect } from 'react-redux'
 import { reCount, shareUrl } from '@/pages/api/homePage'
+import hostConfig from '@/hostConfig'
 import { Prius } from 'foliday-bridge'
-window.Prius = Prius
+import head_defult from '@/pages/assets/imgs/head_defult.png'
 
 @connect((state, props) => Object.assign({}, props, state), {})
 class Homepage extends Component {
@@ -172,6 +173,17 @@ class Homepage extends Component {
             })
         }
     }
+    // 修改推荐任务状态
+    fnChangeActivityStatus(index) {
+        this.setState(old => {
+            old.task_list[index].activityStatus = 2
+            return (
+                {
+                    task_list: old.task_list
+                }
+            )
+        })
+    }
     // 跳转明星产品页面
     goToStartProduct() {
         this.props.history.push(
@@ -198,7 +210,7 @@ class Homepage extends Component {
     }
     // 跳转M站个人中心页面
     goPersonalCenter() {
-        alert("1")
+        window.location.href = hostConfig.mBase + 'center'
     }
     // 轻提示
     showToast() {
@@ -216,12 +228,12 @@ class Homepage extends Component {
                     ) : ''
                 }
                 {/* <Button onClick={this.fnFooterClose.bind(this)}>customized buttons</Button> */}
-                <Icon type="left" color="#f5a623"  style={{marginLeft: "15px",marginTop:"15px"}} onClick={this.goPersonalCenter.bind(this)} />
+                <Icon type="left" color="#f5a623" style={{ marginLeft: "15px", marginTop: "15px" }} onClick={this.goPersonalCenter.bind(this)} />
                 <section className="homepage">
                     <header>
                         <ul className="clearfix">
                             <li>
-                                <img src={this.state.iconUrl} alt="" />
+                                <img src={`${(this.state.iconUrl ? this.state.iconUrl : head_defult)}`} alt="" />
                                 <span>{this.props.user.userInfo.nameCh}</span>
                             </li>
                             <li onClick={this.goToRules.bind(this)}>推荐规则</li>
@@ -255,7 +267,7 @@ class Homepage extends Component {
                     <div className="tasks-list">
                         <ul>
                             {this.state.task_list && this.state.task_list.map((item, index) => (
-                                <li className="frist-lachine" key={index}>
+                                <li className={`frist-lachine  ${(item.activityStatus === 2 ? 'fifty' : '')} ${(item.activityStatus === 1 ? 'receive-tasks' : '')}`} key={index}>
                                     <div className="frist-lachine-right">
                                         <img src="./imgs/header-portrait.jpg" alt="" />
                                         <div className="content">
@@ -263,7 +275,15 @@ class Homepage extends Component {
                                             <p>{item.activityDestription}</p>
                                         </div>
                                     </div>
-                                    <span>已完成</span>
+                                    {
+                                        item.activityStatus === 1 && <span onClick={this.fnChangeActivityStatus.bind(this, index)}>领取任务</span>
+                                    }
+                                    {
+                                        item.activityStatus === 2 && <span><span>{item.activityStart}</span><span>/{item.activityEnd}</span><span>进行中</span></span>
+                                    }
+                                    {
+                                        item.activityStatus === 3 && <span >已完成</span>
+                                    }
                                 </li>
                             ))}
                             {/* <li className="frist-lachine">

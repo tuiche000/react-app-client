@@ -26,74 +26,94 @@ class StarProducts extends Component {
     }
     // 获取明星列表数据
     async getProduct() {
-        let product_data = await productList({
-            "pageNo": this.state.product_pageNo,
-            "pageSize": this.state.product_pageSize,
-        })
-        let { result, totalResults } = product_data
-        result = result || []
-        this.setState({
-            product_data: [...this.state.product_data, ...result],
-            refreshing: false,
-        })
-        if (totalResults <= this.state.product_data.length) {
-            this.setState({
-                product_finnished: true
+        try {
+            let product_data = await productList({
+                "pageNo": this.state.product_pageNo,
+                "pageSize": this.state.product_pageSize,
             })
-            return
+            let { result, totalResults } = product_data
+            result = result || []
+            this.setState({
+                product_data: [...this.state.product_data, ...result],
+                refreshing: false,
+            })
+            if (totalResults <= this.state.product_data.length) {
+                this.setState({
+                    product_finnished: true
+                })
+                return
+            }
+        }
+        catch (e) {
+
         }
     }
     // 根据手机号创建二维码分享链接
     async create_qrCode(phone) {
-        let code_data = await create_qrCode(phone)
-        let { qrUrl } = code_data
-        this.setState({
-            QR_code: qrUrl,
-        })
+        try {
+            let code_data = await create_qrCode(phone)
+            let { qrUrl } = code_data
+            this.setState({
+                QR_code: qrUrl,
+            })
+        }
+        catch (e) {
+
+        }
     }
     // 创建二维码分享链接
     async getQrCode(productId) {
-        let code_data = await shareUrl({
-            url: "http://h5test.gofoliday.com/product?productId=" + productId,
-            mode: 0,
-        })
-        this.setState({
-            QR_code: code_data.shareUrl,
-        })
+        try {
+            let code_data = await shareUrl({
+                url: "http://h5test.gofoliday.com/product?productId=" + productId,
+                mode: 0,
+            })
+            this.setState({
+                QR_code: code_data.shareUrl,
+            })
+        }
+        catch (e) {
+
+        }
     }
     async getShareUrl(item) {
-        let share_url = await shareUrl({
-            url: "http://h5test.gofoliday.com/product?productId=" + item.productId,
-            mode: 5,
-        })
-        this.setState({
-            share_url: share_url.shareUrl,
-        })
-        // 设置app右上角分享功能
+        try {
+            let share_url = await shareUrl({
+                url: "http://h5test.gofoliday.com/product?productId=" + item.productId,
+                mode: 5,
+            })
+            this.setState({
+                share_url: share_url.shareUrl,
+            })
+            // 设置app右上角分享功能
 
-        // setShare({
-        //     title: '测试',
-        //     text: '测试',
-        //     imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
-        //     link: this.state.share_url
-        // }).then(function () {
-        //     // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
-        //     // alert("1")
-        // })
+            // setShare({
+            //     title: '测试',
+            //     text: '测试',
+            //     imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
+            //     link: this.state.share_url
+            // }).then(function () {
+            //     // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
+            //     // alert("1")
+            // })
 
-        // 设置分享功能
-        Prius.appEventCallback({
-            callId: 'POP_SHARE',
-            data: {
-                title: item.productName,
-                url: this.state.share_url,
-                description: item.productSubTittle,
-                iconUrl: "https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png",
-            },
-            listener: function (data) {
-                console.log(JSON.stringify(data))
-            }
-        })
+            // 设置分享功能
+            Prius.appEventCallback({
+                callId: 'POP_SHARE',
+                data: {
+                    title: item.productName,
+                    url: this.state.share_url,
+                    description: item.productSubTittle,
+                    iconUrl: "https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png",
+                },
+                listener: function (data) {
+                    console.log(JSON.stringify(data))
+                }
+            })
+        }
+        catch (e) {
+
+        }
     }
     async componentDidMount() {
         try {
