@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { NavBar, Icon } from 'antd-mobile'
 
 class Rules extends Component {
     constructor(...args) {

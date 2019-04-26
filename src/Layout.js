@@ -6,12 +6,11 @@ import hostConfig from '@/hostConfig'
 import { connect } from 'react-redux'
 
 @connect((state, props) => Object.assign({}, props, state), {
-    
 })
 class Layout extends React.Component {
-    constructor(...args) {
-        super(...args)
-    }
+    // constructor(...args) {
+    //     super(...args)
+    // }
     fnBack() {
         if (window.location.hash === "#/fyRcommend/" || window.location.hash === "#/") {
             window.location.href = hostConfig.mBase
@@ -21,10 +20,11 @@ class Layout extends React.Component {
     }
     render = () => {
         const style = this.props.other.notLayout ? { display: 'none' } : null
+        console.log(this.props.other.isInsideApp)
         return (
             <div style={style}>
                 <header>
-                    <Icon type="left" color="#f5a623" style={{ marginLeft: "15px", marginTop: "15px" }} onClick={this.fnBack} />
+                    {this.props.other.isInsideApp ? null : <Icon type="left" color="#f5a623" style={{ marginLeft: "15px", marginTop: "15px" }} onClick={this.fnBack} />}
                 </header>
                 <div>
                     {
@@ -33,6 +33,8 @@ class Layout extends React.Component {
                                 return (
                                     <Route key={index} path={item.path} exact component={item.component} />
                                 )
+                            } else {
+                                return null
                             }
                         })
                     }

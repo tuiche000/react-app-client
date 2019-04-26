@@ -4,19 +4,21 @@ import Layout from './Layout'
 import { Route } from 'react-router-dom'
 import Routes from './routes'
 import { connect } from 'react-redux'
-import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo, setNotLayout } from './actions';
+import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo, setNotLayout, setIsInsideApp } from './actions';
 import { Prius } from 'foliday-bridge'
 import { getQueryVariable } from './utils/util'
 import { account_current } from './pages/api/account'
 import { Toast } from 'antd-mobile';
 window.Prius = Prius
+// console.log(Prius)
 
 @connect((state, props) => Object.assign({}, props, state), {
-  setFolidayToken, setUserInfo, setNotLayout
+  setFolidayToken, setUserInfo, setNotLayout, setIsInsideApp
 })
 class App extends Component {
   constructor(...args) {
     super(...args)
+    this.props.setIsInsideApp(Prius.isInsideApp)
   }
 
   // 获取用户信息
@@ -113,7 +115,7 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    console.log('componentDidUpdate')
+    // console.log('componentDidUpdate')
     this.fnNotLayout();
   }
 
@@ -127,6 +129,8 @@ class App extends Component {
                 return (
                   <Route key={index} path={item.path} exact component={item.component} />
                 )
+              } else {
+                return null
               }
             })
           }

@@ -1,6 +1,7 @@
 export const SET_FOLIDAY_TOKEN = 'folidayToken';
 export const SET_USER_INFO = 'userInfo';
-export const SET_NOT_LAYOUT = 'notLayout'
+export const SET_NOT_LAYOUT = 'notLayout';
+export const SET_IS_INSIDE_APP = 'isInsideApp';
 
 // 保存token
 export function setFolidayToken(string) {
@@ -22,6 +23,14 @@ export function setUserInfo(json) {
 export function setNotLayout(boolean) {
   return {
     type: SET_NOT_LAYOUT,
+    value: boolean
+  };
+}
+
+// 设置是否在APP内
+export function setIsInsideApp(boolean) {
+  return {
+    type: SET_IS_INSIDE_APP,
     value: boolean
   };
 }

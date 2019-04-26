@@ -1,7 +1,8 @@
-import { SET_NOT_LAYOUT } from '../actions';
+import { SET_NOT_LAYOUT, SET_IS_INSIDE_APP } from '../actions';
 
 export default function (state = {
-  notLayout: false
+  notLayout: false,
+  isInsideApp: false,
 }, action) {
   switch (action.type) {
     // 保存是否需要显示Layout组建
@@ -12,6 +13,12 @@ export default function (state = {
       return {
         ...state,
         notLayout: action.value
+      };
+    // 设置是否在APP内
+    case SET_IS_INSIDE_APP:
+      return {
+        ...state,
+        isInsideApp: action.value
       };
     default:
       return state;
