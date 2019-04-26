@@ -42,16 +42,23 @@ class App extends Component {
       // 如果在app里
       if (window.Prius.isInsideApp) {
         let _this = this
+        
+        const forward = _this.props.location.pathname
+        const fnLoginBoth = async (data) => {
+          // 有token
+          let { token } = data
+          Token = token
+          _this.props.setFolidayToken(Token)
+          await _this.account_current()
+          _this.props.history.replace(forward);
+        }
+
         // 没登录取登录然后取token
         window.Prius.addCallback({
           callId: "login_in",
-          listener: async function (data) {
+          listener: function (data) {
             if (data.code === 0) {
-              // 有token
-              let { token } = data
-              Token = token
-              _this.props.setFolidayToken(Token)
-              await _this.account_current()
+              fnLoginBoth(data)
             }
           }
         });
@@ -59,16 +66,13 @@ class App extends Component {
         window.Prius.appEventCallback({
           callId: "LOGIN",
           data: {},
-          listener: async function (data) {
+          listener: function (data) {
             if (data.token) {
-              // 有token
-              let { token } = data
-              Token = token
-              _this.props.setFolidayToken(Token)
-              await _this.account_current()
+              fnLoginBoth(data)
             }
           }
         })
+        _this.props.history.goBack()
       }
       // 不在app里
       else {
@@ -95,12 +99,13 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // console.log(this.props)
     console.log('DidMount')
     this.checkLogin();
   }
 
   componentDidUpdate() {
-    // console.log('DidUpdate')
+    console.log('DidUpdate')
     // this.checkLogin();
   }
 

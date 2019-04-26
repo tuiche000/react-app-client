@@ -19,10 +19,10 @@ switch (process.env.NODE_ENV) {
         config = bases.dev
         break;
     case "production":
-        config = bases.dev.prod
+        config = bases.prod
         break;
     case "test":
-        config = bases.dev.test
+        config = bases.test
         break;
     default:
     //
