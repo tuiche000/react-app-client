@@ -1,5 +1,5 @@
 import { Toast } from 'antd-mobile';
-import querystring from 'querystring'
+import queryString from 'query-string'
 
 let BASE = ""
 switch (process.env.NODE_ENV) {
@@ -43,7 +43,7 @@ let showOrHideLoad = (show = true) => {
 async function commonFetcdh(url, options, method = 'GET') {
   showOrHideLoad();
   hideLoading = false
-  const searchStr = querystring(options)
+  const searchStr = queryString.stringify(options)
   let initObj = {}
   if (method === 'GET') { // 如果是GET请求，拼接url
     url += '?' + searchStr
