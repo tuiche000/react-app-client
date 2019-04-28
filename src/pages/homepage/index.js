@@ -92,17 +92,6 @@ class Homepage extends Component {
             this.setState({
                 share_url: share_url.shareUrl,
             })
-            // 设置app右上角分享功能
-            // setShare({
-            //     title: '测试',
-            //     text: '测试',
-            //     imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
-            //     link: this.state.share_url
-            // }).then(function () {
-            //     // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
-            //     // alert("1")
-            // })
-
             // 设置分享功能
             Prius.appEventCallback({
                 callId: 'POP_SHARE',
@@ -121,7 +110,7 @@ class Homepage extends Component {
             console.log(e)
         }
     }
-    // 获取推荐任务
+    // 获取推荐任务列表
     async getTasklist() {
         try {
             let task_list = await tasklist({
@@ -129,8 +118,8 @@ class Homepage extends Component {
                 "pageSize": 10,
             })
             let { result } = task_list
-            let last_result = result.map( item => {
-                if(item.activityStatus !== 3) {
+            let last_result = result.map(item => {
+                if (item.activityStatus !== 3) {
                     item.activityPrize = 0
                 }
                 return item
@@ -153,18 +142,16 @@ class Homepage extends Component {
         }
         this.getIconurl()
     }
-
+    // 设置明星产品立即推荐分享二维码以及app分享
     fnFooterClose(item) {
-        if (!this.state.showDialog) {
-            try {
-                if (window.Prius.isInsideApp) {
-                    this.getShareUrl(item)
-                } else {
-                    this.getQrCode(item.productId)
-                }
-            } catch (e) {
-                console.log(e)
+        try {
+            if (window.Prius.isInsideApp) {
+                this.getShareUrl(item)
+            } else {
+                this.getQrCode(item.productId)
             }
+        } catch (e) {
+            console.log(e)
         }
         this.setState({
             showDialog: !this.state.showDialog
@@ -179,11 +166,11 @@ class Homepage extends Component {
             })
         }
     }
-    // 修改推荐任务状态
+    // 获取推荐任务二维码图片
     async getActivityQrCode() {
         try {
             let code_data = await shareUrl({
-                url: hostConfig.mBase + 'logins',
+                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase ,
                 mode: 0,
             })
             this.setState({
@@ -194,34 +181,23 @@ class Homepage extends Component {
             console.log(e)
         }
     }
-
+    // 设置推荐任务APP分享 
     async getActivityShareUrl() {
         try {
             let share_url = await shareUrl({
-                url: hostConfig.mBase + 'logins',
+                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase ,
                 mode: 5,
             })
             this.setState({
                 Activityshare_url: share_url.shareUrl,
             })
-            // 设置app右上角分享功能
-            // setShare({
-            //     title: '测试',
-            //     text: '测试',
-            //     imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
-            //     link: this.state.share_url
-            // }).then(function () {
-            //     // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
-            //     // alert("1")
-            // })
-
             // 设置分享功能
             Prius.appEventCallback({
                 callId: 'POP_SHARE',
                 data: {
-                    title: "测试",
+                    title: "你有一封限量邀请函",
                     url: this.state.Activityshare_url,
-                    description: "测试",
+                    description: "你的好友发来一封邀请，邀请你加入FOLIDAY复星旅文，让你和他同享高品质度假旅行。",
                     iconUrl: "https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png",
                 },
                 listener: function (data) {
@@ -233,31 +209,43 @@ class Homepage extends Component {
             console.log(e)
         }
     }
-
+    // 修改推荐任务状态
     fnChangeActivityStatus(index) {
-        if (!this.state.showDialog) {
-            try {
-                if (window.Prius.isInsideApp) {
-                    this.getActivityShareUrl()
-                } else {
-                    this.getActivityQrCode()
-                }
-                this.setState(old => {
-                    old.task_list[index].activityStatus = 2
-                    return (
-                        {
-                            task_list: old.task_list
-                        }
-                    )
-                })
-            } catch (e) {
-                console.log()
+        try {
+            if (window.Prius.isInsideApp) {
+                this.getActivityShareUrl()
+            } else {
+                this.getActivityQrCode()
             }
+            this.setState(old => {
+                old.task_list[index].activityStatus = 2
+                return (
+                    {
+                        task_list: old.task_list
+                    }
+                )
+            })
+        } catch (e) {
+            console.log()
         }
         this.setState({
             showDialog: !this.state.showDialog
         })
-
+    }
+    // 推荐任务小图标弹框   不修改状态
+    fnChangeActivity() {
+        try {
+            if (window.Prius.isInsideApp) {
+                this.getActivityShareUrl()
+            } else {
+                this.getActivityQrCode()
+            }
+        } catch (e) {
+            console.log()
+        }
+        this.setState({
+            showDialog: !this.state.showDialog
+        })
     }
     // 跳转明星产品页面
     goToStartProduct() {
@@ -339,17 +327,22 @@ class Homepage extends Component {
                             {this.state.task_list && this.state.task_list.map((item, index) => (
                                 <li className={`frist-lachine  ${(item.activityStatus === 2 ? 'fifty' : '')} ${(item.activityStatus === 1 ? 'receive-tasks' : '')}`} key={index}>
                                     <div className="frist-lachine-right">
-                                        <img src="./imgs/header-portrait.jpg" alt="" />
+                                        <img src={item.activityImgUrl} alt="" />
                                         <div className="content">
-                                            <p>{item.activityName}<span className="icon"></span></p>
+                                            <p>{item.activityName}
+                                                {item.activityStatus === 1 ? <span className="icon" onClick={this.fnChangeActivityStatus.bind(this, index)}></span> : <span className="icon" onClick={this.fnChangeActivity.bind(this)}></span>}
+                                            </p>
                                             {
-                                                item.activityPrize === 1 && <span>奖励金待入账</span>
+                                                item.activityPrize === 0 && <p >{item.activityDestription}</p>
                                             }
                                             {
-                                                item.activityPrize === 2 && <span>奖励金已发放</span>
+                                                item.activityPrize === 1 && <p >奖励金待入账</p>
                                             }
                                             {
-                                                item.activityPrize === 3 && <span>奖励金取消</span>
+                                                item.activityPrize === 2 && <p style={{ color: "#f6a827" }}>奖励金已发放</p>
+                                            }
+                                            {
+                                                item.activityPrize === 3 && <p style={{ color: "#d0021b" }}>奖励金取消</p>
                                             }
                                         </div>
                                     </div>
@@ -357,7 +350,7 @@ class Homepage extends Component {
                                         item.activityStatus === 1 && <span onClick={this.fnChangeActivityStatus.bind(this, index)}>领取任务</span>
                                     }
                                     {
-                                        item.activityStatus === 2 && <span><span>{item.activityStart}</span><span>/{item.activityEnd}</span><span>进行中</span></span>
+                                        item.activityStatus === 2 && <span onClick={this.fnChangeActivity.bind(this)}><span>{item.activityStart}</span><span>/{item.activityEnd}</span><span>进行中</span></span>
                                     }
                                     {
                                         item.activityStatus === 3 && <span>已完成</span>

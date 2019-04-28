@@ -11,6 +11,7 @@ let requestTaskArray = []
 let hideLoading = false
 let showOrHideLoad = (show = true) => {
   const requestLength = requestTaskArray.length;
+
   if (show && requestLength === 0) {
     return Toast.loading('加载中...', 20, () => {
       requestTaskArray = []
@@ -58,7 +59,7 @@ async function commonFetcdh(url, options, method = 'GET') {
     requestTaskArray.push(((BASE + url), initObj))
     let res = await fetch((BASE + url), initObj)
     let { code, data, responseCode, message } = await res.json()
-    if (code === "0" || responseCode === "0") {
+    if (code === "0" || responseCode === "0" || code === "9") {
       return data
     } else {
       showOrHideLoad(false)

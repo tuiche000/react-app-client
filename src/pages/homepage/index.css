@@ -229,12 +229,12 @@ main {
 .recommended-tasks .icon {
     display: inline-block;
     margin-left: 5px;
-    width: 7px;
-    height: 7px;
+    width: 10px;
+    height: 10px;
     border-right: 1px solid #756030;
     border-bottom: 1px solid #756030;
-    -webkit-transform: rotate(-45deg) translate(0, -50%);
-    transform: rotate(-45deg) translate(0, -50%);
+    -webkit-transform: rotate(-45deg) translate(0, 0%);
+    transform: rotate(-45deg) translate(0, 0%);
 }
 
 .integral {

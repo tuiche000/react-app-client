@@ -4,6 +4,7 @@ import { Tabs, NavBar, Icon, PullToRefresh } from 'antd-mobile'
 import { income, spending } from '@/pages/api/account'
 import { Toast } from 'antd-mobile';
 import { connect } from 'react-redux'
+import { reCount } from '@/pages/api/homePage'
 
 @connect((state, props) => Object.assign({}, props, state), {
 })
@@ -28,13 +29,27 @@ class Details extends Component {
       spending_pageNo: 1, //支出列表页数
       spending_pageSize: 10, //支出列表单页显示数据
       spending_finished: false, // 是否支出列表已经加载全部数据了
+      code: '', // 用户code
     }
   }
+  async getReConut() {
+    try {
+      let Recount = await reCount()
+      let { code } = Recount
+      this.setState({
+        code,
+      })
+      this.getIncome()
+      this.getSpending()
+    }
+    catch (e) {
 
+    }
+  }
   // 获取收入列表
   async getIncome() {
     try {
-      let income_data = await income('ACN0gjHRNvIvUOx', {
+      let income_data = await income(this.state.code, {
         "pageNo": this.state.income_pageNo,
         "pageSize": this.state.income_pageSize,
       })
@@ -60,8 +75,9 @@ class Details extends Component {
 
   // 获取支出列表
   async getSpending() {
+    console.log(this.state.code)
     try {
-      let spending_data = await spending("ACN0gjHRNvIvUOx", {
+      let spending_data = await spending(this.state.code, {
         "pageNo": this.state.spending_pageNo,
         "pageSize": this.state.spending_pageSize,
       })
@@ -88,8 +104,8 @@ class Details extends Component {
 
   async componentDidMount() {
     try {
-      this.getIncome()
-      this.getSpending()
+      this.getReConut()
+
     } catch (e) {
       console.log(e)
     }
@@ -194,9 +210,10 @@ class Details extends Component {
                             <span>{item.createDate}</span>
                           </p>
                         </div>
-                        <div className="substance-right"><span>+</span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)} ${(item.id ? '' : 'hide')} `} onClick={this.active.bind(this, item.id)}></span></div>
+                        <div className="substance-right"><span>+</span><span>{item.point}</span><span></span><span style={{display:"none"}} className={`icon ${(item.active === true ? 'frameActive' : null)} ${(item.id ? '' : 'hide')} `} onClick={this.active.bind(this, item.id)}></span></div>
                       </div>
-                      <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id ? '' : 'hide')}`} >
+                      {/*  下拉气泡 */}
+                      {/* <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id ? '' : 'hide')}`} >
                         <p className="orderID">
                           <span>订单ID</span>
                           <span>{item.id}</span>
@@ -205,7 +222,9 @@ class Details extends Component {
                           <span>{item.typeName}</span>
                           <span>{item.point}</span>
                         </p>
-                      </div>
+                      </div> */}
+
+                      
                     </li>
                   ))}
                 </ul>
@@ -237,9 +256,10 @@ class Details extends Component {
                                 <span>{item.createDate}</span>
                               </p>
                             </div>
-                            <div className="substance-right"><span></span><span>{item.point}</span><span></span><span className={`icon ${(item.active === true ? 'frameActive' : null)} ${(item.id ? '' : 'hide')}`} onClick={this.spending_active.bind(this, item.id)}></span></div>
+                            <div className="substance-right"><span></span><span>{item.point}</span><span></span><span style={{display:"none"}} className={`icon  ${(item.active === true ? 'frameActive' : null)} ${(item.id ? '' : 'hide')}`} onClick={this.spending_active.bind(this, item.id)}></span></div>
                           </div>
-                          <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id ? '' : 'hide')} `}>
+                          {/* 下拉气泡 */}
+                          {/* <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id ? '' : 'hide')} `}>
                             <p className="orderID">
                               <span>订单ID</span>
                               <span>{item.id}</span>
@@ -248,7 +268,7 @@ class Details extends Component {
                               <span>奖励抵扣</span>
                               <span>{item.point}</span>
                             </p>
-                          </div>
+                          </div> */}
                         </li>
                       )
                     })

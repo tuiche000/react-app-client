@@ -5,7 +5,7 @@ export async function income(code, options) {
     return await _GET(`/api/mms/spread/balance/account/${code}/income`, options);
 }
 
-export async function spending(code ,options) {
+export async function spending(code , options) {
     return await _GET(`/api/mms/spread/balance/account/${code}/spending` ,options);
 }
 

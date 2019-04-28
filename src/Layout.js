@@ -38,10 +38,10 @@ class Layout extends React.Component {
                         })
                     }
                 </div>
-                <button onClick={() => {
+                {/* <button onClick={() => {
                     localStorage.clear()
                     window.location.reload()
-                }}>推出登陆</button>
+                }}>推出登陆</button> */}
                 <footer style={{ height: "50px" }}></footer>
             </div>
         )
