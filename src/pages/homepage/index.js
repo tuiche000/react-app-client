@@ -7,7 +7,7 @@ import hostConfig from '@/hostConfig'
 import { productList } from '@/pages/api/product'
 import { tasklist } from '@/pages/api/tasklist'
 import { connect } from 'react-redux'
-import { reCount, shareUrl } from '@/pages/api/homePage'
+import { reCount, shareUrl, recommendProduct } from '@/pages/api/homePage'
 import { Prius } from 'foliday-bridge'
 import head_defult from '@/pages/assets/imgs/head_defult.png'
 
@@ -30,6 +30,7 @@ class Homepage extends Component {
             Activityshare_url: '',
             task_list: [], // 推荐任务列表数据
             iconurl: '',// 用户icon地址 
+            recommend_roduct: [], // 推荐任务中的推荐产品列表
         }
     }
 
@@ -86,7 +87,7 @@ class Homepage extends Component {
     async getShareUrl(item) {
         try {
             let share_url = await shareUrl({
-                url: "http://h5test.gofoliday.com/product?productId=" + item.productId,
+                url: hostConfig.mBase + "product?productId=" + item.productId,
                 mode: 5,
             })
             this.setState({
@@ -107,6 +108,19 @@ class Homepage extends Component {
             })
         }
         catch (e) {
+            console.log(e)
+        }
+    }
+    // 获取推荐任务中的推荐产品列表
+    async getRecommendProduct() {
+        try {
+            let recommend_roduct = await recommendProduct({
+                size: 1,
+            })
+            this.setState({
+                recommend_roduct,
+            })
+        } catch (e) {
             console.log(e)
         }
     }
@@ -137,6 +151,7 @@ class Homepage extends Component {
             this.getProduct()
             this.getReConut()
             this.getTasklist()
+            this.getRecommendProduct()
         } catch (e) {
             console.log(e)
         }
@@ -170,7 +185,7 @@ class Homepage extends Component {
     async getActivityQrCode() {
         try {
             let code_data = await shareUrl({
-                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase ,
+                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
                 mode: 0,
             })
             this.setState({
@@ -185,7 +200,7 @@ class Homepage extends Component {
     async getActivityShareUrl() {
         try {
             let share_url = await shareUrl({
-                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase ,
+                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
                 mode: 5,
             })
             this.setState({
@@ -270,11 +285,6 @@ class Homepage extends Component {
         this.props.history.push(
             '/rules'
         )
-    }
-
-    // 轻提示
-    showToast() {
-        Toast.info('请点击右上角分享按钮', 2);
     }
 
     render() {
@@ -376,27 +386,31 @@ class Homepage extends Component {
                                     </div>
                                 </div>
                                 <span><span>25</span><span>/50</span><span>进行中</span></span>
-                            </li>
-                            <li className="frist-lachine receive-tasks">
+                            </li> */}
+                            {/* <li className="frist-lachine receive-tasks">
                                 <div className="frist-lachine-right">
                                     <img src="./imgs/header-portrait.jpg" alt="" />
                                     <div className="content">
-                                        <p>推荐产品一次<span className="icon"></span></p>
+                                        <p>推荐产品一次<span className="icon" onClick={this.goToStartProduct.bind(this)}></span></p>
                                         <p>分享任意产品，送3个奖励金</p>
                                     </div>
                                 </div>
-                                <span>领取任务</span>
-                            </li>
+                                <span onClick={this.goToStartProduct.bind(this)}>领取任务</span>
+                            </li> */}
                             <li className="frist-lachine receive-tasks">
                                 <div className="frist-lachine-right">
-                                    <img src="./imgs/header-portrait.jpg" alt="" />
+                                    <img src="http://image.fosunholiday.com/foliday/H5/recommend/5.png" alt="" />
                                     <div className="content">
-                                        <p>推荐产品成功预定一次<span className="icon"></span></p>
-                                        <p>好友成功购买推荐产品，赚订单3%</p>
+                                        <p>推荐产品成功预定一次<span className="icon" onClick={this.goToStartProduct.bind(this)}></span></p>
+                                        {this.state.recommend_roduct.prizeStatus ? null : <p>好友成功购买推荐产品，赚订单3%</p>}
+                                        {this.state.recommend_roduct.prizeStatus === 1 && <p >奖励金待入账</p>}
+                                        {this.state.recommend_roduct.prizeStatus === 2 && <p style={{ color: "#f6a827" }}>奖励金已发放</p>}
+                                        {this.state.recommend_roduct.prizeStatus === 3 && <p style={{ color: "#d0021b" }}>奖励金取消</p>}
                                     </div>
                                 </div>
-                                <span>领取任务</span>
-                            </li> */}
+                                <span onClick={this.goToStartProduct.bind(this)}>我要推荐</span>
+                                {/* {this.state.recommend_roduct.taskStatus === 2 && <span style={{ backgroundColor: "#f1e8d0", color: "#ac9987" }} onClick={this.goToStartProduct.bind(this)}>我要推荐</span>} */}
+                            </li>
                         </ul>
                     </div>
                 </section>

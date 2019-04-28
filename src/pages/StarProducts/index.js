@@ -3,6 +3,7 @@ import "./index.css";
 import { NavBar, Icon, PullToRefresh, Toast } from 'antd-mobile';
 import { productList } from '@/pages/api/product';
 import { create_qrCode } from '@/pages/api/member'
+import hostConfig from '@/hostConfig'
 import Dialog from "@/components/Dialog";
 import { connect } from 'react-redux'
 import { shareUrl } from '@/pages/api/homePage'
@@ -64,7 +65,7 @@ class StarProducts extends Component {
     async getQrCode(productId) {
         try {
             let code_data = await shareUrl({
-                url: "http://h5test.gofoliday.com/product?productId=" + productId,
+                url: hostConfig.mBase + "product?productId=" + productId,
                 mode: 0,
             })
             this.setState({

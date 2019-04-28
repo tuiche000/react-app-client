@@ -8,3 +8,6 @@ export async function reCount() {
 export async function shareUrl(options) {
     return await _GET(`/api/mms/spread/member/share-url`, options);
 }
+export async function recommendProduct(options) {
+    return await _GET(`/api/mms/spread/product/onetask`, options);
+}
