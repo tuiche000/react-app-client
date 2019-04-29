@@ -207,7 +207,7 @@ class StarProducts extends Component {
                                 )
                             })
                         }
-                         {this.state.product_data.length === 0 && <div style = {{textAlign:"center" , marginTop:"100px" , fontSize:"20px"}}>暂无数据</div>}
+                         {this.state.product_data.length === 0 && <div style={{textAlign:'center'}}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{width:"40%",paddingTop:"20px"}} /><p style={{paddingTop:"20px"}}>—暂无相关内容—</p></div>}
                     </ul>
                 </PullToRefresh>
             </div>

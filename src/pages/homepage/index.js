@@ -10,6 +10,9 @@ import { connect } from 'react-redux'
 import { reCount, shareUrl, recommendProduct } from '@/pages/api/homePage'
 import { Prius } from 'foliday-bridge'
 import head_defult from '@/pages/assets/imgs/head_defult.png'
+import accountEntry from '@/pages/assets/imgs/accountEntry.png'
+import complete from '@/pages/assets/imgs/complete.png'
+import problem from '@/pages/assets/imgs/problem.png'
 
 @connect((state, props) => Object.assign({}, props, state), {})
 class Homepage extends Component {
@@ -157,7 +160,7 @@ class Homepage extends Component {
         this.getIconurl()
     }
     // 设置明星产品立即推荐分享二维码以及app分享
-    fnFooterClose(item,e) {
+    fnFooterClose(item, e) {
         e && e.stopPropagation();
         e && e.nativeEvent.stopImmediatePropagation();
         try {
@@ -250,7 +253,7 @@ class Homepage extends Component {
     }
     // 推荐任务小图标弹框   不修改状态
     fnChangeActivity() {
-        
+
         try {
             if (window.Prius.isInsideApp) {
                 this.getActivityShareUrl()
@@ -289,7 +292,7 @@ class Homepage extends Component {
         )
     }
     // 跳转产品列表
-    goProductList(productId) {   
+    goProductList(productId) {
         window.location.href = hostConfig.mBase + "product?productId=" + productId
 
     }
@@ -352,13 +355,13 @@ class Homepage extends Component {
                                                 item.activityPrize === 0 && <p >{item.activityDestription}</p>
                                             }
                                             {
-                                                item.activityPrize === 1 && <p >奖励金待入账</p>
+                                                item.activityPrize === 1 && <p > <img src={accountEntry} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />奖励金待入账</p>
                                             }
                                             {
-                                                item.activityPrize === 2 && <p style={{ color: "#f6a827" }}>奖励金已发放</p>
+                                                item.activityPrize === 2 && <p style={{ color: "#f6a827" }}><img src={complete} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />奖励金已发放</p>
                                             }
                                             {
-                                                item.activityPrize === 3 && <p style={{ color: "#d0021b" }}>奖励金取消</p>
+                                                item.activityPrize === 3 && <p style={{ color: "#d0021b" }}><img src={problem} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />奖励金取消</p>
                                             }
                                         </div>
                                     </div>
@@ -409,9 +412,9 @@ class Homepage extends Component {
                                     <div className="content">
                                         <p>推荐产品成功预定一次<span className="icon" onClick={this.goToStartProduct.bind(this)}></span></p>
                                         {this.state.recommend_roduct.taskStatus === 1 && <p>好友成功购买推荐产品，赚订单3%</p>}
-                                        {this.state.recommend_roduct.prizeStatus === 1 && this.state.recommend_roduct.taskStatus === 2 ? <p>奖励金待入账</p> : null}
-                                        {this.state.recommend_roduct.prizeStatus === 2 && this.state.recommend_roduct.taskStatus === 2 ? <p style={{ color: "#f6a827" }}>奖励金已发放</p> : null}
-                                        {this.state.recommend_roduct.prizeStatus === 3 && this.state.recommend_roduct.taskStatus === 2 ? <p style={{ color: "#d0021b" }}>奖励金取消</p> : null}
+                                        {this.state.recommend_roduct.prizeStatus === 1 && this.state.recommend_roduct.taskStatus === 2 ? <p><img src={accountEntry} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />奖励金待入账</p> : null}
+                                        {this.state.recommend_roduct.prizeStatus === 2 && this.state.recommend_roduct.taskStatus === 2 ? <p style={{ color: "#f6a827" }}><img src={complete} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />奖励金已发放</p> : null}
+                                        {this.state.recommend_roduct.prizeStatus === 3 && this.state.recommend_roduct.taskStatus === 2 ? <p style={{ color: "#d0021b" }}><img src={problem} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />奖励金取消</p> : null}
                                     </div>
                                 </div>
                                 <span onClick={this.goToStartProduct.bind(this)}>我要推荐</span>
