@@ -3,6 +3,9 @@ import "./index.css";
 import { Tabs, NavBar, Icon, Toast, PullToRefresh } from 'antd-mobile'
 import { lachineList, recommendList } from '@/pages/api/lachineProduct'
 import { connect } from 'react-redux'
+import accountEntry from '@/pages/assets/imgs/accountEntry.png'
+import complete from '@/pages/assets/imgs/complete.png'
+import problem from '@/pages/assets/imgs/problem.png'
 
 @connect((state, props) => Object.assign({}, props, state), {
 })
@@ -212,13 +215,13 @@ class LachineProduct extends Component {
                                                     </div>
                                                     <div className="product-bottom">
                                                         {
-                                                            item.status === 1 && <span className="bonus-pending">奖励金待发放</span>
+                                                            item.status === 1 && <span className="bonus-pending"><img src={accountEntry} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />奖励金待发放</span>
                                                         }
                                                         {
-                                                            item.status === 2 && <span className="bonus-issued">奖励金已发放</span>
+                                                            item.status === 2 && <span className="bonus-issued"><img src={complete} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />奖励金已发放</span>
                                                         }
                                                         {
-                                                            item.status === 3 && <span className="bonus-fail">审核失败 奖励金 {item.prize} 取消发放</span>
+                                                            item.status === 3 && <span className="bonus-fail"><img src={problem} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />审核失败 奖励金 {item.prize} 取消发放</span>
                                                         }
                                                         <span className="icon" onClick={this.goToDetails.bind(this)}></span>
                                                     </div>
