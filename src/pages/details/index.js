@@ -26,6 +26,7 @@ class Details extends Component {
       income_pageNo: 1, //收入列表页数
       income_pageSize: 10, //收入列表单页显示数据
       income_finished: false, // 是否收入列表已经加载全部数据了
+      finished: false,
       spending_pageNo: 1, //支出列表页数
       spending_pageSize: 10, //支出列表单页显示数据
       spending_finished: false, // 是否支出列表已经加载全部数据了
@@ -39,8 +40,11 @@ class Details extends Component {
       this.setState({
         code,
       })
-      this.getIncome()
-      this.getSpending()
+      await this.getIncome()
+      await this.getSpending()
+      this.setState({
+        finished: true,
+      })
     }
     catch (e) {
 
@@ -225,7 +229,7 @@ class Details extends Component {
                       </div> */}
                     </li>
                   ))}
-                  {this.state.income_data.length === 0 && <div style={{textAlign:'center'}}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{width:"40%",paddingTop:"20px"}} /><p style={{paddingTop:"20px"}}>—暂无相关内容—</p></div>}
+                  {(this.state.income_data.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
                 </ul>
               </PullToRefresh>
             </section>
@@ -272,7 +276,7 @@ class Details extends Component {
                       )
                     })
                   }
-                  {this.state.spending_data.length === 0 && <div style={{textAlign:'center'}}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{width:"40%",paddingTop:"20px"}} /><p style={{paddingTop:"20px"}}>—暂无相关内容—</p></div>}
+                  {(this.state.spending_data.length === 0 && this.state.finished )&& <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
                 </ul>
               </PullToRefresh>
             </section>

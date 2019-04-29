@@ -27,6 +27,7 @@ class LachineProduct extends Component {
             lachine_pageSize: 10, // 拉新列表单页显示数据量
             lachine_finished: false, // 拉新列表是否加载全部数据 
             recommend_pageNo: 1, // 产品列表页数
+            finished: false,
             recommend_pageSize: 10, // 产品列表单页显示数据量
             recommend_finished: false, // 产品列表是否加载全部数据
         }
@@ -81,10 +82,13 @@ class LachineProduct extends Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         try {
-            this.getLachineList()
-            this.getRecommendList()
+            await this.getLachineList()
+            await this.getRecommendList()
+            this.setState({
+                finished: true,
+            })
         } catch (e) {
             alert(JSON.stringify(e))
         }
@@ -180,7 +184,7 @@ class LachineProduct extends Component {
                                                 </div>
                                             </li>
                                         ))}
-                                        {this.state.Lachine_list.length === 0 && <div style={{textAlign:'center'}}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{width:"40%",paddingTop:"20px"}} /><p style={{paddingTop:"20px"}}>—暂无相关内容—</p></div>}
+                                        {(this.state.Lachine_list.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
                                     </ul>
                                 </PullToRefresh>
                             </section>
@@ -262,7 +266,7 @@ class LachineProduct extends Component {
                                             <span className="icon"></span>
                                         </div>
                                     </li> */}
-                                    {this.state.recommend_list.length === 0 && <div style={{textAlign:'center'}}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{width:"40%",paddingTop:"20px"}} /><p style={{paddingTop:"20px"}}>—暂无相关内容—</p></div>}
+                                        {(this.state.recommend_list.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
                                     </ul>
                                 </PullToRefresh>
                             </section>

@@ -482,7 +482,7 @@ class Homepage extends Component {
                     <div className="integral-top  clearfix">
                         <div className="title">
                             <h3>明星产品</h3>
-                            <p>推荐一下产品获取双倍奖励金</p>
+                            <p>推荐一下产品获取3%奖励金</p>
                         </div>
                         <p>
                             <span onClick={this.goToStartProduct.bind(this)}>更多产品</span>

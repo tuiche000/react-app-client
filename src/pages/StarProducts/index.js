@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./index.css";
-import {  PullToRefresh, Toast } from 'antd-mobile';
+import { PullToRefresh, Toast } from 'antd-mobile';
 import { productList } from '@/pages/api/product';
 import { create_qrCode } from '@/pages/api/member'
 import hostConfig from '@/hostConfig'
@@ -22,6 +22,7 @@ class StarProducts extends Component {
             product_pageNo: 1, // 明星产品列表页数
             product_pageSize: 5, // 明星产品列表单页显示数据
             product_finnished: false, // 是否明星产品列表已经加载玩全部数据
+            finished: false,
         }
     }
     // 获取明星列表数据
@@ -117,14 +118,17 @@ class StarProducts extends Component {
     }
     async componentDidMount() {
         try {
-            this.getProduct()
+            await this.getProduct()
+            this.setState({
+                finished: true,
+            })
         } catch (e) {
             // console.log(e)
         }
         // 将页面滑动到顶部
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
-    fnFooterClose(item,e) {
+    fnFooterClose(item, e) {
         // console.log(item.productId)
         e && e.stopPropagation();
         e && e.nativeEvent.stopImmediatePropagation();
@@ -174,7 +178,7 @@ class StarProducts extends Component {
                     icon={this.props.other.isInsideApp ? "" : <Icon type="left" color="#f5a623" />}
                     onLeftClick={() => window.history.go(-1)}
                 ><span style={{ fontSize: "16px" }}>明星产品</span></NavBar> */}
-                <div style={{ fontSize: "16px",textAlign:"center" }} >明星产品</div>
+                <div style={{ fontSize: "16px", textAlign: "center" }} >明星产品</div>
                 <PullToRefresh
                     damping={100}
                     ref={el => this.ptr = el}
@@ -207,7 +211,7 @@ class StarProducts extends Component {
                                 )
                             })
                         }
-                         {this.state.product_data.length === 0 && <div style={{textAlign:'center'}}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{width:"40%",paddingTop:"20px"}} /><p style={{paddingTop:"20px"}}>—暂无相关内容—</p></div>}
+                        {(this.state.product_data.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
                     </ul>
                 </PullToRefresh>
             </div>
