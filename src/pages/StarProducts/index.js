@@ -192,8 +192,8 @@ class StarProducts extends Component {
                                             <span className="yen">&yen;</span>
                                             <span className="num">{item.productPrice}</span>
                                             <span>起</span>
-                                            <span className="num">{item.productPrize}</span>
-                                            <span>奖励金</span>
+                                            {/* <span className="num">{item.productPrize}</span>
+                                            <span>奖励金</span> */}
                                         </p>
                                         <p className="immediately" onClick={this.fnFooterClose.bind(this, item)}>立刻推荐</p>
                                     </li>

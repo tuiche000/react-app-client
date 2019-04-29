@@ -402,10 +402,10 @@ class Homepage extends Component {
                                     <img src="http://image.fosunholiday.com/foliday/H5/recommend/5.png" alt="" />
                                     <div className="content">
                                         <p>推荐产品成功预定一次<span className="icon" onClick={this.goToStartProduct.bind(this)}></span></p>
-                                        {this.state.recommend_roduct.prizeStatus ? null : <p>好友成功购买推荐产品，赚订单3%</p>}
-                                        {this.state.recommend_roduct.prizeStatus === 1 && <p >奖励金待入账</p>}
-                                        {this.state.recommend_roduct.prizeStatus === 2 && <p style={{ color: "#f6a827" }}>奖励金已发放</p>}
-                                        {this.state.recommend_roduct.prizeStatus === 3 && <p style={{ color: "#d0021b" }}>奖励金取消</p>}
+                                        {this.state.recommend_roduct.taskStatus === 1 && <p>好友成功购买推荐产品，赚订单3%</p>}
+                                        {this.state.recommend_roduct.prizeStatus === 1 && this.state.recommend_roduct.taskStatus === 2 ? <p>奖励金待入账</p> : null}
+                                        {this.state.recommend_roduct.prizeStatus === 2 && this.state.recommend_roduct.taskStatus === 2 ? <p style={{ color: "#f6a827" }}>奖励金已发放</p> : null}
+                                        {this.state.recommend_roduct.prizeStatus === 3 && this.state.recommend_roduct.taskStatus === 2 ? <p style={{ color: "#d0021b" }}>奖励金取消</p> : null}
                                     </div>
                                 </div>
                                 <span onClick={this.goToStartProduct.bind(this)}>我要推荐</span>
@@ -489,8 +489,8 @@ class Homepage extends Component {
                                         <p className="amount">
                                             <span className="num">&yen;{item.productPrice}</span>
                                             <span>起</span>
-                                            <span className="num">{item.productPrize}</span>
-                                            <span>奖励金</span>
+                                            {/* <span className="num">{item.productPrize}</span>
+                                            <span>奖励金</span> */}
                                         </p>
                                         <p className="immediately" onClick={this.fnFooterClose.bind(this, item)} >立刻推荐</p>
                                     </li>
