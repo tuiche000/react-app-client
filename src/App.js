@@ -8,7 +8,7 @@ import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo, setNotLayout, setIsIns
 import { Prius } from 'foliday-bridge'
 import { getQueryVariable } from './utils/util'
 import { account_current } from './pages/api/account'
-import { Toast, Modal } from 'antd-mobile';
+import { Toast } from 'antd-mobile';
 window.Prius = Prius
 
 @connect((state, props) => Object.assign({}, props, state), {

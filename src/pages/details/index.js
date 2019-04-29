@@ -69,13 +69,12 @@ class Details extends Component {
       }
     }
     catch (e) {
-      console.log(e)
+      // console.log(e)
     }
   }
 
   // 获取支出列表
   async getSpending() {
-    console.log(this.state.code)
     try {
       let spending_data = await spending(this.state.code, {
         "pageNo": this.state.spending_pageNo,
@@ -98,7 +97,7 @@ class Details extends Component {
       }
     }
     catch (e) {
-      console.log(e)
+      // console.log(e)
     }
   }
 
@@ -107,7 +106,7 @@ class Details extends Component {
       this.getReConut()
 
     } catch (e) {
-      console.log(e)
+      // console.log(e)
     }
 
   }
@@ -210,8 +209,9 @@ class Details extends Component {
                             <span>{item.createDate}</span>
                           </p>
                         </div>
-                        <div className="substance-right"><span>+</span><span>{item.point}</span><span></span><span style={{display:"none"}} className={`icon ${(item.active === true ? 'frameActive' : null)} ${(item.id ? '' : 'hide')} `} onClick={this.active.bind(this, item.id)}></span></div>
+                        <div className="substance-right"><span>+</span><span>{item.point}</span><span></span><span style={{ display: "none" }} className={`icon ${(item.active === true ? 'frameActive' : null)} ${(item.id ? '' : 'hide')} `} onClick={this.active.bind(this, item.id)}></span></div>
                       </div>
+
                       {/*  下拉气泡 */}
                       {/* <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id ? '' : 'hide')}`} >
                         <p className="orderID">
@@ -223,10 +223,9 @@ class Details extends Component {
                           <span>{item.point}</span>
                         </p>
                       </div> */}
-
-                      
                     </li>
                   ))}
+                  {this.state.income_data.length === 0 && <div style={{ textAlign: "center", marginTop: "100px", fontSize: "20px" }}>暂无数据</div>}
                 </ul>
               </PullToRefresh>
             </section>
@@ -256,7 +255,7 @@ class Details extends Component {
                                 <span>{item.createDate}</span>
                               </p>
                             </div>
-                            <div className="substance-right"><span></span><span>{item.point}</span><span></span><span style={{display:"none"}} className={`icon  ${(item.active === true ? 'frameActive' : null)} ${(item.id ? '' : 'hide')}`} onClick={this.spending_active.bind(this, item.id)}></span></div>
+                            <div className="substance-right"><span></span><span>{item.point}</span><span></span><span style={{ display: "none" }} className={`icon  ${(item.active === true ? 'frameActive' : null)} ${(item.id ? '' : 'hide')}`} onClick={this.spending_active.bind(this, item.id)}></span></div>
                           </div>
                           {/* 下拉气泡 */}
                           {/* <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id ? '' : 'hide')} `}>
@@ -273,6 +272,7 @@ class Details extends Component {
                       )
                     })
                   }
+                  {this.state.spending_data.length === 0 && <div style={{ textAlign: "center", marginTop: "100px", fontSize: "20px" }}>暂无数据</div>}
                 </ul>
               </PullToRefresh>
             </section>

@@ -169,7 +169,7 @@ main {
 .recommended-tasks .tasks-list .fifty>span {
     background-color: #f5a623;
     color: #000000;
-    /* width: 68px; */
+    min-width: 70px;
     padding: 0;
 }
 

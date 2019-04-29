@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './store'
 import { HashRouter as Router, Route } from 'react-router-dom';
-console.log(process.env)
+// console.log(process.env)
 ReactDOM.render((
     <Provider store={store}>
         <Router basename="/fyRcommend">

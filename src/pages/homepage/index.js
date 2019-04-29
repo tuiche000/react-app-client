@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { Toast } from 'antd-mobile';
+// import { Toast } from 'antd-mobile';
 import Dialog from "@/components/Dialog";
 // import { setShare } from 'fm-ui/lib/utils/share'
 import hostConfig from '@/hostConfig'
@@ -38,7 +38,7 @@ class Homepage extends Component {
     async getQrCode(productId) {
         try {
             let code_data = await shareUrl({
-                url: "http://h5test.gofoliday.com/product?productId=" + productId,
+                url: hostConfig.mBase + "product?productId=" + productId,
                 mode: 0,
             })
             this.setState({
@@ -46,7 +46,7 @@ class Homepage extends Component {
             })
         }
         catch (e) {
-            console.log(e)
+            // console.log(e)
         }
     }
     // 获取明星列表数据
@@ -64,7 +64,7 @@ class Homepage extends Component {
             })
         }
         catch (e) {
-            console.log(e)
+            // console.log(e)
         }
     }
     // 获取拉新会员数以及下单成功数
@@ -102,12 +102,12 @@ class Homepage extends Component {
                     iconUrl: "https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png",
                 },
                 listener: function (data) {
-                    console.log(JSON.stringify(data))
+                    // console.log(JSON.stringify(data))
                 }
             })
         }
         catch (e) {
-            console.log(e)
+            // console.log(e)
         }
     }
     // 获取推荐任务中的推荐产品列表
@@ -120,7 +120,7 @@ class Homepage extends Component {
                 recommend_roduct,
             })
         } catch (e) {
-            console.log(e)
+            // console.log(e)
         }
     }
     // 获取推荐任务列表
@@ -142,7 +142,7 @@ class Homepage extends Component {
             })
         }
         catch (e) {
-            console.log(e)
+            // console.log(e)
         }
     }
     async componentDidMount() {
@@ -152,12 +152,14 @@ class Homepage extends Component {
             this.getTasklist()
             this.getRecommendProduct()
         } catch (e) {
-            console.log(e)
+            // console.log(e)
         }
         this.getIconurl()
     }
     // 设置明星产品立即推荐分享二维码以及app分享
-    fnFooterClose(item) {
+    fnFooterClose(item,e) {
+        e && e.stopPropagation();
+        e && e.nativeEvent.stopImmediatePropagation();
         try {
             if (window.Prius.isInsideApp) {
                 this.getShareUrl(item)
@@ -165,7 +167,7 @@ class Homepage extends Component {
                 this.getQrCode(item.productId)
             }
         } catch (e) {
-            console.log(e)
+            // console.log(e)
         }
         this.setState({
             showDialog: !this.state.showDialog
@@ -176,7 +178,7 @@ class Homepage extends Component {
         let url = this.props.user.userInfo.iconurl
         if (url) {
             return this.setState({
-                iconUrl: url.indexOf('http:') > -1 ? url : 'http://unitest.fosunholiday.com/' + url
+                iconUrl: url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
             })
         }
     }
@@ -192,7 +194,7 @@ class Homepage extends Component {
             })
         }
         catch (e) {
-            console.log(e)
+            // console.log(e)
         }
     }
     // 设置推荐任务APP分享 
@@ -215,12 +217,12 @@ class Homepage extends Component {
                     iconUrl: "https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png",
                 },
                 listener: function (data) {
-                    console.log(JSON.stringify(data))
+                    // console.log(JSON.stringify(data))
                 }
             })
         }
         catch (e) {
-            console.log(e)
+            // console.log(e)
         }
     }
     // 修改推荐任务状态
@@ -240,7 +242,7 @@ class Homepage extends Component {
                 )
             })
         } catch (e) {
-            console.log()
+            // console.log()
         }
         this.setState({
             showDialog: !this.state.showDialog
@@ -248,6 +250,7 @@ class Homepage extends Component {
     }
     // 推荐任务小图标弹框   不修改状态
     fnChangeActivity() {
+        
         try {
             if (window.Prius.isInsideApp) {
                 this.getActivityShareUrl()
@@ -255,7 +258,7 @@ class Homepage extends Component {
                 this.getActivityQrCode()
             }
         } catch (e) {
-            console.log()
+            // console.log()
         }
         this.setState({
             showDialog: !this.state.showDialog
@@ -285,7 +288,11 @@ class Homepage extends Component {
             '/rules'
         )
     }
+    // 跳转产品列表
+    goProductList(productId) {   
+        window.location.href = hostConfig.mBase + "product?productId=" + productId
 
+    }
     render() {
         return (
             <div className="homepage-main">
@@ -408,7 +415,6 @@ class Homepage extends Component {
                                     </div>
                                 </div>
                                 <span onClick={this.goToStartProduct.bind(this)}>我要推荐</span>
-                                {/* {this.state.recommend_roduct.taskStatus === 2 && <span style={{ backgroundColor: "#f1e8d0", color: "#ac9987" }} onClick={this.goToStartProduct.bind(this)}>我要推荐</span>} */}
                             </li>
                         </ul>
                     </div>
@@ -483,7 +489,7 @@ class Homepage extends Component {
                         {
                             this.state.product_data.map(item => {
                                 return (
-                                    <li className="innisfree-lis" key={item.productId}>
+                                    <li className="innisfree-lis" key={item.productId} onClick={this.goProductList.bind(this, item.productId)}>
                                         <p className="substance" style={{ WebkitBoxOrient: "vertical" }}>{item.productSubTittle}</p>
                                         <p className="amount">
                                             <span className="num">&yen;{item.productPrice}</span>

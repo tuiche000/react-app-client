@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { NavBar, Icon, PullToRefresh, Toast } from 'antd-mobile';
+import {  PullToRefresh, Toast } from 'antd-mobile';
 import { productList } from '@/pages/api/product';
 import { create_qrCode } from '@/pages/api/member'
 import hostConfig from '@/hostConfig'
@@ -79,7 +79,7 @@ class StarProducts extends Component {
     async getShareUrl(item) {
         try {
             let share_url = await shareUrl({
-                url: "http://h5test.gofoliday.com/product?productId=" + item.productId,
+                url: hostConfig.mBase + "product?productId=" + item.productId,
                 mode: 5,
             })
             this.setState({
@@ -107,7 +107,7 @@ class StarProducts extends Component {
                     iconUrl: "https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png",
                 },
                 listener: function (data) {
-                    console.log(JSON.stringify(data))
+                    // console.log(JSON.stringify(data))
                 }
             })
         }
@@ -119,13 +119,15 @@ class StarProducts extends Component {
         try {
             this.getProduct()
         } catch (e) {
-            console.log(e)
+            // console.log(e)
         }
         // 将页面滑动到顶部
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
-    fnFooterClose(item) {
+    fnFooterClose(item,e) {
         // console.log(item.productId)
+        e && e.stopPropagation();
+        e && e.nativeEvent.stopImmediatePropagation();
         try {
             if (window.Prius.isInsideApp) {
                 this.getShareUrl(item)
@@ -133,7 +135,7 @@ class StarProducts extends Component {
                 this.getQrCode(item.productId)
             }
         } catch (e) {
-            console.log(e)
+            // console.log(e)
         }
 
         this.setState({
@@ -153,6 +155,10 @@ class StarProducts extends Component {
         })
         this.getProduct()
     }
+    // 跳转产品列表
+    goProductList(productId) {
+        window.location.href = hostConfig.mBase + "product?productId=" + productId
+    }
     render() {
         return (
             <div className="innisfree ">
@@ -163,11 +169,12 @@ class StarProducts extends Component {
                         </Dialog>
                     ) : ''
                 }
-                <NavBar
+                {/* <NavBar
                     mode="light"
                     icon={this.props.other.isInsideApp ? "" : <Icon type="left" color="#f5a623" />}
                     onLeftClick={() => window.history.go(-1)}
-                ><span style={{ fontSize: "16px" }}>明星产品</span></NavBar>
+                ><span style={{ fontSize: "16px" }}>明星产品</span></NavBar> */}
+                <div style={{ fontSize: "16px",textAlign:"center" }} >明星产品</div>
                 <PullToRefresh
                     damping={100}
                     ref={el => this.ptr = el}
@@ -183,7 +190,7 @@ class StarProducts extends Component {
                         {
                             this.state.product_data.map(item => {
                                 return (
-                                    <li className="innisfree-list" key={item.productId} >
+                                    <li className="innisfree-list" key={item.productId} onClick={this.goProductList.bind(this, item.productId)}>
                                         <div className="img">
                                             <img src={item.productImgUrl} alt="" />
                                         </div>
@@ -200,6 +207,7 @@ class StarProducts extends Component {
                                 )
                             })
                         }
+                         {this.state.product_data.length === 0 && <div style = {{textAlign:"center" , marginTop:"100px" , fontSize:"20px"}}>暂无数据</div>}
                     </ul>
                 </PullToRefresh>
             </div>

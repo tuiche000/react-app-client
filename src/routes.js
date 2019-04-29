@@ -9,7 +9,7 @@ import Rules from "./pages/rules"
 
 export default [
     { path: '/', component: Homepage },
-    { path: '/starProducts', component: StarProducts, notLayout: true },
+    { path: '/starProducts', component: StarProducts,},
     { path: '/bonus', component: Bonus, notLayout: true },
     { path: '/details', component: Details, notLayout: true },
     { path: '/lachineProduct', component: LachineProduct, notLayout: true },

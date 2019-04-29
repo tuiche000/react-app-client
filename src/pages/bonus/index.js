@@ -36,7 +36,7 @@ class Bonus extends Component {
         try {
             this.getReConut()
         } catch (e) {
-            console.log(e)
+            // console.log(e)
         }
 
     }
