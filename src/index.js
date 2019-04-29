@@ -10,7 +10,7 @@ import { HashRouter as Router, Route } from 'react-router-dom';
 // console.log(process.env)
 ReactDOM.render((
     <Provider store={store}>
-        <Router basename="/fyRcommend">
+        <Router >
             <Route component={App} />
         </Router>
     </Provider>
