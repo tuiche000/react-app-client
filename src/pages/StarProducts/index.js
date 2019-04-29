@@ -161,7 +161,19 @@ class StarProducts extends Component {
     }
     // 跳转产品列表
     goProductList(productId) {
-        window.location.href = hostConfig.mBase + "product?productId=" + productId
+        if (window.Prius.isInsideApp) {
+            Prius.appEventCallback({
+                'callId': 'OPEN_DETAIL',
+                data: {
+                    productId,
+                },
+                listener: function (data) {
+                    // console.log(JSON.stringify(data))
+                }
+            })
+        } else {
+            window.location.href = hostConfig.mBase + "product?productId=" + productId
+        }
     }
     render() {
         return (

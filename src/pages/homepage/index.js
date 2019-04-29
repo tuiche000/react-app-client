@@ -149,6 +149,7 @@ class Homepage extends Component {
         }
     }
     async componentDidMount() {
+        console.log(window.Prius)
         try {
             this.getProduct()
             this.getReConut()
@@ -293,7 +294,19 @@ class Homepage extends Component {
     }
     // 跳转产品列表
     goProductList(productId) {
-        window.location.href = hostConfig.mBase + "product?productId=" + productId
+        if (window.Prius.isInsideApp) {
+            Prius.appEventCallback({
+                'callId': 'OPEN_DETAIL',
+                data: {
+                    productId,
+                },
+                listener: function (data) {
+                    // console.log(JSON.stringify(data))
+                }
+            })
+        } else {
+            window.location.href = hostConfig.mBase + "product?productId=" + productId
+        }
 
     }
     render() {
@@ -324,14 +337,14 @@ class Homepage extends Component {
                                 <span className="num">{this.state.totalPrize}</span>
                             </p>
                         </div>
-                        <div className="success">
-                            <div className="success-lachine" onClick={this.goTolachineProduct.bind(this)}>
+                        <div className="success" >
+                            {/* <div className="success-lachine" onClick={this.goTolachineProduct.bind(this)}>
                                 <p>拉新会员成功数</p>
                                 <p>{this.state.recMemberCount}</p>
-                            </div>
+                            </div> */}
                             <div className="success-order" onClick={this.goTolachineProduct.bind(this)}>
-                                <p>下单成功数</p>
-                                <p>{this.state.recOrderCount}</p>
+                                <p>下单成功数: <span style={{color:'#e9cf8a',fontsize:"18px"}}>{this.state.recOrderCount}</span></p>
+                                {/* <p>{this.state.recOrderCount}</p> */}
                             </div>
                         </div>
                     </section>

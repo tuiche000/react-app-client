@@ -19,7 +19,7 @@ class LachineProduct extends Component {
             Lachine_list: [], // 拉新列表数据
             recommend_list: [], // 产品列表数据
             tabs: [             // tab栏标题
-                { title: '拉新会员' },
+                // { title: '拉新会员' },
                 { title: '产品推荐' },
             ],
             initialPage: 0,
@@ -156,7 +156,7 @@ class LachineProduct extends Component {
                 <div className="lachineProduct ">
                     <Tabs tabs={this.state.tabs} initialPage={this.state.initialPage} tabBarActiveTextColor={'#000000'} tabBarInactiveTextColor={'#999999'} tabBarUnderlineStyle={{ border: '0.5px #ffc147 solid' }} animated={true} useOnPan={true} onChange={this.onTabsChange}>
                         <div>
-                            <section className="lachine" >
+                            {/* <section className="lachine" >
                                 <PullToRefresh
                                     damping={100}
                                     ref={el => this.ptr = el}
@@ -187,7 +187,7 @@ class LachineProduct extends Component {
                                         {(this.state.Lachine_list.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
                                     </ul>
                                 </PullToRefresh>
-                            </section>
+                            </section> */}
                         </div>
                         <div>
                             <section className="product" >
