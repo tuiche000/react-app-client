@@ -58,7 +58,6 @@ class Homepage extends Component {
             })
             let { result } = productData || []
             this.setState((prevState) => {
-                // console.log('prevState', prevState)
                 return {
                     product_data: result || [],
                 }
