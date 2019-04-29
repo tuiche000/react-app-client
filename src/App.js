@@ -9,6 +9,7 @@ import { Prius } from 'foliday-bridge'
 import { getQueryVariable } from './utils/util'
 import { account_current } from './pages/api/account'
 import { Toast } from 'antd-mobile';
+import hostConfig from '@/hostConfig'
 window.Prius = Prius
 
 @connect((state, props) => Object.assign({}, props, state), {
@@ -96,7 +97,7 @@ class App extends Component {
             return
           }
           // 啥都没有就滚去(测试)登录页面
-          window.location = `http://h5test.gofoliday.com/logins?redirect=${window.location.href}`
+          window.location = `${hostConfig.mBase}logins?redirect=${window.location.href}`
         }
         // redux有folidayToken 或者 storeage有folidayToken
         else {
