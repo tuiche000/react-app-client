@@ -6,8 +6,8 @@ const bases = {
         mBase: 'http://h5test.gofoliday.com/',
     },
     prod: {
-        apiBase: 'http://unitest.fosunholiday.com',
-        mBase: 'http://h5test.gofoliday.com/',
+        apiBase: 'http://api.fosunholiday.com',
+        mBase: 'http://h5.gofoliday.com/',
     },
     test: {
         apiBase: 'http://unitest.fosunholiday.com',
