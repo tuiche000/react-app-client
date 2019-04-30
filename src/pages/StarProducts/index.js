@@ -195,7 +195,7 @@ class StarProducts extends Component {
                     damping={100}
                     ref={el => this.ptr = el}
                     style={{
-                        minHeight: this.state.height,
+                        height: this.state.height,
                         overflow: 'auto',
                     }}
                     direction="up"
