@@ -62,7 +62,6 @@ class App extends Component {
           let { token } = data
           Token = token
           _this.props.setFolidayToken(Token)
-          await _this.fnAccount_current()
         }
 
         // 没登录取登录然后取token
@@ -71,6 +70,7 @@ class App extends Component {
           listener: function (data) {
             if (data.code === "0") {
               fnLoginBoth(data)
+              window.location.reload()
             }
           }
         });
@@ -78,9 +78,10 @@ class App extends Component {
         window.Prius.appEventCallback({
           callId: "LOGIN",
           data: {},
-          listener: function (data) {
+          listener: async function (data) {
             if (data.token) {
               fnLoginBoth(data)
+              await _this.fnAccount_current()
             }
           }
         })
