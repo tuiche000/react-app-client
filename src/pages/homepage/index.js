@@ -102,7 +102,7 @@ class Homepage extends Component {
                     title: item.productName,
                     url: this.state.share_url,
                     description: item.productSubTittle,
-                    iconUrl: "https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png",
+                    iconUrl: item.productImgUrl,
                 },
                 listener: function (data) {
                     // console.log(JSON.stringify(data))
