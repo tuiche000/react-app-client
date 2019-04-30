@@ -105,7 +105,7 @@ class StarProducts extends Component {
                     title: item.productName,
                     url: this.state.share_url,
                     description: item.productSubTittle,
-                    iconUrl: item.productImgUrl,
+                    iconUrl: "http:" + item.productImgUrl,
                 },
                 listener: function (data) {
                     // console.log(JSON.stringify(data))

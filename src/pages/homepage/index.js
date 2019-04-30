@@ -102,7 +102,7 @@ class Homepage extends Component {
                     title: item.productName,
                     url: this.state.share_url,
                     description: item.productSubTittle,
-                    iconUrl: item.productImgUrl,
+                    iconUrl: "http:" + item.productImgUrl,
                 },
                 listener: function (data) {
                     // console.log(JSON.stringify(data))
@@ -343,7 +343,7 @@ class Homepage extends Component {
                                 <p>{this.state.recMemberCount}</p>
                             </div> */}
                             <div className="success-order" onClick={this.goTolachineProduct.bind(this)}>
-                                <p>下单成功数: <span style={{color:'#e9cf8a',fontsize:"18px"}}>{this.state.recOrderCount}</span></p>
+                                <p>下单成功数: <span style={{ color: '#e9cf8a', fontsize: "18px" }}>{this.state.recOrderCount}</span></p>
                                 {/* <p>{this.state.recOrderCount}</p> */}
                             </div>
                         </div>
