@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "./index.css";
 import { Tabs, NavBar, Icon, Toast, PullToRefresh } from 'antd-mobile'
-import { lachineList, recommendList } from '@/pages/api/lachineProduct'
+import {  recommendList } from '@/pages/api/lachineProduct'
 import { connect } from 'react-redux'
 import accountEntry from '@/pages/assets/imgs/accountEntry.png'
 import complete from '@/pages/assets/imgs/complete.png'

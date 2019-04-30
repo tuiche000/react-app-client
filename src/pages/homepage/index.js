@@ -92,15 +92,12 @@ class Homepage extends Component {
                 url: hostConfig.mBase + "product?productId=" + item.productId,
                 mode: 5,
             })
-            this.setState({
-                share_url: share_url.shareUrl,
-            })
             // 设置分享功能
             Prius.appEventCallback({
                 callId: 'POP_SHARE',
                 data: {
                     title: item.productName,
-                    url: this.state.share_url,
+                    url:share_url,
                     description: item.productSubTittle,
                     iconUrl: "http:" + item.productImgUrl,
                 },
@@ -164,15 +161,12 @@ class Homepage extends Component {
     fnFooterClose(item, e) {
         e && e.stopPropagation();
         e && e.nativeEvent.stopImmediatePropagation();
-        try {
+
             if (window.Prius.isInsideApp) {
                 this.getShareUrl(item)
             } else {
                 this.getQrCode(item.productId)
             }
-        } catch (e) {
-            // console.log(e)
-        }
         this.setState({
             showDialog: !this.state.showDialog
         })

@@ -57,11 +57,13 @@ class App extends Component {
       // 如果在app里
       if (window.Prius.isInsideApp) {
         let _this = this
-        const fnLoginBoth = async (data) => {
+        const fnLoginBoth = (data) => {
           // 有token
           let { token } = data
           Token = token
           _this.props.setFolidayToken(Token)
+          _this.fnAccount_current()
+
         }
 
         // 没登录取登录然后取token
@@ -81,7 +83,6 @@ class App extends Component {
           listener: async function (data) {
             if (data.token) {
               fnLoginBoth(data)
-              await _this.fnAccount_current()
             }
           }
         })
@@ -111,6 +112,9 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // window.onerror = function (message, source, lineno, colno, error) {
+    //   alert(error)
+    // }
     this.fnCheckLogin();
     this.fnNotLayout();
   }
