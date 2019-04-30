@@ -34,28 +34,28 @@ class LachineProduct extends Component {
     }
 
     // 获取拉新列表
-    async getLachineList() {
-        try {
-            let Lachine_list = await lachineList({
-                "pageNo": this.state.lachine_pageNo,
-                "pageSize": this.state.lachine_pageSize,
-            })
-            let { result, totalResults } = Lachine_list
-            this.setState({
-                Lachine_list: [...this.state.Lachine_list, ...result] || [],
-                refreshing: false,
-            })
-            if (totalResults <= this.state.Lachine_list.length) {
-                this.setState({
-                    lachine_finished: true,
-                })
-                return
-            }
-        }
-        catch (err) {
-            // console.log(err)
-        }
-    }
+    // async getLachineList() {
+    //     try {
+    //         let Lachine_list = await lachineList({
+    //             "pageNo": this.state.lachine_pageNo,
+    //             "pageSize": this.state.lachine_pageSize,
+    //         })
+    //         let { result, totalResults } = Lachine_list
+    //         this.setState({
+    //             Lachine_list: [...this.state.Lachine_list, ...result] || [],
+    //             refreshing: false,
+    //         })
+    //         if (totalResults <= this.state.Lachine_list.length) {
+    //             this.setState({
+    //                 lachine_finished: true,
+    //             })
+    //             return
+    //         }
+    //     }
+    //     catch (err) {
+    //         // console.log(err)
+    //     }
+    // }
 
     // 获取产品推荐列表数据
     async getRecommendList() {
@@ -84,7 +84,7 @@ class LachineProduct extends Component {
 
     async componentDidMount() {
         try {
-            await this.getLachineList()
+            // await this.getLachineList()
             await this.getRecommendList()
             this.setState({
                 finished: true,
@@ -111,19 +111,19 @@ class LachineProduct extends Component {
         this.setState({ refreshing: true });
         switch (this.state.initialPage) {
             // 收入上拉加载更多
-            case 0:
-                if (this.state.lachine_finished) {
-                    Toast.info('数据已经加载完毕', 1);
-                    this.setState({ refreshing: false });
-                    break;
-                }
-                this.setState({
-                    lachine_pageNo: this.state.lachine_pageNo + 1
-                })
-                this.getLachineList()
-                break;
+            // case 0:
+            //     if (this.state.lachine_finished) {
+            //         Toast.info('数据已经加载完毕', 1);
+            //         this.setState({ refreshing: false });
+            //         break;
+            //     }
+            //     this.setState({
+            //         lachine_pageNo: this.state.lachine_pageNo + 1
+            //     })
+            //     this.getLachineList()
+            //     break;
             // 支出上拉加载更多
-            case 1:
+            case 0:
                 if (this.state.recommend_finished) {
                     Toast.info('数据已经加载完毕', 1);
                     this.setState({ refreshing: false });
