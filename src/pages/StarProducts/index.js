@@ -125,8 +125,7 @@ class StarProducts extends Component {
         // 将页面滑动到顶部
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
-    fnFooterClose(item, e) {
-        // console.log(item.productId)
+    fnFooterClose(item = {}, e) {
         e && e.stopPropagation();
         e && e.nativeEvent.stopImmediatePropagation();
         if (window.Prius.isInsideApp) {

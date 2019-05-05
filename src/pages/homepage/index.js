@@ -97,7 +97,7 @@ class Homepage extends Component {
                 callId: 'POP_SHARE',
                 data: {
                     title: item.productName,
-                    url:share_url,
+                    url: share_url,
                     description: item.productSubTittle,
                     iconUrl: "http:" + item.productImgUrl,
                 },
@@ -158,15 +158,14 @@ class Homepage extends Component {
         this.getIconurl()
     }
     // 设置明星产品立即推荐分享二维码以及app分享
-    fnFooterClose(item, e) {
+    fnFooterClose(item = {}, e) {
         e && e.stopPropagation();
         e && e.nativeEvent.stopImmediatePropagation();
-
-            if (window.Prius.isInsideApp) {
-                this.getShareUrl(item)
-            } else {
-                this.getQrCode(item.productId)
-            }
+        if (window.Prius.isInsideApp) {
+            this.getShareUrl(item)
+        } else {
+            this.getQrCode(item.productId)
+        }
         this.setState({
             showDialog: !this.state.showDialog
         })
