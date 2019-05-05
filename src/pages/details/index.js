@@ -40,7 +40,8 @@ class Details extends Component {
       this.setState({
         code,
       })
-
+      await this.getIncome()
+      await this.getSpending()
       this.setState({
         finished: true,
       })
@@ -106,13 +107,10 @@ class Details extends Component {
 
   async componentDidMount() {
     try {
-      await this.getReConut()
-      this.getIncome()
-      this.getSpending()
+      this.getReConut()
     } catch (e) {
       // console.log(e)
     }
-
   }
 
   // tabs切换函数
