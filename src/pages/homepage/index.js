@@ -146,7 +146,6 @@ class Homepage extends Component {
         }
     }
     async componentDidMount() {
-        console.log(window.Prius)
         try {
             this.getProduct()
             this.getReConut()
