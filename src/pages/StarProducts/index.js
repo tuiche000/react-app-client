@@ -100,7 +100,7 @@ class StarProducts extends Component {
                 callId: 'POP_SHARE',
                 data: {
                     title: item.productName,
-                    url: share_url,
+                    url: share_url.shareUrl,
                     description: item.productSubTittle,
                     iconUrl: "http:" + item.productImgUrl,
                 },
