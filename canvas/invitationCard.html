@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border-radius: 10px;
+    }
+
+    body {
+      background-color: #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="aa" width="320px" height="568px" style="display: none;position:absolute;z-index:-1;"></canvas>
+  <div class="box" style="width:320px;margin:0 auto;height: 568px;background-color: white;position: relative"></div>
+  <input type="button" value="下载画报" style="margin-left: 150px;margin-top: 20px;" onclick="downloadimg()" />
+</body>
+<script>
+  const aa = document.getElementById('aa');
+  const bb = aa.getContext('2d');
+
+  let obj = {
+    // productImg: 'http://h5test.gofoliday.com/static/img/learnBanner.png',
+    // productImg: "http://img.fosunholiday.com/img/M00/00/5E/Ch0djlym8MeAGvG3ABQRRuZtVmI822.jpg",
+    backgroundImg: 'imgs/invitationCard.png',
+    iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
+    code: 'http://imagedev.fosunholiday.com/member/qr/15573940966868206598805511159157.png',
+    nameCh: "任我行",
+  }
+
+  let imgone = new Image;
+  imgone.setAttribute('crossOrigin', 'anonymous');
+  imgone.src = obj.backgroundImg + '?' + (+new Date())
+
+  let imgtwo = new Image;
+  imgtwo.setAttribute('crossOrigin', 'anonymous');
+  imgtwo.src = obj.iconurl + '?' + (+new Date());
+
+  let imgthere = new Image;
+  imgthere.setAttribute('crossOrigin', 'anonymous');
+  imgthere.src = obj.code + '?' + (+new Date());
+
+
+  window.onload = function () {
+
+    bb.drawImage(imgone, 0, 0, 320, 568);
+
+    bb.drawImage(imgtwo, 20, 110, 45, 45);
+
+    bb.drawImage(imgthere, 110, 350, 100, 100);
+
+    bb.fillStyle = "#fff";
+    bb.font = '14px Adobe Ming Std';
+    bb.fillText(obj.nameCh, 80, 125);
+
+    bb.fillStyle = "#c5c0b7";
+    bb.font = '14px Adobe Ming Std';
+    bb.fillText('邀请您一起赚奖励金', 80, 150);
+
+    let img = convertCanvasToImage(aa);
+    console.log(img)
+    $('.box').append(img);
+    console.log(JSON.stringify(dataURLtoBlob($("img")[0].src)))
+    console.log(b64toBlob($("img")[0].src.replace("data:image/png;base64,", "")))
+  }
+
+  function convertCanvasToImage(canvas) {
+    let image = new Image();
+    image.src = canvas.toDataURL("image/png");
+    return image;
+  }
+
+
+  // 转二进制（1）
+  function dataURLtoBlob(dataurl) {
+    var bytes = window.atob(dataurl.split(',')[1]);
+    var ab = new ArrayBuffer(bytes.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < bytes.length; i++) {
+      ia[i] = bytes.charCodeAt(i);
+    }
+    return new Blob([ab], {
+      type: 'image/png'
+    });
+  }
+
+  // 转二进制(2)
+  function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      var byteNumbers = new Array(slice.length);
+      for (var i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      var byteArray = new Uint8Array(byteNumbers);
+
+      byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {
+      type: contentType
+    });
+    return blob;
+  }
+
+
+  //下载海报
+  function downloadimg() {
+    let img = $('.box').children('img').attr("src");
+    let alink = document.createElement("a");
+    alink.href = img;
+    alink.download = "新年快乐111.png";
+    alink.click();
+  }
+</script>
+
+</html>

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+  <title>文字+图片+下载图片</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border-radius: 10px;
+    }
+
+    body {
+      background-color: #ccc;
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="aa" width="320px" height="568px" style="display: none;position:absolute;z-index:-1;"></canvas>
+  <div class="box" style="width:320px;margin:0 auto;height: 568px;background-color: white;position: relative"></div>
+  <input type="button" value="下载画报" style="margin-left: 150px;margin-top: 20px;" onclick="downloadimg()" />
+  <script>
+    
+    const aa = document.getElementById('aa');
+    const bb = aa.getContext('2d');
+
+    let obj = {
+      // productImg: 'http://h5test.gofoliday.com/static/img/learnBanner.png',
+      // productImg: "http://img.fosunholiday.com/img/M00/00/5E/Ch0djlym8MeAGvG3ABQRRuZtVmI822.jpg",
+      productImg: 'imgs/cover.jpg',
+      iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
+      // code: 'http://imagedev.fosunholiday.com/member/qr/15573940966868206598805511159157.png',
+      code: 'http://image.fosunholiday.com/member/qr/15574685862746381925260192859975.png',
+      productSubTittle: "【玩转亚特兰蒂斯】住2晚爱必侬棠湾度假公寓+看一场全家都爱看的驻场C秀+饕餮亚特兰蒂斯美食",
+      productPrice: 6333,
+      nameCh: "任我行",
+    }
+
+    let imgone = new Image;
+    imgone.setAttribute('crossOrigin', 'anonymous');
+    imgone.src = obj.productImg + '?' + (+new Date())
+
+    let imgtwo = new Image;
+    imgtwo.setAttribute('crossOrigin', 'anonymous');
+    imgtwo.src = obj.iconurl + '?' + (+new Date());
+
+    let imgthere = new Image;
+    imgthere.setAttribute('crossOrigin', 'anonymous');
+    imgthere.src = obj.code + '?' + (+new Date());
+
+
+    window.onload = function () {
+
+      bb.fillStyle = "#fff";
+      bb.fillRect(0, 0, 320, 568);
+
+      bb.drawImage(imgone, 0, 0, 320, 320);
+
+      bb.drawImage(imgtwo, 135, 295, 45, 45);
+
+      bb.drawImage(imgthere, 220, 450, 100, 100);
+
+      bb.fillStyle = "#666";
+      bb.font = '12px Adobe Ming Std';
+      bb.fillText('复星旅文FOLIDAY 官方直销', 10, 360);
+
+      bb.fillStyle = '#000'; // 文字填充颜色
+      bb.font = '14px Adobe Ming Std';
+      bb.lineWidth = 1;
+      let str = obj.productSubTittle
+      if (str.length > 40) {
+        str = str.substring(0, 40) + "..."
+      }
+      let lineWidth = 0;
+      let canvasWidth = aa.width - 20; //计算canvas的宽度
+      let initHeight = 385; //绘制字体距离canvas顶部初始的高度
+      let lastSubStrIndex = 0; //每次开始截取的字符串的索引
+      for (let i = 0; i < str.length; i++) {
+        lineWidth += bb.measureText(str[i]).width;
+        if (lineWidth > canvasWidth) {
+          bb.fillText(str.substring(lastSubStrIndex, i), 10, initHeight); //绘制截取部分
+          initHeight += 18; //40为字体的高度
+          lineWidth = 10;
+          lastSubStrIndex = i;
+        }
+        if (i == str.length - 1) { //绘制剩余部分
+          bb.fillText(str.substring(lastSubStrIndex, i + 1), 10, initHeight);
+        }
+      }
+
+      bb.fillStyle = '#f5a623';
+      bb.font = '12px Adobe Ming Std';
+      bb.fillText('￥', 10, 430);
+
+      bb.fillStyle = '#f5a623';
+      bb.font = '20px Adobe Ming Std';
+      bb.fillText(obj.productPrice, 22, 430);
+
+      bb.fillStyle = '#666';
+      bb.font = '14px Adobe Ming Std';
+      bb.fillText('起', 30 + obj.productPrice.toString().length * 11, 430);
+
+      bb.fillStyle = '#666';
+      bb.font = '14px Adobe Ming Std';
+      bb.fillText('首单立享50元优惠', 50 + obj.productPrice.toString().length * 11, 430);
+
+      bb.strokeStyle = "transparent";
+      bb.moveTo(200, 480);
+      bb.lineTo(200, 500);
+      bb.stroke();
+      bb.textAlign = "end"
+
+      bb.fillStyle = '#000';
+      bb.font = '14px Adobe Ming Std';
+      bb.fillText(obj.nameCh, 220, 490);
+
+      bb.fillStyle = '#000';
+      bb.font = '14px Adobe Ming Std';
+      bb.fillText('邀请您识别二维码 享优惠', 220, 520);
+
+      let img = convertCanvasToImage(aa);
+      console.log(img)
+      $('.box').append(img);
+      console.log(JSON.stringify(dataURLtoBlob($("img")[0].src)))
+      console.log(b64toBlob($("img")[0].src.replace("data:image/png;base64,", "")))
+    }
+
+    function convertCanvasToImage(canvas) {
+      let image = new Image();
+      image.src = canvas.toDataURL("image/png");
+      return image;
+    }
+
+
+    // 转二进制（1）
+    function dataURLtoBlob(dataurl) {
+      var bytes = window.atob(dataurl.split(',')[1]);
+      var ab = new ArrayBuffer(bytes.length);
+      var ia = new Uint8Array(ab);
+      for (var i = 0; i < bytes.length; i++) {
+        ia[i] = bytes.charCodeAt(i);
+      }
+      return new Blob([ab], {
+        type: 'image/png'
+      });
+    }
+
+    // 转二进制(2)
+    function b64toBlob(b64Data, contentType, sliceSize) {
+      contentType = contentType || '';
+      sliceSize = sliceSize || 512;
+
+      var byteCharacters = atob(b64Data);
+      var byteArrays = [];
+
+      for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+      }
+
+      var blob = new Blob(byteArrays, {
+        type: contentType
+      });
+      return blob;
+    }
+
+
+    //下载海报
+    function downloadimg() {
+      let img = $('.box').children('img').attr("src");
+      let alink = document.createElement("a");
+      alink.href = img;
+      alink.download = "新年快乐.png";
+      alink.click();
+    }
+  </script>
+</body>
+
+</html>
