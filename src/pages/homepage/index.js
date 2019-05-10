@@ -157,13 +157,15 @@ class Homepage extends Component {
         this.getIconurl()
     }
     // 设置明星产品立即推荐分享二维码以及app分享
-    fnFooterClose(item = {}, e) {
+    fnFooterClose(item, e) {
         e && e.stopPropagation();
         e && e.nativeEvent.stopImmediatePropagation();
-        if (window.Prius.isInsideApp) {
-            this.getShareUrl(item)
-        } else {
-            this.getQrCode(item.productId)
+        if (item) {
+            if (window.Prius.isInsideApp) {
+                this.getShareUrl(item)
+            } else {
+                this.getQrCode(item.productId)
+            }
         }
         this.setState({
             showDialog: !this.state.showDialog
@@ -330,13 +332,14 @@ class Homepage extends Component {
                             </p>
                         </div>
                         <div className="success" >
-                            {/* <div className="success-lachine" onClick={this.goTolachineProduct.bind(this)}>
+                            <div className="success-lachine" onClick={this.goTolachineProduct.bind(this)}>
                                 <p>拉新会员成功数</p>
                                 <p>{this.state.recMemberCount}</p>
-                            </div> */}
+                            </div>
                             <div className="success-order" onClick={this.goTolachineProduct.bind(this)}>
-                                <p>下单成功数: <span style={{ color: '#e9cf8a', fontsize: "18px" }}>{this.state.recOrderCount}</span></p>
-                                {/* <p>{this.state.recOrderCount}</p> */}
+                                <p>下单成功数</p>
+                                {/* <p>下单成功数: <span style={{ color: '#e9cf8a', fontsize: "18px" }}>{this.state.recOrderCount}</span></p> */}
+                                <p>{this.state.recOrderCount}</p>
                             </div>
                         </div>
                     </section>

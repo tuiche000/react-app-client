@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "./index.css";
 import { Tabs, NavBar, Icon, Toast, PullToRefresh } from 'antd-mobile'
-import {  recommendList } from '@/pages/api/lachineProduct'
+import {  recommendList ,lachineList} from '@/pages/api/lachineProduct'
 import { connect } from 'react-redux'
 import accountEntry from '@/pages/assets/imgs/accountEntry.png'
 import complete from '@/pages/assets/imgs/complete.png'
@@ -19,7 +19,7 @@ class LachineProduct extends Component {
             Lachine_list: [], // 拉新列表数据
             recommend_list: [], // 产品列表数据
             tabs: [             // tab栏标题
-                // { title: '拉新会员' },
+                { title: '拉新会员' },
                 { title: '产品推荐' },
             ],
             initialPage: 0,
@@ -34,28 +34,28 @@ class LachineProduct extends Component {
     }
 
     // 获取拉新列表
-    // async getLachineList() {
-    //     try {
-    //         let Lachine_list = await lachineList({
-    //             "pageNo": this.state.lachine_pageNo,
-    //             "pageSize": this.state.lachine_pageSize,
-    //         })
-    //         let { result, totalResults } = Lachine_list
-    //         this.setState({
-    //             Lachine_list: [...this.state.Lachine_list, ...result] || [],
-    //             refreshing: false,
-    //         })
-    //         if (totalResults <= this.state.Lachine_list.length) {
-    //             this.setState({
-    //                 lachine_finished: true,
-    //             })
-    //             return
-    //         }
-    //     }
-    //     catch (err) {
-    //         // console.log(err)
-    //     }
-    // }
+    async getLachineList() {
+        try {
+            let Lachine_list = await lachineList({
+                "pageNo": this.state.lachine_pageNo,
+                "pageSize": this.state.lachine_pageSize,
+            })
+            let { result, totalResults } = Lachine_list
+            this.setState({
+                Lachine_list: [...this.state.Lachine_list, ...result] || [],
+                refreshing: false,
+            })
+            if (totalResults <= this.state.Lachine_list.length) {
+                this.setState({
+                    lachine_finished: true,
+                })
+                return
+            }
+        }
+        catch (err) {
+            // console.log(err)
+        }
+    }
 
     // 获取产品推荐列表数据
     async getRecommendList() {
@@ -84,7 +84,7 @@ class LachineProduct extends Component {
 
     async componentDidMount() {
         try {
-            // await this.getLachineList()
+            await this.getLachineList()
             await this.getRecommendList()
             this.setState({
                 finished: true,
@@ -110,20 +110,20 @@ class LachineProduct extends Component {
     onRefresh = () => {
         this.setState({ refreshing: true });
         switch (this.state.initialPage) {
-            // 收入上拉加载更多
-            // case 0:
-            //     if (this.state.lachine_finished) {
-            //         Toast.info('数据已经加载完毕', 1);
-            //         this.setState({ refreshing: false });
-            //         break;
-            //     }
-            //     this.setState({
-            //         lachine_pageNo: this.state.lachine_pageNo + 1
-            //     })
-            //     this.getLachineList()
-            //     break;
-            // 支出上拉加载更多
+            // 拉新会员加载更多
             case 0:
+                if (this.state.lachine_finished) {
+                    Toast.info('数据已经加载完毕', 1);
+                    this.setState({ refreshing: false });
+                    break;
+                }
+                this.setState({
+                    lachine_pageNo: this.state.lachine_pageNo + 1
+                })
+                this.getLachineList()
+                break;
+            // 产品推荐加载更多
+            case 1:
                 if (this.state.recommend_finished) {
                     Toast.info('数据已经加载完毕', 1);
                     this.setState({ refreshing: false });
@@ -155,7 +155,7 @@ class LachineProduct extends Component {
 
                 <div className="lachineProduct ">
                     <Tabs tabs={this.state.tabs} initialPage={this.state.initialPage} tabBarActiveTextColor={'#000000'} tabBarInactiveTextColor={'#999999'} tabBarUnderlineStyle={{ border: '0.5px #ffc147 solid' }} animated={true} useOnPan={true} onChange={this.onTabsChange}>
-                        {/* <div>
+                        <div>
                             <section className="lachine" >
                                 <PullToRefresh
                                     damping={100}
@@ -188,14 +188,14 @@ class LachineProduct extends Component {
                                     </ul>
                                 </PullToRefresh>
                             </section>
-                        </div> */}
+                        </div>
                         <div>
                             <section className="product" >
                                 <PullToRefresh
                                     damping={100}
                                     ref={el => this.ptr = el}
                                     style={{
-                                        minHeight: this.state.height,
+                                        height: this.state.height,
                                         overflow: 'auto',
                                     }}
                                     direction="up"

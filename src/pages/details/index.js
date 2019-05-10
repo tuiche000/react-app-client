@@ -151,6 +151,7 @@ class Details extends Component {
     switch (this.state.initialPage) {
       // 收入上拉加载更多
       case 0:
+        console.log("0")
         if (this.state.income_finished) {
           Toast.info('数据已经加载完毕', 1);
           this.setState({ refreshing: false });

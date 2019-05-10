@@ -125,13 +125,15 @@ class StarProducts extends Component {
         // 将页面滑动到顶部
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
-    fnFooterClose(item = {}, e) {
+    fnFooterClose(item, e) {
         e && e.stopPropagation();
         e && e.nativeEvent.stopImmediatePropagation();
-        if (window.Prius.isInsideApp) {
-            this.getShareUrl(item)
-        } else {
-            this.getQrCode(item.productId)
+        if (item) {
+            if (window.Prius.isInsideApp) {
+                this.getShareUrl(item)
+            } else {
+                this.getQrCode(item.productId)
+            }
         }
         this.setState({
             showDialog: !this.state.showDialog
