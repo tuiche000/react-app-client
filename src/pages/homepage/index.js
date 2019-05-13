@@ -50,7 +50,7 @@ class Homepage extends Component {
             backgroundImg: ImgInvitationCard,
             iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
             code: 'http://imagedev.fosunholiday.com/member/qr/15573940966868206598805511159157.png',
-            nameCh: "任我行",
+            nameCh: "行",
         }).then(res => {
             this.state.canvasImg = <img src={res.src} alt="cover" />
             console.log(this.state.canvasImg)
