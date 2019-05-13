@@ -9,15 +9,20 @@ import { tasklist } from '@/pages/api/tasklist'
 import { connect } from 'react-redux'
 import { reCount, shareUrl, recommendProduct } from '@/pages/api/homePage'
 import { Prius } from 'foliday-bridge'
+import { fnCanvas } from '@/utils/util'
 import head_defult from '@/pages/assets/imgs/head_defult.png'
 import accountEntry from '@/pages/assets/imgs/accountEntry.png'
 import complete from '@/pages/assets/imgs/complete.png'
 import problem from '@/pages/assets/imgs/problem.png'
+import ImgInvitationCard from './imgs/invitationCard.png'
 
 @connect((state, props) => Object.assign({}, props, state), {})
 class Homepage extends Component {
     constructor(...args) {
         super(...args)
+        this.refCanvas = React.createRef();
+        this.refBox = React.createRef();
+        this.fnCanvas = fnCanvas.bind(this)
         this.state = {
             list_data: [],
             showDialog: false,
@@ -39,18 +44,33 @@ class Homepage extends Component {
 
     // 创建二维码分享链接
     async getQrCode(productId) {
-        try {
-            let code_data = await shareUrl({
-                url: hostConfig.mBase + "product?productId=" + productId,
-                mode: 0,
+        this.fnCanvas({
+            // productImg: 'http://h5test.gofoliday.com/static/img/learnBanner.png',
+            // productImg: "http://img.fosunholiday.com/img/M00/00/5E/Ch0djlym8MeAGvG3ABQRRuZtVmI822.jpg",
+            backgroundImg: ImgInvitationCard,
+            iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
+            code: 'http://imagedev.fosunholiday.com/member/qr/15573940966868206598805511159157.png',
+            nameCh: "任我行",
+        }).then(res => {
+            this.state.canvasImg = <img src={res.src} />
+            console.log(this.state.canvasImg)
+            this.setState((state) => {
+                return {
+                    showDialog: !this.state.showDialog
+                }
             })
-            this.setState({
-                QR_code: code_data.shareUrl,
-            })
-        }
-        catch (e) {
-            // console.log(e)
-        }
+        })
+        // try {
+        //     let code_data = await shareUrl({
+        //         url: hostConfig.mBase + "product?productId=" + productId,
+        //         mode: 0,
+        //     })
+        //     this.setState({
+        //         QR_code: code_data.shareUrl,
+        //     })
+        // }
+        // catch (e) {
+        // }
     }
     // 获取明星列表数据
     async getProduct() {
@@ -167,8 +187,11 @@ class Homepage extends Component {
                 this.getQrCode(item.productId)
             }
         }
-        this.setState({
-            showDialog: !this.state.showDialog
+        this.setState((state) => {
+            if (state.canvasImg) return {
+                showDialog: !this.state.showDialog,
+                canvasImg: '',
+            }
         })
     }
     // 修改用户icon
@@ -182,18 +205,18 @@ class Homepage extends Component {
     }
     // 获取推荐任务二维码图片
     async getActivityQrCode() {
-        try {
-            let code_data = await shareUrl({
-                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
-                mode: 0,
-            })
-            this.setState({
-                QR_code: code_data.shareUrl,
-            })
-        }
-        catch (e) {
-            // console.log(e)
-        }
+        // try {
+        //     let code_data = await shareUrl({
+        //         url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
+        //         mode: 0,
+        //     })
+        //     this.setState({
+        //         QR_code: code_data.shareUrl,
+        //     })
+        // }
+        // catch (e) {
+        //     // console.log(e)
+        // }
     }
     // 设置推荐任务APP分享 
     async getActivityShareUrl() {
@@ -307,12 +330,15 @@ class Homepage extends Component {
         return (
             <div className="homepage-main">
                 {
-                    (this.state.showDialog && this.state.QR_code) ? (
-                        <Dialog title="长按图片保存" footer_close={this.fnFooterClose.bind(this)}>
-                            <img src={this.state.QR_code} alt="" />
+                    (this.state.showDialog) ? (
+                        <Dialog footer_close={this.fnFooterClose.bind(this)}>
+                            {this.state.canvasImg}
+                            {/* <img src={this.state.QR_code} alt="" /> */}
                         </Dialog>
                     ) : ''
                 }
+                {/* <div ref={this.refBox} className="box" style={{ width: '320px', margin: '0 auto', height: '568px', backgroundColor: 'white', position: 'relative' }}></div> */}
+                <canvas ref={this.refCanvas} id="aa" width="320px" height="568px" style={{ display: 'none', position: 'absolute', zIndex: -1 }}></canvas>
                 <section className="homepage">
                     <header>
                         <ul className="clearfix">

@@ -31,7 +31,7 @@
 }
 .am-modal-transparent .am-modal-content {
     border-radius: 7px;
-    padding-top: 15px;
+    /* padding-top: 15px; */
 }
 .am-modal-content {
     position: relative;
@@ -47,10 +47,10 @@
     height: auto;
 }
 .am-modal-header {
-    padding: 6px 15px 15px;
+    /* padding: 6px 15px 15px; */
 }
 .am-modal-transparent .am-modal-content .am-modal-body {
-    padding: 0 15px 15px;
+    /* padding: 0 15px 15px; */
 }
 .am-modal-body {
     font-size: 15px;
