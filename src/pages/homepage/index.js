@@ -52,7 +52,7 @@ class Homepage extends Component {
             code: 'http://imagedev.fosunholiday.com/member/qr/15573940966868206598805511159157.png',
             nameCh: "任我行",
         }).then(res => {
-            this.state.canvasImg = <img src={res.src} />
+            this.state.canvasImg = <img src={res.src} alt="cover" />
             console.log(this.state.canvasImg)
             this.setState((state) => {
                 return {
@@ -337,7 +337,6 @@ class Homepage extends Component {
                         </Dialog>
                     ) : ''
                 }
-                {/* <div ref={this.refBox} className="box" style={{ width: '320px', margin: '0 auto', height: '568px', backgroundColor: 'white', position: 'relative' }}></div> */}
                 <canvas ref={this.refCanvas} id="aa" width="320px" height="568px" style={{ display: 'none', position: 'absolute', zIndex: -1 }}></canvas>
                 <section className="homepage">
                     <header>

@@ -9,8 +9,6 @@ export function getQueryVariable(variable) {
 }
 
 export function fnCanvas (obj = {
-    // productImg: 'http://h5test.gofoliday.com/static/img/learnBanner.png',
-    // productImg: "http://img.fosunholiday.com/img/M00/00/5E/Ch0djlym8MeAGvG3ABQRRuZtVmI822.jpg",
     backgroundImg: 'http://imagedev.fosunholiday.com/member/qr/15573940966868206598805511159157.png',
     iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
     code: 'http://imagedev.fosunholiday.com/member/qr/15573940966868206598805511159157.png',
@@ -18,7 +16,7 @@ export function fnCanvas (obj = {
 }) {
     let image;
     const canvas = this.refCanvas.current
-    const box = this.refBox.current
+    // const box = this.refBox.current
     if (canvas.getContext) {
         let ctx = canvas.getContext("2d");
         // (function () {
