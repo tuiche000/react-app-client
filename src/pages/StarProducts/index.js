@@ -7,13 +7,17 @@ import hostConfig from '@/hostConfig'
 import Dialog from "@/components/Dialog";
 import { connect } from 'react-redux'
 import { shareUrl } from '@/pages/api/homePage'
-import { Prius } from 'foliday-bridge'
+import { Prius } from 'foliday-bridge';
+import { fnCanvas, startProductCanvas } from '@/utils/util'
+import welfareIcon from '@/pages/assets/imgs/icon_coupon_welfare.png'
 
 @connect((state, props) => Object.assign({}, props, state), {})
 class StarProducts extends Component {
     constructor(...args) {
         super(...args)
-
+        this.refCanvas = React.createRef();
+        this.fnCanvas = fnCanvas.bind(this)
+        this.startProductCanvas = startProductCanvas.bind(this)
         this.state = {
             refreshing: false,
             showDialog: false,
@@ -23,6 +27,8 @@ class StarProducts extends Component {
             product_pageSize: 5, // 明星产品列表单页显示数据
             product_finnished: false, // 是否明星产品列表已经加载玩全部数据
             finished: false,
+            canvasImg: "", // canvas生成的图片
+            iconUrl: '', // 用户头像地址
         }
     }
     // 获取明星列表数据
@@ -63,14 +69,42 @@ class StarProducts extends Component {
         }
     }
     // 创建二维码分享链接
-    async getQrCode(productId) {
+    async getQrCode(item) {
+
+        let url = this.props.user.userInfo.iconurl
+        if (url) {
+            url = url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
+        }else {
+            url = 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png'
+        }
+
         try {
             let code_data = await shareUrl({
-                url: hostConfig.mBase + "product?productId=" + productId,
+                url: hostConfig.mBase + "product?productId=" + item.productId,
                 mode: 0,
             })
             this.setState({
                 QR_code: code_data.shareUrl,
+            })
+            this.startProductCanvas({
+                // productImg: item.productImg,
+                // iconurl: url,
+                productImg: 'http://h5test.gofoliday.com/static/img/learnBanner.png',
+                iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
+                code: this.state.QR_code,
+                productSubTittle: item.productSubTittle,
+                productPrice: item.productPrice,
+                nameCh: this.props.user.userInfo.nameCh,
+                firstOrder: "首单立享50元优惠",
+                Official: "复星旅文FOLIDAY 官方直销",
+                welfareIcon,
+            }).then(res => {
+                this.state.canvasImg = <img src={res.src} alt="cover" />
+                this.setState((state) => {
+                    return {
+                        showDialog: !this.state.showDialog
+                    }
+                })
             })
         }
         catch (e) {
@@ -83,18 +117,14 @@ class StarProducts extends Component {
                 url: hostConfig.mBase + "product?productId=" + item.productId,
                 mode: 5,
             })
-            // 设置app右上角分享功能
 
-            // setShare({
-            //     title: '测试',
-            //     text: '测试',
-            //     imgUrl: 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png',
-            //     link: this.state.share_url
-            // }).then(function () {
-            //     // _czc.push(["_trackEvent", document.title, "share", this.$route.query.channel])
-            //     // alert("1")
-            // })
-
+            let code_data = await shareUrl({
+                url: hostConfig.mBase + "product?productId=" + item.productId,
+                mode: 0,
+            })
+            this.setState({
+                QR_code: code_data.shareUrl,
+            })
             // 设置分享功能
             Prius.appEventCallback({
                 callId: 'POP_SHARE',
@@ -102,7 +132,23 @@ class StarProducts extends Component {
                     title: item.productName,
                     url: share_url.shareUrl,
                     description: item.productSubTittle,
-                    iconUrl: "http:" + item.productImgUrl,
+                    iconUrl: item.productImgUrl.indexOf('http:') > -1 ? item.productImgUrl : "http:" + item.productImgUrl,
+                    canvasImg: {
+                        type: 2,
+                        message: {
+                            productImg: item.productImgUrl.indexOf('http:') > -1 ? item.productImgUrl : "http:" + item.productImgUrl,
+                            iconurl: this.state.iconUrl ? this.state.iconUrl : "https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png",
+                            code: this.state.QR_code,
+                            productSubTittle: item.productSubTittle,
+                            productPrice: item.productPrice,
+                            nameCh: this.props.user.userInfo.nameCh,
+                            productId: item.productId,
+                            firstOrder: "首单立享50元优惠",
+                            Official: "复星旅文FOLIDAY 官方直销",
+                            productType: item.productType,
+                            welfareIcon: "http://image.fosunholiday.com/app/3.0/recommend/icon_coupon_welfare.png",
+                        }
+                    },
                 },
                 listener: function (data) {
                     // console.log(JSON.stringify(data))
@@ -122,9 +168,21 @@ class StarProducts extends Component {
         } catch (e) {
             // console.log(e)
         }
+        this.getIconurl()
         // 将页面滑动到顶部
         document.body.scrollTop = document.documentElement.scrollTop = 0
     }
+
+    // 修改用户icon
+    getIconurl() {
+        let url = this.props.user.userInfo.iconurl
+        if (url) {
+            return this.setState({
+                iconUrl: url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
+            })
+        }
+    }
+
     fnFooterClose(item, e) {
         e && e.stopPropagation();
         e && e.nativeEvent.stopImmediatePropagation();
@@ -132,15 +190,17 @@ class StarProducts extends Component {
             if (window.Prius.isInsideApp) {
                 this.getShareUrl(item)
             } else {
-                this.getQrCode(item.productId)
+                this.getQrCode(item)
             }
         }
-        this.setState({
-            showDialog: !this.state.showDialog
+        this.setState((state) => {
+            if (state.canvasImg) return {
+                showDialog: !this.state.showDialog,
+                canvasImg: '',
+            }
         })
     }
     onRefresh = () => {
-
         this.setState({ refreshing: true });
         if (this.state.product_finnished) {
             Toast.info('数据已经加载完毕', 1);
@@ -173,16 +233,12 @@ class StarProducts extends Component {
             <div className="innisfree ">
                 {
                     (this.state.showDialog && this.state.QR_code) ? (
-                        <Dialog title="长按图片保存" footer_close={this.fnFooterClose.bind(this)}>
-                            <img src={this.state.QR_code} alt="" />
+                        <Dialog footer_close={this.fnFooterClose.bind(this)}>
+                            {this.state.canvasImg}
                         </Dialog>
                     ) : ''
                 }
-                {/* <NavBar
-                    mode="light"
-                    icon={this.props.other.isInsideApp ? "" : <Icon type="left" color="#f5a623" />}
-                    onLeftClick={() => window.history.go(-1)}
-                ><span style={{ fontSize: "16px" }}>明星产品</span></NavBar> */}
+                <canvas ref={this.refCanvas} id="aa" width="320px" height="568px" style={{ display: 'none', position: 'absolute', zIndex: -1 }}></canvas>
                 <div style={{ fontSize: "16px", textAlign: "center" }} >明星产品</div>
                 <PullToRefresh
                     damping={100}

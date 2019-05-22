@@ -1,0 +1,18 @@
+body,
+html,
+main {
+  background-color: #fff;
+}
+
+img {
+  width: 100%;
+}
+.entrance p {
+  height: 60px;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  line-height: 60px;
+  background-color: #e0c794;
+  position: relative;
+}

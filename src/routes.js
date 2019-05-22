@@ -5,10 +5,11 @@ import Bonus from "./pages/bonus"
 import Details from "./pages/details"
 import LachineProduct from "./pages/lachineProduct"
 import Rules from "./pages/rules"
-// import NotFound from './pages/NotFound'
+import Entrance from './pages/entrance'
 
 export default [
-    { path: '/', component: Homepage },
+    { path: '/', component: Entrance ,notLayout: true},
+    { path: '/homepage', component: Homepage },
     { path: '/starProducts', component: StarProducts,},
     { path: '/bonus', component: Bonus, notLayout: true },
     { path: '/details', component: Details, notLayout: true },

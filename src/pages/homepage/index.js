@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./index.css";
-// import { Toast } from 'antd-mobile';
+import { Icon } from 'antd-mobile';
 import Dialog from "@/components/Dialog";
 // import { setShare } from 'fm-ui/lib/utils/share'
 import hostConfig from '@/hostConfig'
@@ -9,11 +9,11 @@ import { tasklist } from '@/pages/api/tasklist'
 import { connect } from 'react-redux'
 import { reCount, shareUrl, recommendProduct } from '@/pages/api/homePage'
 import { Prius } from 'foliday-bridge'
-import { fnCanvas } from '@/utils/util'
-import head_defult from '@/pages/assets/imgs/head_defult.png'
+import { fnCanvas, startProductCanvas } from '@/utils/util'
 import accountEntry from '@/pages/assets/imgs/accountEntry.png'
 import complete from '@/pages/assets/imgs/complete.png'
 import problem from '@/pages/assets/imgs/problem.png'
+import welfareIcon from '@/pages/assets/imgs/icon_coupon_welfare.png'
 import ImgInvitationCard from './imgs/invitationCard.png'
 
 @connect((state, props) => Object.assign({}, props, state), {})
@@ -23,6 +23,7 @@ class Homepage extends Component {
         this.refCanvas = React.createRef();
         this.refBox = React.createRef();
         this.fnCanvas = fnCanvas.bind(this)
+        this.startProductCanvas = startProductCanvas.bind(this)
         this.state = {
             list_data: [],
             showDialog: false,
@@ -36,42 +37,58 @@ class Homepage extends Component {
             totalPrize: 0, // 用户奖励金
             share_url: "", // 分享地址
             Activityshare_url: '',
-            task_list: [], // 推荐任务列表数据
+            task_list_summary: {},// 推荐主任务列表数据
+            task_list: [], // 推荐子任务列表数据
             iconurl: '',// 用户icon地址 
             recommend_roduct: [], // 推荐任务中的推荐产品列表
+            canvasImg: "", // canvas生成的图片
+            dropDown: true, // 推荐列表下拉状态
         }
     }
 
-    // 创建二维码分享链接
-    async getQrCode(productId) {
-        this.fnCanvas({
-            // productImg: 'http://h5test.gofoliday.com/static/img/learnBanner.png',
-            // productImg: "http://img.fosunholiday.com/img/M00/00/5E/Ch0djlym8MeAGvG3ABQRRuZtVmI822.jpg",
-            backgroundImg: ImgInvitationCard,
-            iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
-            code: 'http://imagedev.fosunholiday.com/member/qr/15573940966868206598805511159157.png',
-            nameCh: "行",
-        }).then(res => {
-            this.state.canvasImg = <img src={res.src} alt="cover" />
-            console.log(this.state.canvasImg)
-            this.setState((state) => {
-                return {
-                    showDialog: !this.state.showDialog
-                }
+    // H5明星产品推荐图片
+    async getQrCode(item) {
+        let url = this.props.user.userInfo.iconurl
+        if (url) {
+            url = url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
+        }else {
+            url = 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png'
+        }
+
+        try {
+            let code_data = await shareUrl({
+                url: hostConfig.mBase + "product?productId=" + item.productId,
+                mode: 0,
             })
-        })
-        // try {
-        //     let code_data = await shareUrl({
-        //         url: hostConfig.mBase + "product?productId=" + productId,
-        //         mode: 0,
-        //     })
-        //     this.setState({
-        //         QR_code: code_data.shareUrl,
-        //     })
-        // }
-        // catch (e) {
-        // }
+            this.setState({
+                QR_code: code_data.shareUrl,
+            })
+            // 生成明星产品分享图
+            this.startProductCanvas({
+                // productImg: item.productImg,
+                // iconurl: url,
+                productImg: 'http://h5test.gofoliday.com/static/img/learnBanner.png',
+                iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
+                code: this.state.QR_code,
+                productSubTittle: item.productSubTittle,
+                productPrice: item.productPrice,
+                nameCh: this.props.user.userInfo.nameCh,
+                firstOrder: "首单立享50元优惠",
+                Official: "复星旅文FOLIDAY 官方直销",
+                welfareIcon,
+            }).then(res => {
+                this.state.canvasImg = <img src={res.src} alt="cover" />
+                this.setState((state) => {
+                    return {
+                        showDialog: !this.state.showDialog
+                    }
+                })
+            })
+        }
+        catch (e) {
+        }
     }
+
     // 获取明星列表数据
     async getProduct() {
         try {
@@ -105,12 +122,29 @@ class Homepage extends Component {
 
         }
     }
-    // 获取分享地址
+    // 获取明星产品分享地址以及APP分享
     async getShareUrl(item) {
+
+        let url = this.props.user.userInfo.iconurl
+        if (this.props.user.userInfo.iconurl) {
+            url = url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
+        }else {
+            url = 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png'
+        }
+
         try {
             let share_url = await shareUrl({
                 url: hostConfig.mBase + "product?productId=" + item.productId,
                 mode: 5,
+            })
+
+            // 获取明星产品分享二维码图片
+            let code_data = await shareUrl({
+                url: hostConfig.mBase + "product?productId=" + item.productId,
+                mode: 0,
+            })
+            this.setState({
+                QR_code: code_data.shareUrl,
             })
             // 设置分享功能
             Prius.appEventCallback({
@@ -119,7 +153,23 @@ class Homepage extends Component {
                     title: item.productName,
                     url: share_url.shareUrl,
                     description: item.productSubTittle,
-                    iconUrl: "http:" + item.productImgUrl,
+                    iconUrl: item.productImgUrl.indexOf('http:') > -1 ? item.productImgUrl : "http:" + item.productImgUrl,
+                    canvasImg: {
+                        type: 2,
+                        message: {
+                            productImg: item.productImgUrl.indexOf('http:') > -1 ? item.productImgUrl : "http:" + item.productImgUrl,
+                            iconurl: url,
+                            code: this.state.QR_code,
+                            productSubTittle: item.productSubTittle,
+                            productPrice: item.productPrice,
+                            nameCh: this.props.user.userInfo.nameCh,
+                            productId: item.productId,
+                            firstOrder: "首单立享50元优惠",
+                            Official: "复星旅文FOLIDAY 官方直销",
+                            productType: item.productType,
+                            welfareIcon: "http://image.fosunholiday.com/app/3.0/recommend/icon_coupon_welfare.png",
+                        }
+                    },
                 },
                 listener: function (data) {
                     // console.log(JSON.stringify(data))
@@ -151,14 +201,9 @@ class Homepage extends Component {
                 "pageSize": 10,
             })
             let { result } = task_list
-            let last_result = result.map(item => {
-                if (item.activityStatus !== 3) {
-                    item.activityPrize = 0
-                }
-                return item
-            })
             this.setState({
-                task_list: last_result,
+                task_list: result[0].stageListDTOS,
+                task_list_summary: result[0],
             })
         }
         catch (e) {
@@ -166,6 +211,7 @@ class Homepage extends Component {
         }
     }
     async componentDidMount() {
+        this.getIconurl()
         try {
             this.getProduct()
             this.getReConut()
@@ -174,7 +220,8 @@ class Homepage extends Component {
         } catch (e) {
             // console.log(e)
         }
-        this.getIconurl()
+        // 将页面滑动到顶部
+        document.body.scrollTop = document.documentElement.scrollTop = 0
     }
     // 设置明星产品立即推荐分享二维码以及app分享
     fnFooterClose(item, e) {
@@ -184,7 +231,7 @@ class Homepage extends Component {
             if (window.Prius.isInsideApp) {
                 this.getShareUrl(item)
             } else {
-                this.getQrCode(item.productId)
+                this.getQrCode(item)
             }
         }
         this.setState((state) => {
@@ -205,18 +252,44 @@ class Homepage extends Component {
     }
     // 获取推荐任务二维码图片
     async getActivityQrCode() {
-        // try {
-        //     let code_data = await shareUrl({
-        //         url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
-        //         mode: 0,
-        //     })
-        //     this.setState({
-        //         QR_code: code_data.shareUrl,
-        //     })
-        // }
-        // catch (e) {
-        //     // console.log(e)
-        // }
+        try {
+            let code_data = await shareUrl({
+                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
+                mode: 0,
+            })
+            this.setState({
+                QR_code: code_data.shareUrl,
+            })
+
+            // 生成推荐任务分享图片
+            
+            let url = this.props.user.userInfo.iconurl
+            if(url) {
+                url = url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
+            }else{
+                url = 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png'
+            }
+
+            this.fnCanvas({
+                backgroundImg: ImgInvitationCard,
+                // iconurl: url  ,
+                iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
+                code: this.state.QR_code,
+                nameCh: this.props.user.userInfo.nameCh,
+            }).then(res => {
+                this.state.canvasImg = <img src={res.src} alt="cover"/>
+                this.state.taskImgSrc = res.src
+                this.setState((state) => {
+                    return {
+                        showDialog: !this.state.showDialog
+                    }
+                })
+            })
+
+        }
+        catch (e) {
+            // console.log(e)
+        }
     }
     // 设置推荐任务APP分享 
     async getActivityShareUrl() {
@@ -228,6 +301,14 @@ class Homepage extends Component {
             this.setState({
                 Activityshare_url: share_url.shareUrl,
             })
+            // 获取推荐任务分享二维码
+            let code_data = await shareUrl({
+                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
+                mode: 0,
+            })
+            this.setState({
+                QR_code: code_data.shareUrl,
+            })
             // 设置分享功能
             Prius.appEventCallback({
                 callId: 'POP_SHARE',
@@ -236,6 +317,14 @@ class Homepage extends Component {
                     url: this.state.Activityshare_url,
                     description: "你的好友发来一封邀请，邀请你加入FOLIDAY复星旅文，让你和他同享高品质度假旅行。",
                     iconUrl: "https://foliday-img.oss-cn-shanghai.aliyuncs.com/h5/download/256.png",
+                    canvasImg: {
+                        type: 1,
+                        message: {
+                            iconurl: this.state.iconUrl ? this.state.iconUrl : "https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png",
+                            code: this.state.QR_code,
+                            nameCh: this.props.user.userInfo.nameCh,
+                        }
+                    },
                 },
                 listener: function (data) {
                     // console.log(JSON.stringify(data))
@@ -246,32 +335,8 @@ class Homepage extends Component {
             // console.log(e)
         }
     }
-    // 修改推荐任务状态
-    fnChangeActivityStatus(index) {
-        try {
-            if (window.Prius.isInsideApp) {
-                this.getActivityShareUrl()
-            } else {
-                this.getActivityQrCode()
-            }
-            this.setState(old => {
-                old.task_list[index].activityStatus = 2
-                return (
-                    {
-                        task_list: old.task_list
-                    }
-                )
-            })
-        } catch (e) {
-            // console.log()
-        }
-        this.setState({
-            showDialog: !this.state.showDialog
-        })
-    }
     // 推荐任务小图标弹框   不修改状态
     fnChangeActivity() {
-
         try {
             if (window.Prius.isInsideApp) {
                 this.getActivityShareUrl()
@@ -281,8 +346,18 @@ class Homepage extends Component {
         } catch (e) {
             // console.log()
         }
+        this.setState((state) => {
+            if (state.canvasImg) return {
+                showDialog: !this.state.showDialog,
+                canvasImg: '',
+            }
+        })
+    }
+
+    // 修改推荐下拉框状态
+    fnChangeDropDownState() {
         this.setState({
-            showDialog: !this.state.showDialog
+            dropDown: !this.state.dropDown
         })
     }
     // 跳转明星产品页面
@@ -333,7 +408,6 @@ class Homepage extends Component {
                     (this.state.showDialog) ? (
                         <Dialog footer_close={this.fnFooterClose.bind(this)}>
                             {this.state.canvasImg}
-                            {/* <img src={this.state.QR_code} alt="" /> */}
                         </Dialog>
                     ) : ''
                 }
@@ -342,7 +416,7 @@ class Homepage extends Component {
                     <header>
                         <ul className="clearfix">
                             <li>
-                                <img src={`${(this.state.iconUrl ? this.state.iconUrl : head_defult)}`} alt="" />
+                                <img src={`${(this.state.iconUrl ? this.state.iconUrl : "https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png")}`} alt="" />
                                 <span>{this.props.user.userInfo.nameCh}</span>
                             </li>
                             <li onClick={this.goToRules.bind(this)}>推荐规则</li>
@@ -376,72 +450,49 @@ class Homepage extends Component {
                     </div>
                     <div className="tasks-list">
                         <ul>
-                            {this.state.task_list && this.state.task_list.map((item, index) => (
-                                <li className={`frist-lachine  ${(item.activityStatus === 2 ? 'fifty' : '')} ${(item.activityStatus === 1 ? 'receive-tasks' : '')}`} key={index}>
-                                    <div className="frist-lachine-right">
-                                        <img src={item.activityImgUrl} alt="" />
-                                        <div className="content">
-                                            <p>{item.activityName}
-                                                {item.activityStatus === 1 ? <span className="icon" onClick={this.fnChangeActivityStatus.bind(this, index)}></span> : <span className="icon" onClick={this.fnChangeActivity.bind(this)}></span>}
-                                            </p>
-                                            {
-                                                item.activityPrize === 0 && <p >{item.activityDestription}</p>
-                                            }
-                                            {
-                                                item.activityPrize === 1 && <p > <img src={accountEntry} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />奖励金待入账</p>
-                                            }
-                                            {
-                                                item.activityPrize === 2 && <p style={{ color: "#f6a827" }}><img src={complete} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />奖励金已发放</p>
-                                            }
-                                            {
-                                                item.activityPrize === 3 && <p style={{ color: "#d0021b" }}><img src={problem} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />奖励金取消</p>
-                                            }
-                                        </div>
-                                    </div>
-                                    {
-                                        item.activityStatus === 1 && <span onClick={this.fnChangeActivityStatus.bind(this, index)}>领取任务</span>
-                                    }
-                                    {
-                                        item.activityStatus === 2 && <span onClick={this.fnChangeActivity.bind(this)}><span>{item.activityStart}</span><span>/{item.activityEnd}</span><span>进行中</span></span>
-                                    }
-                                    {
-                                        item.activityStatus === 3 && <span>已完成</span>
-                                    }
-                                </li>
-                            ))}
-                            {/* <li className="frist-lachine">
+                            <li className="frist-lachine fifty" style={this.state.dropDown ? { borderBottom: "1px solid #ccc" } : { borderBottom: "none" }}>
                                 <div className="frist-lachine-right">
-                                    <img src="./imgs/header-portrait.jpg" alt="" />
+                                    <img style={{ width: "40px", marginTop: "0px" }} src={this.state.task_list_summary.activityImgUrl} alt="" />
                                     <div className="content">
-                                        <p>拉新10位好友<span className="icon"></span></p>
-                                        <p>奖励翻倍，还能免费升级会员权益</p>
+                                        <p>{this.state.task_list_summary.activityName}</p>
+                                        <p>{this.state.task_list_summary.activityDestription}</p>
                                     </div>
                                 </div>
-                                <span>已完成</span>
+                                {this.state.task_list_summary.activityStatus === 1 && <span style={{ padding: "3px 10px", color: "#fff" }} onClick={this.fnChangeActivity.bind(this)}>我要拉新</span>}
+                                {this.state.task_list_summary.activityStatus === 2 && <span onClick={this.fnChangeActivity.bind(this)}><span>{this.state.task_list_summary.activityStart}</span><span>/{this.state.task_list_summary.activityEnd}</span><span>进行中</span></span>}
+                                {this.state.task_list_summary.activityStatus === 3 && <span style={{ padding: "3px 10px", color: "#ac9987", backgroundColor: "#f1e8d0" }} onClick={this.fnChangeActivity.bind(this)}>已完成</span>}
+                                <div className="dropDown" onClick={this.fnChangeDropDownState.bind(this)}>
+                                    <Icon type={this.state.dropDown ? "down" : "up"} color="#cca846" />
+                                </div>
                             </li>
-                            <li className="frist-lachine fifty">
-                                <div className="frist-lachine-right">
-                                    <img src="./imgs/header-portrait.jpg" alt="" />
-                                    <div className="content">
-                                        <p>拉新50位好友<span className="icon"></span></p>
-                                        <p>奖励全随你花，兑换产品不限</p>
-                                    </div>
-                                </div>
-                                <span><span>25</span><span>/50</span><span>进行中</span></span>
-                            </li> */}
-                            {/* <li className="frist-lachine receive-tasks">
-                                <div className="frist-lachine-right">
-                                    <img src="./imgs/header-portrait.jpg" alt="" />
-                                    <div className="content">
-                                        <p>推荐产品一次<span className="icon" onClick={this.goToStartProduct.bind(this)}></span></p>
-                                        <p>分享任意产品，送3个奖励金</p>
-                                    </div>
-                                </div>
-                                <span onClick={this.goToStartProduct.bind(this)}>领取任务</span>
-                            </li> */}
+                            {/* f1e8d0 */}
+                            <li style={this.state.dropDown ? { display: "none" } : { display: "block" }} className="dropDownBox">
+                                <ul>
+                                    {
+                                        this.state.task_list.map((item, index) => {
+                                            return (
+                                                <li className="frist-lachine" key={index}>
+                                                    <div className="frist-lachine-right">
+                                                        {item.activityStatus === 1 && <img src="http://image.fosunholiday.com/app/3.0/recommend/notStarted.png" alt="" />}
+                                                        {item.activityStatus === 2 && <img src="http://image.fosunholiday.com/app/3.0/recommend/ongoing.png" alt="" />}
+                                                        {item.activityStatus === 3 && <img src="http://image.fosunholiday.com/app/3.0/recommend/complete.png" alt="" />}
+                                                        <div className="content">
+                                                            <p>{item.activityName}</p>
+                                                            <p>{item.activityDestription}</p>
+                                                        </div>
+                                                    </div>
+                                                    {item.activityStatus === 1 && <p>未开始</p>}
+                                                    {item.activityStatus === 2 && <p style={{ color: "#f5a623" }}>进行中</p>}
+                                                    {item.activityStatus === 3 && <p style={{ color: '#7ed321' }}>已完成</p>}
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
+                            </li>
                             <li className="frist-lachine receive-tasks">
                                 <div className="frist-lachine-right">
-                                    <img src="http://image.fosunholiday.com/foliday/H5/recommend/5.png" alt="" />
+                                    <img style={{ width: "40px", marginTop: "0px" }} src="http://image.fosunholiday.com/foliday/H5/recommend/5.png" alt="" />
                                     <div className="content">
                                         <p>推荐产品成功预定一次<span className="icon" onClick={this.goToStartProduct.bind(this)}></span></p>
                                         {this.state.recommend_roduct.taskStatus === 1 && <p>好友成功购买推荐产品，赚订单3%</p>}

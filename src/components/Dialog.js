@@ -16,9 +16,12 @@ class Dialog extends Component {
     componentWillUnmount() {
         document.querySelector('body').style = ""
     }
+    componentDidMount() {
 
+    }
     fnClose() {
         this.props.footer_close && this.props.footer_close();
+
     }
 
     render() {
@@ -27,15 +30,15 @@ class Dialog extends Component {
                 <div>
                     <div className="am-modal-mask"></div>
                     <div className="am-modal-wrap " role="dialog" aria-labelledby="推荐产品成功">
-                        <div role="document" className="am-modal am-modal-transparent">
-                            <div className="am-modal-content">
+                        <div role="document" className="am-modal am-modal-transparent" >
+                            <div className="am-modal-content" style={{borderRadius:"36px"}}>
                                 <div className="am-modal-header">
                                     <div className="am-modal-title">
                                         {this.props.title}
                                     </div>
                                 </div>
-                                <div className="am-modal-body">
-                                    <div className="am-modal-alert-content">
+                                <div className="am-modal-body" style={{borderRadius:"36px",overflow:"hidden"}} >
+                                    <div className="am-modal-alert-content" >
                                         {
                                             this.props.children
                                         }

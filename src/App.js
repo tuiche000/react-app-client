@@ -8,7 +8,7 @@ import { SET_FOLIDAY_TOKEN, setFolidayToken, setUserInfo, setNotLayout, setIsIns
 import { Prius } from 'foliday-bridge'
 import { getQueryVariable } from './utils/util'
 import { account_current } from './pages/api/account'
-import { Toast } from 'antd-mobile';
+// import { Toast } from 'antd-mobile';
 import hostConfig from '@/hostConfig'
 window.Prius = Prius
 
@@ -21,15 +21,16 @@ class App extends Component {
     this.props.setIsInsideApp(Prius.isInsideApp)
   }
 
+
   // 获取用户信息
   async fnAccount_current() {
     try {
       let userInfo = await account_current()
       // 判断isStaff 是不是员工
-      if (userInfo.isStaff !== 1) {
-        Toast.fail('您不是复星员工！', 2);
-        // return
-      }
+      // if (userInfo.isStaff !== 1) {
+      //   Toast.fail('您不是复星员工！', 2);
+      //   // return
+      // }
       this.props.setUserInfo(userInfo)
     }
     catch (e) {

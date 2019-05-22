@@ -209,7 +209,7 @@ class LachineProduct extends Component {
                                                     <div className="product-top clearfix">
                                                         <div className="picture"><img src={item.productImage} alt="" /></div>
                                                         <div className="characters">
-                                                            <p className="characters-describe">{item.productSubTitle}</p>
+                                                            <p className="characters-describe" style={{ WebkitBoxOrient: "vertical" }}>{item.productSubTitle}</p>
                                                             <p className="characters-time">
                                                                 <span>推荐时间</span>
                                                                 <span>{item.recommendDate}</span>
