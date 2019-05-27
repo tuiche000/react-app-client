@@ -11,10 +11,14 @@ class Dialog extends Component {
     constructor(...args) {
         super(...args);
         document.querySelector('body').style = "overflow: hidden;height: 100vh;"
+        // 禁止页面滑动
+        document.addEventListener('touchmove', (e) =>{e.preventDefault()}, false);
     }
 
     componentWillUnmount() {
         document.querySelector('body').style = ""
+        // 重启页面滑动
+        document.removeEventListener('touchmove', (e) =>{e.preventDefault()}, false);
     }
     componentDidMount() {
 
@@ -31,13 +35,13 @@ class Dialog extends Component {
                     <div className="am-modal-mask"></div>
                     <div className="am-modal-wrap " role="dialog" aria-labelledby="推荐产品成功">
                         <div role="document" className="am-modal am-modal-transparent" >
-                            <div className="am-modal-content" style={{borderRadius:"36px"}}>
+                            <div className="am-modal-content" style={{ borderRadius: "36px" }}>
                                 <div className="am-modal-header">
                                     <div className="am-modal-title">
                                         {this.props.title}
                                     </div>
                                 </div>
-                                <div className="am-modal-body" style={{borderRadius:"36px",overflow:"hidden"}} >
+                                <div className="am-modal-body" style={{ borderRadius: "36px", overflow: "hidden" }} >
                                     <div className="am-modal-alert-content" >
                                         {
                                             this.props.children

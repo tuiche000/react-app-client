@@ -18,11 +18,22 @@ main {
     line-height: 30px;
 }
 
-.homepage header ul li:nth-child(1) img {
+.homepage header ul li:nth-child(1) .user {
+    height: 30px;
     width: 30px;
-    height: auto;
-    border-radius: 100%;
     margin-right: 5px;
+    float: left;
+    background-color: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    background-size: 110%;
+}
+.homepage header ul li:nth-child(1) .user img {
+    min-width: 100%;
+    max-width: 150%;
+    min-height: 100%;
+    max-height: 120%;
+    vertical-align:baseline 
 }
 
 .homepage header ul li:nth-child(1) {

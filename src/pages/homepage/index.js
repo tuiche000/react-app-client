@@ -15,6 +15,7 @@ import complete from '@/pages/assets/imgs/complete.png'
 import problem from '@/pages/assets/imgs/problem.png'
 import welfareIcon from '@/pages/assets/imgs/icon_coupon_welfare.png'
 import ImgInvitationCard from './imgs/invitationCard.png'
+import head_defult from '@/pages/assets/imgs/head_defult.png'
 
 @connect((state, props) => Object.assign({}, props, state), {})
 class Homepage extends Component {
@@ -44,16 +45,27 @@ class Homepage extends Component {
             canvasImg: "", // canvas生成的图片
             dropDown: true, // 推荐列表下拉状态
         }
+
+    }
+
+    async componentDidMount() {
+
+        this.getIconurl()
+        try {
+            this.getProduct()
+            this.getReConut()
+            this.getTasklist()
+            this.getRecommendProduct()
+        } catch (e) {
+            // console.log(e)
+        }
+        // 将页面滑动到顶部
+        document.body.scrollTop = document.documentElement.scrollTop = 0
     }
 
     // H5明星产品推荐图片
     async getQrCode(item) {
-        let url = this.props.user.userInfo.iconurl
-        if (url) {
-            url = url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
-        }else {
-            url = 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png'
-        }
+
 
         try {
             let code_data = await shareUrl({
@@ -63,12 +75,18 @@ class Homepage extends Component {
             this.setState({
                 QR_code: code_data.shareUrl,
             })
+
+            let url = this.props.user.userInfo.iconurl
+            if (url) {
+                url = url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
+            } else {
+                url = head_defult
+            }
+
             // 生成明星产品分享图
             this.startProductCanvas({
-                // productImg: item.productImg,
-                // iconurl: url,
-                productImg: 'http://h5test.gofoliday.com/static/img/learnBanner.png',
-                iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
+                productImg: item.productImgUrl,
+                iconurl: url,
                 code: this.state.QR_code,
                 productSubTittle: item.productSubTittle,
                 productPrice: item.productPrice,
@@ -128,8 +146,8 @@ class Homepage extends Component {
         let url = this.props.user.userInfo.iconurl
         if (this.props.user.userInfo.iconurl) {
             url = url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
-        }else {
-            url = 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png'
+        } else {
+            url = head_defult
         }
 
         try {
@@ -202,27 +220,15 @@ class Homepage extends Component {
             })
             let { result } = task_list
             this.setState({
-                task_list: result[0].stageListDTOS,
-                task_list_summary: result[0],
+                task_list: result[0].stageListDTOS || [],
+                task_list_summary: result[0] || [],
             })
         }
         catch (e) {
             // console.log(e)
         }
     }
-    async componentDidMount() {
-        this.getIconurl()
-        try {
-            this.getProduct()
-            this.getReConut()
-            this.getTasklist()
-            this.getRecommendProduct()
-        } catch (e) {
-            // console.log(e)
-        }
-        // 将页面滑动到顶部
-        document.body.scrollTop = document.documentElement.scrollTop = 0
-    }
+
     // 设置明星产品立即推荐分享二维码以及app分享
     fnFooterClose(item, e) {
         e && e.stopPropagation();
@@ -262,22 +268,21 @@ class Homepage extends Component {
             })
 
             // 生成推荐任务分享图片
-            
+
             let url = this.props.user.userInfo.iconurl
-            if(url) {
+            if (url) {
                 url = url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
-            }else{
-                url = 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png'
+            } else {
+                url = head_defult
             }
 
             this.fnCanvas({
                 backgroundImg: ImgInvitationCard,
-                // iconurl: url  ,
-                iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
+                iconurl: url,
                 code: this.state.QR_code,
                 nameCh: this.props.user.userInfo.nameCh,
             }).then(res => {
-                this.state.canvasImg = <img src={res.src} alt="cover"/>
+                this.state.canvasImg = <img src={res.src} alt="cover" />
                 this.state.taskImgSrc = res.src
                 this.setState((state) => {
                     return {
@@ -416,7 +421,9 @@ class Homepage extends Component {
                     <header>
                         <ul className="clearfix">
                             <li>
-                                <img src={`${(this.state.iconUrl ? this.state.iconUrl : "https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png")}`} alt="" />
+                                <span className="user">
+                                    <img src={`${(this.state.iconUrl ? this.state.iconUrl : "https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png")}`} alt="" />
+                                </span>
                                 <span>{this.props.user.userInfo.nameCh}</span>
                             </li>
                             <li onClick={this.goToRules.bind(this)}>推荐规则</li>

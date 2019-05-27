@@ -10,6 +10,7 @@ import { shareUrl } from '@/pages/api/homePage'
 import { Prius } from 'foliday-bridge';
 import { fnCanvas, startProductCanvas } from '@/utils/util'
 import welfareIcon from '@/pages/assets/imgs/icon_coupon_welfare.png'
+import head_defult from '@/pages/assets/imgs/head_defult.png'
 
 @connect((state, props) => Object.assign({}, props, state), {})
 class StarProducts extends Component {
@@ -74,8 +75,8 @@ class StarProducts extends Component {
         let url = this.props.user.userInfo.iconurl
         if (url) {
             url = url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
-        }else {
-            url = 'https://foliday-img.oss-cn-shanghai.aliyuncs.com/fuyoujian/head_defult.png'
+        } else {
+            url = head_defult
         }
 
         try {
@@ -87,10 +88,10 @@ class StarProducts extends Component {
                 QR_code: code_data.shareUrl,
             })
             this.startProductCanvas({
-                // productImg: item.productImg,
-                // iconurl: url,
-                productImg: 'http://h5test.gofoliday.com/static/img/learnBanner.png',
-                iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
+                productImg:item.productImgUrl,
+                iconurl: url,
+                // productImg: productImgcc,
+                // iconurl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/QUHanDV7bcMqfu2cibrN6zs9NhxD2Aw5TGib1KCOI9ibqiafXUkPhXmduAfVe8zJKKT6rfC2bbTg5G1amKEvicwnEUw/132',
                 code: this.state.QR_code,
                 productSubTittle: item.productSubTittle,
                 productPrice: item.productPrice,
@@ -117,7 +118,7 @@ class StarProducts extends Component {
                 url: hostConfig.mBase + "product?productId=" + item.productId,
                 mode: 5,
             })
-
+            console.log(share_url)
             let code_data = await shareUrl({
                 url: hostConfig.mBase + "product?productId=" + item.productId,
                 mode: 0,
