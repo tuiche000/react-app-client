@@ -10,7 +10,7 @@ class Entrance extends Component {
     }
 
     componentDidMount() {
-        
+
     }
 
     goToHomepage() {

@@ -49,7 +49,6 @@ class Homepage extends Component {
     }
 
     async componentDidMount() {
-
         this.getIconurl()
         try {
             this.getProduct()
@@ -65,8 +64,6 @@ class Homepage extends Component {
 
     // H5明星产品推荐图片
     async getQrCode(item) {
-
-
         try {
             let code_data = await shareUrl({
                 url: hostConfig.mBase + "product?productId=" + item.productId,
@@ -76,13 +73,14 @@ class Homepage extends Component {
                 QR_code: code_data.shareUrl,
             })
 
+
+            // 获取用户头像地址并设置默认值
             let url = this.props.user.userInfo.iconurl
             if (url) {
                 url = url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
             } else {
                 url = head_defult
             }
-
             // 生成明星产品分享图
             this.startProductCanvas({
                 productImg: item.productImgUrl,
@@ -142,7 +140,7 @@ class Homepage extends Component {
     }
     // 获取明星产品分享地址以及APP分享
     async getShareUrl(item) {
-
+        // 获取用户头像地址并设置默认值 
         let url = this.props.user.userInfo.iconurl
         if (this.props.user.userInfo.iconurl) {
             url = url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
@@ -150,6 +148,7 @@ class Homepage extends Component {
             url = head_defult
         }
 
+        // 获取app分享地址
         try {
             let share_url = await shareUrl({
                 url: hostConfig.mBase + "product?productId=" + item.productId,
@@ -168,9 +167,9 @@ class Homepage extends Component {
             Prius.appEventCallback({
                 callId: 'POP_SHARE',
                 data: {
-                    title: item.productName,
+                    title: item.productSubTittle,
                     url: share_url.shareUrl,
-                    description: item.productSubTittle,
+                    description: item.productName,
                     iconUrl: item.productImgUrl.indexOf('http:') > -1 ? item.productImgUrl : "http:" + item.productImgUrl,
                     canvasImg: {
                         type: 2,
@@ -219,9 +218,11 @@ class Homepage extends Component {
                 "pageSize": 10,
             })
             let { result } = task_list
+            result.map((item) => {
+                item.active = true
+            })
             this.setState({
-                task_list: result[0].stageListDTOS || [],
-                task_list_summary: result[0] || [],
+                task_list: result,
             })
         }
         catch (e) {
@@ -360,9 +361,11 @@ class Homepage extends Component {
     }
 
     // 修改推荐下拉框状态
-    fnChangeDropDownState() {
+    fnChangeDropDownState(index) {
+        let arr = this.state.task_list
+        arr[index].active = !arr[index].active
         this.setState({
-            dropDown: !this.state.dropDown
+            task_list:arr
         })
     }
     // 跳转明星产品页面
@@ -398,7 +401,6 @@ class Homepage extends Component {
                     productId,
                 },
                 listener: function (data) {
-                    // console.log(JSON.stringify(data))
                 }
             })
         } else {
@@ -444,7 +446,6 @@ class Homepage extends Component {
                             </div>
                             <div className="success-order" onClick={this.goTolachineProduct.bind(this)}>
                                 <p>下单成功数</p>
-                                {/* <p>下单成功数: <span style={{ color: '#e9cf8a', fontsize: "18px" }}>{this.state.recOrderCount}</span></p> */}
                                 <p>{this.state.recOrderCount}</p>
                             </div>
                         </div>
@@ -457,45 +458,56 @@ class Homepage extends Component {
                     </div>
                     <div className="tasks-list">
                         <ul>
-                            <li className="frist-lachine fifty" style={this.state.dropDown ? { borderBottom: "1px solid #ccc" } : { borderBottom: "none" }}>
-                                <div className="frist-lachine-right">
-                                    <img style={{ width: "40px", marginTop: "0px" }} src={this.state.task_list_summary.activityImgUrl} alt="" />
-                                    <div className="content">
-                                        <p>{this.state.task_list_summary.activityName}</p>
-                                        <p>{this.state.task_list_summary.activityDestription}</p>
-                                    </div>
-                                </div>
-                                {this.state.task_list_summary.activityStatus === 1 && <span style={{ padding: "3px 10px", color: "#fff" }} onClick={this.fnChangeActivity.bind(this)}>我要拉新</span>}
-                                {this.state.task_list_summary.activityStatus === 2 && <span onClick={this.fnChangeActivity.bind(this)}><span>{this.state.task_list_summary.activityStart}</span><span>/{this.state.task_list_summary.activityEnd}</span><span>进行中</span></span>}
-                                {this.state.task_list_summary.activityStatus === 3 && <span style={{ padding: "3px 10px", color: "#ac9987", backgroundColor: "#f1e8d0" }} onClick={this.fnChangeActivity.bind(this)}>已完成</span>}
-                                <div className="dropDown" onClick={this.fnChangeDropDownState.bind(this)}>
-                                    <Icon type={this.state.dropDown ? "down" : "up"} color="#cca846" />
-                                </div>
-                            </li>
-                            {/* f1e8d0 */}
-                            <li style={this.state.dropDown ? { display: "none" } : { display: "block" }} className="dropDownBox">
-                                <ul>
-                                    {
-                                        this.state.task_list.map((item, index) => {
-                                            return (
-                                                <li className="frist-lachine" key={index}>
+                            <li>
+                                {
+                                    this.state.task_list.map((item, index) => {
+                                        return (
+                                            <ul key={index}>
+                                                <li className="frist-lachine fifty" style={item.active ? { borderBottom: "1px solid #ccc" } : { borderBottom: "none" }}>
                                                     <div className="frist-lachine-right">
-                                                        {item.activityStatus === 1 && <img src="http://image.fosunholiday.com/app/3.0/recommend/notStarted.png" alt="" />}
-                                                        {item.activityStatus === 2 && <img src="http://image.fosunholiday.com/app/3.0/recommend/ongoing.png" alt="" />}
-                                                        {item.activityStatus === 3 && <img src="http://image.fosunholiday.com/app/3.0/recommend/complete.png" alt="" />}
+                                                        <img style={{ width: "40px", marginTop: "0px" }} src={item.activityImgUrl} alt="" />
                                                         <div className="content">
                                                             <p>{item.activityName}</p>
                                                             <p>{item.activityDestription}</p>
                                                         </div>
                                                     </div>
-                                                    {item.activityStatus === 1 && <p>未开始</p>}
-                                                    {item.activityStatus === 2 && <p style={{ color: "#f5a623" }}>进行中</p>}
-                                                    {item.activityStatus === 3 && <p style={{ color: '#7ed321' }}>已完成</p>}
+                                                    {item.activityStatus === 1 && <span style={{ padding: "3px 10px", color: "#fff" }} onClick={this.fnChangeActivity.bind(this)}>我要拉新</span>}
+                                                    {item.activityStatus === 2 && <span onClick={this.fnChangeActivity.bind(this)}><span>{item.activityStart}</span><span>/{item.activityEnd}</span><span>进行中</span></span>}
+                                                    {item.activityStatus === 3 && <span style={{ padding: "3px 10px", color: "#ac9987", backgroundColor: "#f1e8d0" }} onClick={this.fnChangeActivity.bind(this)}>已完成</span>}
+                                                    <div className="dropDown" onClick={this.fnChangeDropDownState.bind(this,index)}>
+                                                        <Icon type={item.active ? "down" : "up"} color="#cca846" />
+                                                    </div>
                                                 </li>
-                                            )
-                                        })
-                                    }
-                                </ul>
+                                                {/* f1e8d0 */}
+                                                <li style={item.active ? { display: "none" } : { display: "block" }} className="dropDownBox">
+                                                    <ul>
+                                                        {item.stageListDTOS && (
+                                                            item.stageListDTOS.map((items, indexx) => {
+                                                                return (
+                                                                    <li className="frist-lachine" key={indexx}>
+                                                                        <div className="frist-lachine-right">
+                                                                            {items.activityStatus === 1 && <img src="http://image.fosunholiday.com/app/3.0/recommend/notStarted.png" alt="" />}
+                                                                            {items.activityStatus === 2 && <img src="http://image.fosunholiday.com/app/3.0/recommend/ongoing.png" alt="" />}
+                                                                            {items.activityStatus === 3 && <img src="http://image.fosunholiday.com/app/3.0/recommend/complete.png" alt="" />}
+                                                                            <div className="content">
+                                                                                <p>{items.activityName}</p>
+                                                                                <p>{items.activityDestription}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        {items.activityStatus === 1 && <p>未开始</p>}
+                                                                        {items.activityStatus === 2 && <p style={{ color: "#f5a623" }}>进行中</p>}
+                                                                        {items.activityStatus === 3 && <p style={{ color: '#7ed321' }}>已完成</p>}
+                                                                    </li>
+                                                                )
+                                                            })
+                                                        )}
+
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        )
+                                    })
+                                }
                             </li>
                             <li className="frist-lachine receive-tasks">
                                 <div className="frist-lachine-right">

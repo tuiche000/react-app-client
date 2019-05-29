@@ -130,9 +130,9 @@ class StarProducts extends Component {
             Prius.appEventCallback({
                 callId: 'POP_SHARE',
                 data: {
-                    title: item.productName,
+                    title: item.productSubTittle,
                     url: share_url.shareUrl,
-                    description: item.productSubTittle,
+                    description:  item.productName,
                     iconUrl: item.productImgUrl.indexOf('http:') > -1 ? item.productImgUrl : "http:" + item.productImgUrl,
                     canvasImg: {
                         type: 2,

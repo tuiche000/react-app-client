@@ -40,11 +40,6 @@ class Details extends Component {
       this.setState({
         code,
       })
-      await this.getIncome()
-      await this.getSpending()
-      this.setState({
-        finished: true,
-      })
     }
     catch (e) {
 
@@ -107,7 +102,12 @@ class Details extends Component {
 
   async componentDidMount() {
     try {
-      this.getReConut()
+      await this.getReConut()
+      await this.getIncome()
+      await this.getSpending()
+      this.setState({
+        finished: true,
+      })
     } catch (e) {
       // console.log(e)
     }
@@ -151,7 +151,6 @@ class Details extends Component {
     switch (this.state.initialPage) {
       // 收入上拉加载更多
       case 0:
-        console.log("0")
         if (this.state.income_finished) {
           Toast.info('数据已经加载完毕', 1);
           this.setState({ refreshing: false });
