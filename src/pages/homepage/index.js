@@ -9,7 +9,7 @@ import { tasklist } from '@/pages/api/tasklist'
 import { connect } from 'react-redux'
 import { reCount, shareUrl, recommendProduct } from '@/pages/api/homePage'
 import { Prius } from 'foliday-bridge'
-import { fnCanvas, startProductCanvas ,recommendImgCanvas , lachineImgCanvas} from '@/utils/util'
+import { fnCanvas, startProductCanvas, recommendImgCanvas, lachineImgCanvas } from '@/utils/util'
 import accountEntry from '@/pages/assets/imgs/accountEntry.png'
 import complete from '@/pages/assets/imgs/complete.png'
 import problem from '@/pages/assets/imgs/problem.png'
@@ -378,7 +378,7 @@ class Homepage extends Component {
     fnRecommendDialog() {
         // 生成明星产品分享图
         this.recommendImgCanvas({
-            backgroundImg:recommendImg
+            backgroundImg: recommendImg
         }).then(res => {
             this.state.canvasImg = <img src={res.src} alt="cover" />
             this.setState((state) => {
@@ -392,7 +392,7 @@ class Homepage extends Component {
     // 显示拉新产品弹框
     fnLachineDialog() {
         this.lachineImgCanvas({
-            backgroundImg:lachineImg
+            backgroundImg: lachineImg
         }).then(res => {
             this.state.canvasImg = <img src={res.src} alt="cover" />
             this.setState((state) => {
@@ -439,7 +439,7 @@ class Homepage extends Component {
                 }
             })
         } else {
-            window.location.href = hostConfig.mBase + "product?productId=" + productId
+            window.location.href = `${hostConfig.mBase}product?productId=${productId}`
         }
 
     }
@@ -526,7 +526,6 @@ class Homepage extends Component {
                                                         <Icon type={item.active ? "down" : "up"} color="#cca846" />
                                                     </div>
                                                 </li>
-                                                {/* f1e8d0 */}
                                                 <li style={item.active ? { display: "none" } : { display: "block" }} className="dropDownBox">
                                                     <ul>
                                                         {item.stageListDTOS && (
@@ -549,7 +548,6 @@ class Homepage extends Component {
                                                                 )
                                                             })
                                                         )}
-
                                                     </ul>
                                                 </li>
                                             </ul>

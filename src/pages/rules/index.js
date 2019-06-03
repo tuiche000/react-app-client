@@ -29,7 +29,7 @@ class Rules extends Component {
                 ><span style={{ fontSize: "16px", color: '#fff' }}></span></NavBar> */}
                 <section className="Re-award">
                     <h2 className="plan" style={{ fontWeight: "600" }}>复游荐计划</h2>
-                    <p style={{ fontSize: "10px" }}>复游荐计划（以下简称“计划”）允许复游会会员（以下简称“会员”）通过邀请朋友注册成为复游会新用户来赢取复游会积分；通过推荐朋友购买复星旅文FOLIDAY平台商品或服务赢取奖励金。</p>
+                    <p style={{ fontSize: "10px" }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;复游荐计划（以下简称“计划”）允许复游会会员（以下简称“会员”）通过邀请朋友注册成为复游会新用户来赢取复游会积分；通过推荐朋友购买复星旅文FOLIDAY平台商品或服务赢取奖励金。</p>
                     <p style={{ height: "15px" }}></p>
                     <div>
                         <p style={{ fontSize: "10px" }}><span style={{ fontWeight: "600" }}>积分：</span>会员通过复游荐计划，成功邀请朋友注册成为复游会新会员获得的奖励。</p>
@@ -45,12 +45,12 @@ class Rules extends Component {
                     <p style={{ height: "15px" }}></p>
                     <div>
                         <p style={{ fontSize: "10px" }}><span style={{ fontWeight: "600" }}>如何赢取奖励金：</span>推荐产品，获得奖励金。推荐产品后，如好友打开产品首次预订，则您可获得好友支付金额的3%作为奖励金。您可以推荐产品给不同的好友，每个好友首次预订，您都可以获得奖励金。</p>
-                        <p style={{ fontSize: "10px" }}>
+                        <div style={{ fontSize: "10px" }}>
                             <span style={{ fontWeight: "600" }}>奖励金发放：</span>
                             <p><span style={{ fontWeight: "600" }}>1.</span>推荐奖励金，在好友出游归来，平台审核后发放，您可以在复游推荐页面中看到。</p>
                             <p><span style={{ fontWeight: "600" }}>2.</span>实际奖励金，可能因好友支付的金额或部分退款而改变。如果好友支付后退款，则奖励金也同步取消。</p>
                             <p><span style={{ fontWeight: "600" }}>3.</span>可获得奖励金的产品，当您进入产品时，会看到相关的提示，如果没有提示的产品，推荐后并不能获得奖励金。</p>
-                        </p>
+                        </div>
                         <p style={{ fontSize: "10px" }}><span style={{ fontWeight: "600" }}>奖励金使用：</span>可用于FOLIDAY平台积分商城产品兑换，不可提现。如积分不足以支付订单金额，则需要补差。</p>
                     </div>
                     <p style={{ height: "15px" }}></p>

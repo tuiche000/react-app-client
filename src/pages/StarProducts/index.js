@@ -22,7 +22,7 @@ class StarProducts extends Component {
         this.state = {
             refreshing: false,
             showDialog: false,
-            height: document.documentElement.clientHeight - 55  ,
+            height: document.documentElement.clientHeight - 50,
             product_data: [], // 明星产品列表数据
             product_pageNo: 1, // 明星产品列表页数
             product_pageSize: 10, // 明星产品列表单页显示数据
@@ -161,7 +161,6 @@ class StarProducts extends Component {
         }
     }
     async componentDidMount() {
-        console.log(this.ptr)
         try {
             await this.getProduct()
             this.setState({
@@ -227,7 +226,7 @@ class StarProducts extends Component {
                 }
             })
         } else {
-            window.location.href = hostConfig.mBase + "product?productId=" + productId
+            window.location.href = `${hostConfig.mBase}product?productId=${productId}`
         }
     }
     render() {
@@ -243,7 +242,7 @@ class StarProducts extends Component {
                 <canvas ref={this.refCanvas} id="aa" width="320px" height="568px" style={{ display: 'none', position: 'absolute', zIndex: -1 }}></canvas>
                 <div style={{ fontSize: "16px", textAlign: "center" }} >明星产品</div>
                 <PullToRefresh
-                    damping={50}
+                    damping={100}
                     ref={el => this.ptr = el}
                     style={{
                         height: this.state.height,
@@ -254,30 +253,27 @@ class StarProducts extends Component {
                     onRefresh={this.onRefresh}
                 >
                     {/* <ul > */}
-                    {
-                        this.state.product_data.map(item => {
-                            return (
-                                <div className="innisfree-list" key={item.productId} onClick={this.goProductList.bind(this, item.productId)}>
-                                    <div className="img">
-                                        <img src={item.productImgUrl} alt="" />
+                        {
+                            this.state.product_data.map(item => {
+                                return (
+                                    <div className="innisfree-list" key={item.productId} onClick={this.goProductList.bind(this, item.productId)}>
+                                        <div className="img">
+                                            <img src={item.productImgUrl} alt="" />
+                                        </div>
+                                        <p className="substance" style={{ WebkitBoxOrient: "vertical" }}>{item.productSubTittle}</p>
+                                        <p className="amount">
+                                            <span className="yen">&yen;</span>
+                                            <span className="num">{item.productPrice}</span>
+                                            <span>起</span>
+                                        </p>
+                                        <div style={{ position: "relative" }}>
+                                            <p className="immediately" onClick={this.fnFooterClose.bind(this, item)}>立刻推荐</p>
+                                        </div>
                                     </div>
-                                    <p className="substance" style={{ WebkitBoxOrient: "vertical" }}>{item.productSubTittle}</p>
-                                    <p className="amount">
-                                        <span className="yen">&yen;</span>
-                                        <span className="num">{item.productPrice}</span>
-                                        <span>起</span>
-                                        {/* <span className="num">{item.productPrize}</span>
-                                            <span>奖励金</span> */}
-                                    </p>
-                                    <div style={{ position: "relative" }}>
-                                        <p className="immediately" onClick={this.fnFooterClose.bind(this, item)}>立刻推荐</p>
-                                    </div>
-                                </div>
-                                // <div style={{textAlign: "center",padding: "20px",height:"200px"}}>pull up 0</div>
-                            )
-                        })
-                    }
-                    {(this.state.product_data.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
+                                )
+                            })
+                        }
+                        {(this.state.product_data.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
                     {/* </ul> */}
                 </PullToRefresh>
             </div>
