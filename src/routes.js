@@ -10,7 +10,7 @@ import Entrance from './pages/entrance'
 export default [
     { path: '/', component: Entrance ,notLayout: true},
     { path: '/homepage', component: Homepage },
-    { path: '/starProducts', component: StarProducts},
+    { path: '/starProducts', component: StarProducts, },
     { path: '/bonus', component: Bonus, notLayout: true },
     { path: '/details', component: Details, notLayout: true },
     { path: '/lachineProduct', component: LachineProduct, notLayout: true },

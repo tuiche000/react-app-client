@@ -56,28 +56,28 @@ export function fnCanvas(obj = {
         }
 
         let result = imgLoad([imgone, imgtwo, imgthere]).then(res => {
-         
+
             ctx.drawImage(imgone, 0, 0, 610, 830);
             ctx.drawImage(imgthere, 220, 500, 160, 160);
-     
+
             ctx.fillStyle = "#fff";
             ctx.font = '26px Adobe Ming Std';
             ctx.fillText(obj.nameCh, 140, 180);
-            
+
             ctx.fillText('邀请您一起赚奖励金', 140, 230);
 
             ctx.beginPath();
-            ctx.strokeStyle="#fff";
-            ctx.lineWidth="8";
+            ctx.strokeStyle = "#fff";
+            ctx.lineWidth = "8";
             ctx.arc(80, 200, 40, 0, 360 * Math.PI / 180, true);
             ctx.closePath();
             ctx.stroke();
             ctx.clip();
             ctx.drawImage(imgtwo, 40, 160, 80, 80);
-            
+
             ctx.fillStyle = "#c5c0b7";
             ctx.font = '26px Adobe Ming Std';
-            
+
             image = new Image();
             image.src = canvas.toDataURL("image/png");
             return image
@@ -146,7 +146,7 @@ export function startProductCanvas(obj = {
             ctx.fillRect(0, 0, 610, 830);
 
             ctx.drawImage(imgone, 0, 0, 610, 460);
-            
+
             ctx.drawImage(imgthere, 440, 676, 150, 150);
 
 
@@ -212,14 +212,201 @@ export function startProductCanvas(obj = {
             ctx.fillText('邀请您识别二维码 享优惠', 440, 780);
 
             ctx.beginPath();
-            ctx.strokeStyle="#fff";
-            ctx.lineWidth="10";
+            ctx.strokeStyle = "#fff";
+            ctx.lineWidth = "10";
             ctx.arc(304, 460, 40, 0, 360 * Math.PI / 180, true);
             ctx.closePath();
             ctx.stroke();
             ctx.clip();
             ctx.drawImage(imgtwo, 265, 420, 80, 80);
-            
+
+            image = new Image();
+            image.src = canvas.toDataURL("image/png");
+            // box.appendChild(image)
+            return image
+        })
+        return result
+    }
+}
+
+export function recommendImgCanvas(obj = {
+    backgroundImg: '',
+}) {
+    let image;
+    const canvas = this.refCanvas.current
+    canvas.width = 592
+    canvas.height = 833
+
+    if (canvas.getContext) {
+        let ctx = canvas.getContext("2d");
+
+        let imgone = new Image();
+        imgone.setAttribute('crossOrigin', 'anonymous');
+        imgone.src = obj.backgroundImg;
+
+        function imgLoad(img) {
+            return new Promise((resolve, reject) => {
+                function next(index) {
+                    let timer = `timer${index}`
+                    timer = setInterval(function () {
+                        if (img[index].complete) {
+                            clearInterval(timer)
+                            if (index + 1 === img.length) {
+                                resolve()
+                            } else {
+                                next(index + 1)
+                            }
+                        }
+                    }, 50)
+                }
+                next(0)
+            })
+        }
+
+        let result = imgLoad([imgone]).then(res => {
+            ctx.drawImage(imgone, 0, 0, 592, 833);
+
+            ctx.fillStyle = '#7c693c';
+            ctx.font = '30px Adobe Ming Std';
+            ctx.fillText("分享邀请或推荐链接", 190, 300);
+
+            ctx.fillStyle = '#6a6a6a';
+            ctx.font = '23px Adobe Ming Std';
+            ctx.fillText("通过微信、微博、钉钉等分享给好友", 190, 335);
+
+            ctx.fillStyle = '#7c693c';
+            ctx.font = '30px Adobe Ming Std';
+            ctx.fillText("好友注册/下单", 190, 490);
+
+            ctx.fillStyle = '#6a6a6a';
+            ctx.font = '23px Adobe Ming Std';
+            ctx.fillText("好友注册成为会员或好友首次下单", 190, 525);
+
+            ctx.fillStyle = '#7c693c';
+            ctx.font = '30px Adobe Ming Std';
+            ctx.fillText("获得积分/奖励金", 190, 690);
+
+            ctx.fillStyle = '#6a6a6a';
+            ctx.font = '23px Adobe Ming Std';
+            ctx.fillText("好友注册成为会员后，您获得积分奖", 190, 725);
+
+            ctx.fillStyle = '#6a6a6a';
+            ctx.font = '23px Adobe Ming Std';
+            ctx.fillText("励；好友下单出游后，您获得奖励金", 190, 760);
+
+
+            image = new Image();
+            image.src = canvas.toDataURL("image/png");
+            // box.appendChild(image)
+            return image
+        })
+        return result
+    }
+}
+
+export function lachineImgCanvas(obj = {
+    backgroundImg: '',
+}) {
+    let image;
+    const canvas = this.refCanvas.current
+    canvas.width = 592
+    canvas.height = 833
+
+    if (canvas.getContext) {
+        let ctx = canvas.getContext("2d");
+
+        let imgone = new Image();
+        imgone.setAttribute('crossOrigin', 'anonymous');
+        imgone.src = obj.backgroundImg;
+
+        function imgLoad(img) {
+            return new Promise((resolve, reject) => {
+                function next(index) {
+                    let timer = `timer${index}`
+                    timer = setInterval(function () {
+                        if (img[index].complete) {
+                            clearInterval(timer)
+                            if (index + 1 === img.length) {
+                                resolve()
+                            } else {
+                                next(index + 1)
+                            }
+                        }
+                    }, 50)
+                }
+                next(0)
+            })
+        }
+
+        let result = imgLoad([imgone]).then(res => {
+            ctx.drawImage(imgone, 0, 0, 592, 726);
+
+            ctx.fillStyle = '#837146';
+            ctx.font = '28px Adobe Ming Std';
+            ctx.fillText("第1~4人", 60, 310);
+
+            ctx.fillStyle = '#6a6a6a';
+            ctx.font = '22px Adobe Ming Std';
+            ctx.fillText("每人奖励100积分", 60, 350);
+
+
+            ctx.fillStyle = '#837146';
+            ctx.font = '28px Adobe Ming Std';
+            ctx.fillText("第5人", 300, 310);
+
+            ctx.fillStyle = '#6a6a6a';
+            ctx.font = '22px Adobe Ming Std';
+            ctx.fillText("获取阶段奖励500积分", 300, 350);
+
+            ctx.fillStyle = '#837146';
+            ctx.font = '28px Adobe Ming Std';
+            ctx.fillText("第6~9人", 60, 410);
+
+            ctx.fillStyle = '#6a6a6a';
+            ctx.font = '22px Adobe Ming Std';
+            ctx.fillText("每人奖励100积分", 60, 450);
+
+            ctx.fillStyle = '#837146';
+            ctx.font = '28px Adobe Ming Std';
+            ctx.fillText("第10人", 300, 410);
+
+            ctx.fillStyle = '#6a6a6a';
+            ctx.font = '22px Adobe Ming Std';
+            ctx.fillText("获取阶段奖励500积分", 300, 450);
+
+            ctx.fillStyle = '#837146';
+            ctx.font = '28px Adobe Ming Std';
+            ctx.fillText("第11~49人", 60, 510);
+
+            ctx.fillStyle = '#6a6a6a';
+            ctx.font = '22px Adobe Ming Std';
+            ctx.fillText("每人奖励100积分", 60, 550);
+
+            ctx.fillStyle = '#837146';
+            ctx.font = '28px Adobe Ming Std';
+            ctx.fillText("第50人", 300, 510);
+
+            ctx.fillStyle = '#6a6a6a';
+            ctx.font = '22px Adobe Ming Std';
+            ctx.fillText("获取阶段奖励1000积分", 300, 550);
+
+            //开始一个新的绘制路径
+            ctx.beginPath();
+            // 直线颜色
+            ctx.strokeStyle="#d0d0d0"
+            //定义直线的起点坐标为(10,10)
+            ctx.moveTo(60, 600);
+            //定义直线的终点坐标为(50,10)
+            ctx.lineTo(550, 600);
+            //沿着坐标点顺序的路径绘制直线
+            ctx.stroke();
+            //关闭当前的绘制路径
+            ctx.closePath();
+
+            ctx.fillStyle = '#ff7700';
+            ctx.font = '30px Adobe Ming Std';
+            ctx.fillText("总获取6800积分", 180, 650);
+
             image = new Image();
             image.src = canvas.toDataURL("image/png");
             // box.appendChild(image)

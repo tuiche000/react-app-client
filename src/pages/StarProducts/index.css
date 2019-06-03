@@ -13,13 +13,13 @@ body {
   border-radius: 20px;
   overflow: hidden;
   padding:0;
-  position: relative;
+  /* position: relative; */
 }
 
 .innisfree .innisfree-list .img img {
   width: 100%;
   height: auto;
-  position: relative;
+  /* position: relative; */
 }
 
 .innisfree .innisfree-list .substance {

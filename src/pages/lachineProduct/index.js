@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "./index.css";
 import { Tabs, NavBar, Icon, Toast, PullToRefresh } from 'antd-mobile'
-import {  recommendList ,lachineList} from '@/pages/api/lachineProduct'
+import { recommendList, lachineList } from '@/pages/api/lachineProduct'
 import { connect } from 'react-redux'
 import accountEntry from '@/pages/assets/imgs/accountEntry.png'
 import complete from '@/pages/assets/imgs/complete.png'
@@ -19,10 +19,10 @@ class LachineProduct extends Component {
             Lachine_list: [], // 拉新列表数据
             recommend_list: [], // 产品列表数据
             tabs: [             // tab栏标题
-                { title: '拉新会员' },
                 { title: '产品推荐' },
+                { title: '拉新会员' },
             ],
-            initialPage: 0,
+            initialPage:  Number(this.props.history.location.search.split("=")[1]) || 0, // 切换tab栏
             lachine_pageNo: 1, // 拉新列表页数
             lachine_pageSize: 10, // 拉新列表单页显示数据量
             lachine_finished: false, // 拉新列表是否加载全部数据 
@@ -112,18 +112,6 @@ class LachineProduct extends Component {
         switch (this.state.initialPage) {
             // 拉新会员加载更多
             case 0:
-                if (this.state.lachine_finished) {
-                    Toast.info('数据已经加载完毕', 1);
-                    this.setState({ refreshing: false });
-                    break;
-                }
-                this.setState({
-                    lachine_pageNo: this.state.lachine_pageNo + 1
-                })
-                this.getLachineList()
-                break;
-            // 产品推荐加载更多
-            case 1:
                 if (this.state.recommend_finished) {
                     Toast.info('数据已经加载完毕', 1);
                     this.setState({ refreshing: false });
@@ -133,6 +121,18 @@ class LachineProduct extends Component {
                     recommend_pageNo: this.state.recommend_pageNo + 1
                 })
                 this.getRecommendList()
+                break;
+            // 产品推荐加载更多
+            case 1:
+                if (this.state.lachine_finished) {
+                    Toast.info('数据已经加载完毕', 1);
+                    this.setState({ refreshing: false });
+                    break;
+                }
+                this.setState({
+                    lachine_pageNo: this.state.lachine_pageNo + 1
+                })
+                this.getLachineList()
                 break;
             default:
                 this.setState({ refreshing: false });
@@ -169,7 +169,7 @@ class LachineProduct extends Component {
                                     onRefresh={this.onRefresh}
                                 >
                                     <ul>
-                                        {this.state.Lachine_list.map(item => (
+                                        {this.state.recommend_list.map(item => (
                                             <li key={item.recommendId}>
                                                 <div className="lachine-top clearfix">
                                                     <div className="picture"><img src="http://img.fosunholiday.com/img/M00/00/32/Ch0djlri8MuAIUyaAARiSUd-y2o767.jpg" alt="" /></div>
@@ -184,7 +184,7 @@ class LachineProduct extends Component {
                                                 </div>
                                             </li>
                                         ))}
-                                        {(this.state.Lachine_list.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
+                                        {(this.state.recommend_list.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
                                     </ul>
                                 </PullToRefresh>
                             </section>
@@ -204,7 +204,7 @@ class LachineProduct extends Component {
                                 >
                                     <ul>
                                         {
-                                            this.state.recommend_list.map(item => (
+                                            this.state.Lachine_list.map(item => (
                                                 <li key={item.recommendId}>
                                                     <div className="product-top clearfix">
                                                         <div className="picture"><img src={item.productImage} alt="" /></div>
@@ -266,7 +266,7 @@ class LachineProduct extends Component {
                                             <span className="icon"></span>
                                         </div>
                                     </li> */}
-                                        {(this.state.recommend_list.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
+                                        {(this.state.Lachine_list.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
                                     </ul>
                                 </PullToRefresh>
                             </section>

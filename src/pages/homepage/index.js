@@ -9,13 +9,17 @@ import { tasklist } from '@/pages/api/tasklist'
 import { connect } from 'react-redux'
 import { reCount, shareUrl, recommendProduct } from '@/pages/api/homePage'
 import { Prius } from 'foliday-bridge'
-import { fnCanvas, startProductCanvas } from '@/utils/util'
+import { fnCanvas, startProductCanvas ,recommendImgCanvas , lachineImgCanvas} from '@/utils/util'
 import accountEntry from '@/pages/assets/imgs/accountEntry.png'
 import complete from '@/pages/assets/imgs/complete.png'
 import problem from '@/pages/assets/imgs/problem.png'
 import welfareIcon from '@/pages/assets/imgs/icon_coupon_welfare.png'
 import ImgInvitationCard from './imgs/invitationCard.png'
 import head_defult from '@/pages/assets/imgs/head_defult.png'
+import IntegralImg from "./imgs/integralImg.png"
+import money from "./imgs/money.png"
+import lachineImg from "./imgs/lachineImg.png"
+import recommendImg from "./imgs/recommendImg.png"
 
 @connect((state, props) => Object.assign({}, props, state), {})
 class Homepage extends Component {
@@ -25,6 +29,8 @@ class Homepage extends Component {
         this.refBox = React.createRef();
         this.fnCanvas = fnCanvas.bind(this)
         this.startProductCanvas = startProductCanvas.bind(this)
+        this.recommendImgCanvas = recommendImgCanvas.bind(this)
+        this.lachineImgCanvas = lachineImgCanvas.bind(this)
         this.state = {
             list_data: [],
             showDialog: false,
@@ -284,7 +290,6 @@ class Homepage extends Component {
                 nameCh: this.props.user.userInfo.nameCh,
             }).then(res => {
                 this.state.canvasImg = <img src={res.src} alt="cover" />
-                this.state.taskImgSrc = res.src
                 this.setState((state) => {
                     return {
                         showDialog: !this.state.showDialog
@@ -365,9 +370,39 @@ class Homepage extends Component {
         let arr = this.state.task_list
         arr[index].active = !arr[index].active
         this.setState({
-            task_list:arr
+            task_list: arr
         })
     }
+
+    // 显示推荐弹框
+    fnRecommendDialog() {
+        // 生成明星产品分享图
+        this.recommendImgCanvas({
+            backgroundImg:recommendImg
+        }).then(res => {
+            this.state.canvasImg = <img src={res.src} alt="cover" />
+            this.setState((state) => {
+                return {
+                    showDialog: !this.state.showDialog
+                }
+            })
+        })
+    }
+
+    // 显示拉新产品弹框
+    fnLachineDialog() {
+        this.lachineImgCanvas({
+            backgroundImg:lachineImg
+        }).then(res => {
+            this.state.canvasImg = <img src={res.src} alt="cover" />
+            this.setState((state) => {
+                return {
+                    showDialog: !this.state.showDialog
+                }
+            })
+        })
+    }
+
     // 跳转明星产品页面
     goToStartProduct() {
         this.props.history.push(
@@ -375,9 +410,9 @@ class Homepage extends Component {
         )
     }
     // 跳转拉新产品页面
-    goTolachineProduct() {
+    goTolachineProduct(initialPage) {
         this.props.history.push(
-            '/lachineProduct'
+            '/lachineProduct?initialPage=' + initialPage
         )
     }
     // 跳转奖励金账户页面
@@ -432,21 +467,34 @@ class Homepage extends Component {
                         </ul>
                     </header>
                     <section className="aggregation">
-                        <div className="bonus" onClick={this.goToBonus.bind(this)}>
-                            <p>我的奖励金</p>
-                            <p>
-                                <span>&yen;</span>
-                                <span className="num">{this.state.totalPrize}</span>
-                            </p>
+                        <div className="bonus">
+                            <div className="bonusNum" onClick={this.goToBonus.bind(this)}>
+                                <p>我的奖励金</p>
+                                <p>
+                                    <span>
+                                        <img src={money} style={{ width: "15px", marginRight: "3px", marginBottom: "4px" }} alt="" />
+                                    </span>
+                                    <span className="num">{this.state.totalPrize}</span>
+                                </p>
+                            </div>
+                            <div className="integral">
+                                <p>我的积分</p>
+                                <p>
+                                    <span>
+                                        <img src={IntegralImg} style={{ width: "15px", marginRight: "3px", marginBottom: "4px" }} alt="" />
+                                    </span>
+                                    <span className="num">{this.state.totalPrize}</span>
+                                </p>
+                            </div>
                         </div>
                         <div className="success" >
-                            <div className="success-lachine" onClick={this.goTolachineProduct.bind(this)}>
-                                <p>拉新会员成功数</p>
-                                <p>{this.state.recMemberCount}</p>
-                            </div>
-                            <div className="success-order" onClick={this.goTolachineProduct.bind(this)}>
-                                <p>下单成功数</p>
+                            <div className="success-lachine" onClick={this.goTolachineProduct.bind(this, 0)}>
+                                <p>下单成功</p>
                                 <p>{this.state.recOrderCount}</p>
+                            </div>
+                            <div className="success-order" onClick={this.goTolachineProduct.bind(this, 1)}>
+                                <p>拉新会员</p>
+                                <p>{this.state.recMemberCount}</p>
                             </div>
                         </div>
                     </section>
@@ -463,18 +511,18 @@ class Homepage extends Component {
                                     this.state.task_list.map((item, index) => {
                                         return (
                                             <ul key={index}>
-                                                <li className="frist-lachine fifty" style={item.active ? { borderBottom: "1px solid #ccc" } : { borderBottom: "none" }}>
-                                                    <div className="frist-lachine-right">
+                                                <li className="frist-lachine fifty" style={item.active ? { borderBottom: "1px solid #ccc" } : { borderBottom: "none" }} >
+                                                    <div className="frist-lachine-right" onClick={this.fnLachineDialog.bind(this)}>
                                                         <img style={{ width: "40px", marginTop: "0px" }} src={item.activityImgUrl} alt="" />
                                                         <div className="content">
-                                                            <p>{item.activityName}</p>
+                                                            <p>{item.activityName}<span className="icon"></span></p>
                                                             <p>{item.activityDestription}</p>
                                                         </div>
                                                     </div>
                                                     {item.activityStatus === 1 && <span style={{ padding: "3px 10px", color: "#fff" }} onClick={this.fnChangeActivity.bind(this)}>我要拉新</span>}
                                                     {item.activityStatus === 2 && <span onClick={this.fnChangeActivity.bind(this)}><span>{item.activityStart}</span><span>/{item.activityEnd}</span><span>进行中</span></span>}
                                                     {item.activityStatus === 3 && <span style={{ padding: "3px 10px", color: "#ac9987", backgroundColor: "#f1e8d0" }} onClick={this.fnChangeActivity.bind(this)}>已完成</span>}
-                                                    <div className="dropDown" onClick={this.fnChangeDropDownState.bind(this,index)}>
+                                                    <div className="dropDown" onClick={this.fnChangeDropDownState.bind(this, index)}>
                                                         <Icon type={item.active ? "down" : "up"} color="#cca846" />
                                                     </div>
                                                 </li>
@@ -509,11 +557,11 @@ class Homepage extends Component {
                                     })
                                 }
                             </li>
-                            <li className="frist-lachine receive-tasks">
-                                <div className="frist-lachine-right">
+                            <li className="frist-lachine receive-tasks" >
+                                <div className="frist-lachine-right" >
                                     <img style={{ width: "40px", marginTop: "0px" }} src="http://image.fosunholiday.com/foliday/H5/recommend/5.png" alt="" />
-                                    <div className="content">
-                                        <p>推荐产品成功预定一次<span className="icon" onClick={this.goToStartProduct.bind(this)}></span></p>
+                                    <div className="content" onClick={this.fnRecommendDialog.bind(this)}>
+                                        <p>推荐产品成功预定一次<span className="icon"></span></p>
                                         {this.state.recommend_roduct.taskStatus === 1 && <p>好友成功购买推荐产品，赚订单3%</p>}
                                         {this.state.recommend_roduct.taskStatus === 2 && <p>好友成功购买推荐产品，赚订单3%</p>}
                                         {this.state.recommend_roduct.prizeStatus === 1 && this.state.recommend_roduct.taskStatus === 3 ? <p><img src={accountEntry} alt="" style={{ width: "17px", marginRight: "5px", marginTop: "2px" }} />奖励金待入账</p> : null}
