@@ -40,6 +40,11 @@ class Details extends Component {
       this.setState({
         code,
       })
+      await this.getIncome()
+      await this.getSpending()
+      this.setState({
+        finished: true,
+      })
     }
     catch (e) {
 
@@ -102,12 +107,7 @@ class Details extends Component {
 
   async componentDidMount() {
     try {
-      await this.getReConut()
-      await this.getIncome()
-      await this.getSpending()
-      this.setState({
-        finished: true,
-      })
+      this.getReConut()
     } catch (e) {
       // console.log(e)
     }
@@ -151,6 +151,7 @@ class Details extends Component {
     switch (this.state.initialPage) {
       // 收入上拉加载更多
       case 0:
+        console.log("0")
         if (this.state.income_finished) {
           Toast.info('数据已经加载完毕', 1);
           this.setState({ refreshing: false });
@@ -213,18 +214,6 @@ class Details extends Component {
                         </div>
                         <div className="substance-right"><span>+</span><span>{item.point}</span><span></span><span style={{ display: "none" }} className={`icon ${(item.active === true ? 'frameActive' : null)} ${(item.id ? '' : 'hide')} `} onClick={this.active.bind(this, item.id)}></span></div>
                       </div>
-
-                      {/*  下拉气泡 */}
-                      {/* <div className={`drop-down clearfix ${(item.active === true ? 'divDeviation' : '')} ${(item.id ? '' : 'hide')}`} >
-                        <p className="orderID">
-                          <span>订单ID</span>
-                          <span>{item.id}</span>
-                        </p>
-                        <p className="replacement">
-                          <span>{item.typeName}</span>
-                          <span>{item.point}</span>
-                        </p>
-                      </div> */}
                     </li>
                   ))}
                   {(this.state.income_data.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}

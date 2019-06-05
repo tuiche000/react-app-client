@@ -22,7 +22,7 @@ class LachineProduct extends Component {
                 { title: '产品推荐' },
                 { title: '拉新会员' },
             ],
-            initialPage:  Number(this.props.history.location.search.split("=")[1]) || 0, // 切换tab栏
+            initialPage: Number(this.props.history.location.search.split("=")[1]) || 0, // 切换tab栏,
             lachine_pageNo: 1, // 拉新列表页数
             lachine_pageSize: 10, // 拉新列表单页显示数据量
             lachine_finished: false, // 拉新列表是否加载全部数据 
@@ -32,7 +32,18 @@ class LachineProduct extends Component {
             recommend_finished: false, // 产品列表是否加载全部数据
         }
     }
+    async componentDidMount() {
+        try {
+            await this.getLachineList()
+            await this.getRecommendList()
+            this.setState({
+                finished: true,
+            })
+        } catch (e) {
+            alert(JSON.stringify(e))
+        }
 
+    }
     // 获取拉新列表
     async getLachineList() {
         try {
@@ -82,18 +93,6 @@ class LachineProduct extends Component {
         }
     }
 
-    async componentDidMount() {
-        try {
-            await this.getLachineList()
-            await this.getRecommendList()
-            this.setState({
-                finished: true,
-            })
-        } catch (e) {
-            alert(JSON.stringify(e))
-        }
-
-    }
     // 跳转奖励金收支明细页面
     goToDetails() {
         this.props.history.push(
@@ -156,40 +155,6 @@ class LachineProduct extends Component {
                 <div className="lachineProduct ">
                     <Tabs tabs={this.state.tabs} initialPage={this.state.initialPage} tabBarActiveTextColor={'#000000'} tabBarInactiveTextColor={'#999999'} tabBarUnderlineStyle={{ border: '0.5px #ffc147 solid' }} animated={true} useOnPan={true} onChange={this.onTabsChange}>
                         <div>
-                            <section className="lachine" >
-                                <PullToRefresh
-                                    damping={100}
-                                    ref={el => this.ptr = el}
-                                    style={{
-                                        height: this.state.height,
-                                        overflow: 'auto',
-                                    }}
-                                    direction="up"
-                                    refreshing={this.state.refreshing}
-                                    onRefresh={this.onRefresh}
-                                >
-                                    <ul>
-                                        {this.state.recommend_list.map(item => (
-                                            <li key={item.recommendId}>
-                                                <div className="lachine-top clearfix">
-                                                    <div className="picture"><img src="http://img.fosunholiday.com/img/M00/00/32/Ch0djlri8MuAIUyaAARiSUd-y2o767.jpg" alt="" /></div>
-                                                    <div className="characters">
-                                                        <p className="characters-telephone">{item.mobile}</p>
-                                                        <p className="characters-time">
-                                                            <span>推荐时间</span>
-                                                            <span>{item.recommendDate}</span>
-                                                            <span></span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        ))}
-                                        {(this.state.recommend_list.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
-                                    </ul>
-                                </PullToRefresh>
-                            </section>
-                        </div>
-                        <div>
                             <section className="product" >
                                 <PullToRefresh
                                     damping={100}
@@ -204,7 +169,7 @@ class LachineProduct extends Component {
                                 >
                                     <ul>
                                         {
-                                            this.state.Lachine_list.map(item => (
+                                            this.state.recommend_list.map(item => (
                                                 <li key={item.recommendId}>
                                                     <div className="product-top clearfix">
                                                         <div className="picture"><img src={item.productImage} alt="" /></div>
@@ -232,40 +197,40 @@ class LachineProduct extends Component {
                                                 </li>
                                             ))
                                         }
-                                        {/* <li>
-                                        <div className="product-top clearfix">
-                                            <div className="picture"><img src="./imgs/header-portrait.jpg" alt="" /></div>
-                                            <div className="characters">
-                                                <p className="characters-describe">马尔代夫卡尼岛Club Med度假村高级会所2晚豪华水屋，送往返机票</p>
-                                                <p className="characters-time">
-                                                    <span>推荐时间</span>
-                                                    <span>2018-12-12</span>
-                                                    <span>09:00</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="product-bottom">
-                                            <span className="bonus-pending">奖励金待入账</span>
-                                            <span className="icon"></span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="product-top clearfix">
-                                            <div className="picture"><img src="./imgs/header-portrait.jpg" alt="" /></div>
-                                            <div className="characters">
-                                                <p className="characters-describe">马尔代夫卡尼岛Club Med度假村高级会所2晚豪华水屋，送往返机票</p>
-                                                <p className="characters-time">
-                                                    <span>推荐时间</span>
-                                                    <span>2018-12-12</span>
-                                                    <span>09:00</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="product-bottom">
-                                            <span className="bonus-fail">审核失败 奖励金1.00取消发放</span>
-                                            <span className="icon"></span>
-                                        </div>
-                                    </li> */}
+                                        {(this.state.recommend_list.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
+                                    </ul>
+                                </PullToRefresh>
+                            </section>
+                        </div>
+                        <div>
+                            <section className="lachine" >
+                                <PullToRefresh
+                                    damping={100}
+                                    ref={el => this.ptra = el}
+                                    style={{
+                                        height: this.state.height,
+                                        overflow: 'auto',
+                                    }}
+                                    direction="up"
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this.onRefresh}
+                                >
+                                    <ul>
+                                        {this.state.Lachine_list.map(item => (
+                                            <li key={item.recommendId}>
+                                                <div className="lachine-top clearfix">
+                                                    <div className="picture"><img src={item.productImage} alt="" /></div>
+                                                    <div className="characters">
+                                                        <p className="characters-telephone">{item.mobile}</p>
+                                                        <p className="characters-time">
+                                                            <span>推荐时间</span>
+                                                            <span>{item.recommendDate}</span>
+                                                            <span></span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        ))}
                                         {(this.state.Lachine_list.length === 0 && this.state.finished) && <div style={{ textAlign: 'center' }}><img src="http://image.fosunholiday.com/h5/default/KONG.png" alt="" style={{ width: "40%", paddingTop: "20px" }} /><p style={{ paddingTop: "20px" }}>—暂无相关内容—</p></div>}
                                     </ul>
                                 </PullToRefresh>

@@ -1,0 +1,26 @@
+body,
+html,
+main {
+  background-color: #fff;
+}
+
+.propaganda {
+  position: relative;
+}
+
+img {
+  width: 100%;
+}
+
+.propaganda p {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%,0);
+  bottom: 10px;
+  width: 90vw;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  line-height: 40px;
+  background-color: #ef8b00;
+}

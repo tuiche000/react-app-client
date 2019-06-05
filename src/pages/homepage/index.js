@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import "./index.css";
 import { Icon } from 'antd-mobile';
 import Dialog from "@/components/Dialog";
-// import { setShare } from 'fm-ui/lib/utils/share'
 import hostConfig from '@/hostConfig'
 import { productList } from '@/pages/api/product'
 import { tasklist } from '@/pages/api/tasklist'
@@ -153,7 +152,6 @@ class Homepage extends Component {
         } else {
             url = head_defult
         }
-
         // 获取app分享地址
         try {
             let share_url = await shareUrl({
@@ -263,11 +261,11 @@ class Homepage extends Component {
             })
         }
     }
-    // 获取推荐任务二维码图片
+    // 获取会员拉新二维码图片
     async getActivityQrCode() {
         try {
             let code_data = await shareUrl({
-                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
+                url: hostConfig.mBase + 'fyRecommend/#/propaganda',
                 mode: 0,
             })
             this.setState({
@@ -275,7 +273,6 @@ class Homepage extends Component {
             })
 
             // 生成推荐任务分享图片
-
             let url = this.props.user.userInfo.iconurl
             if (url) {
                 url = url.indexOf('http:') > -1 ? url : hostConfig.apiBase + '/' + url
@@ -302,19 +299,19 @@ class Homepage extends Component {
             // console.log(e)
         }
     }
-    // 设置推荐任务APP分享 
+    // 设置会员拉新APP分享 
     async getActivityShareUrl() {
         try {
             let share_url = await shareUrl({
-                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
+                url: hostConfig.mBase + 'fyRecommend/#/propaganda',
                 mode: 5,
             })
             this.setState({
                 Activityshare_url: share_url.shareUrl,
             })
-            // 获取推荐任务分享二维码
+            // 获取会员拉新分享二维码
             let code_data = await shareUrl({
-                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
+                url: hostConfig.mBase + 'fyRecommend/#/propaganda',
                 mode: 0,
             })
             this.setState({
@@ -346,7 +343,8 @@ class Homepage extends Component {
             // console.log(e)
         }
     }
-    // 推荐任务小图标弹框   不修改状态
+
+    // 会员拉新弹框
     fnChangeActivity() {
         try {
             if (window.Prius.isInsideApp) {
@@ -376,7 +374,6 @@ class Homepage extends Component {
 
     // 显示推荐弹框
     fnRecommendDialog() {
-        // 生成明星产品分享图
         this.recommendImgCanvas({
             backgroundImg: recommendImg
         }).then(res => {
@@ -441,7 +438,6 @@ class Homepage extends Component {
         } else {
             window.location.href = `${hostConfig.mBase}product?productId=${productId}`
         }
-
     }
     render() {
         return (
@@ -519,10 +515,9 @@ class Homepage extends Component {
                                                             <p>{item.activityDestription}</p>
                                                         </div>
                                                     </div>
-                                                    {item.activityStatus === 1 && <span style={{ padding: "3px 10px", color: "#fff" }} onClick={this.fnChangeActivity.bind(this)}>我要拉新</span>}
-                                                    {item.activityStatus === 2 && <span onClick={this.fnChangeActivity.bind(this)}><span>{item.activityStart}</span><span>/{item.activityEnd}</span><span>进行中</span></span>}
-                                                    {item.activityStatus === 3 && <span style={{ padding: "3px 10px", color: "#ac9987", backgroundColor: "#f1e8d0" }} onClick={this.fnChangeActivity.bind(this)}>已完成</span>}
-                                                    <div className="dropDown" onClick={this.fnChangeDropDownState.bind(this, index)}>
+                                                    <span style={{ padding: "3px 10px", color: "#fff" }} onClick={this.fnChangeActivity.bind(this)}>我要拉新</span>
+                                                    <div className="progressBar"><span>{item.activityStart}</span><span>/{item.activityEnd}</span></div>
+                                                    <div className="dropDown" onClick={this.fnChangeDropDownState.bind(this, index)} style={item.stageListDTOS ? {display:"block"}: {display:"none"}}>
                                                         <Icon type={item.active ? "down" : "up"} color="#cca846" />
                                                     </div>
                                                 </li>
@@ -557,7 +552,7 @@ class Homepage extends Component {
                             </li>
                             <li className="frist-lachine receive-tasks" >
                                 <div className="frist-lachine-right" >
-                                    <img style={{ width: "40px", marginTop: "0px" }} src="http://image.fosunholiday.com/foliday/H5/recommend/5.png" alt="" />
+                                    <img style={{ width: "40px", marginTop: "0px" }} src="http://image.fosunholiday.com/h5/spread/lALPDeC2uIKalK7NBljNAu4_750_1624_03.png" alt="" />
                                     <div className="content" onClick={this.fnRecommendDialog.bind(this)}>
                                         <p>推荐产品成功预定一次<span className="icon"></span></p>
                                         {this.state.recommend_roduct.taskStatus === 1 && <p>好友成功购买推荐产品，赚订单3%</p>}
