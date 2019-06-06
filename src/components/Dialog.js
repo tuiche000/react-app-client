@@ -12,13 +12,13 @@ class Dialog extends Component {
         super(...args);
         document.querySelector('body').style = "overflow: hidden;height: 100vh;"
         // 禁止页面滑动
-        document.addEventListener('touchmove', (e) =>{e.preventDefault()}, false);
+        // document.addEventListener('touchmove', (e) =>{e.preventDefault()}, false);
     }
 
     componentWillUnmount() {
         document.querySelector('body').style = ""
         // 重启页面滑动
-        document.removeEventListener('touchmove', (e) =>{e.preventDefault()}, false);
+        // document.removeEventListener('touchmove', (e) =>{e.preventDefault()}, false);
     }
     componentDidMount() {
 

@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import accountEntry from '@/pages/assets/imgs/accountEntry.png'
 import complete from '@/pages/assets/imgs/complete.png'
 import problem from '@/pages/assets/imgs/problem.png'
+import head_defult from '@/pages/assets/imgs/head_defult.png'
 
 @connect((state, props) => Object.assign({}, props, state), {
 })
@@ -219,7 +220,7 @@ class LachineProduct extends Component {
                                         {this.state.Lachine_list.map(item => (
                                             <li key={item.recommendId}>
                                                 <div className="lachine-top clearfix">
-                                                    <div className="picture"><img src={item.productImage} alt="" /></div>
+                                                    <div className="picture"><img src={head_defult} alt="" /></div>
                                                     <div className="characters">
                                                         <p className="characters-telephone">{item.mobile}</p>
                                                         <p className="characters-time">

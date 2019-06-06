@@ -71,14 +71,12 @@ class Homepage extends Component {
     async getQrCode(item) {
         try {
             let code_data = await shareUrl({
-                url: hostConfig.mBase + "product?productId=" + item.productId,
+                url: `${hostConfig.mBase}product?productId=${item.productId}`,
                 mode: 0,
             })
             this.setState({
                 QR_code: code_data.shareUrl,
             })
-
-
             // 获取用户头像地址并设置默认值
             let url = this.props.user.userInfo.iconurl
             if (url) {
@@ -155,13 +153,13 @@ class Homepage extends Component {
         // 获取app分享地址
         try {
             let share_url = await shareUrl({
-                url: hostConfig.mBase + "product?productId=" + item.productId,
+                url: `${hostConfig.mBase}product?productId=${item.productId}`,
                 mode: 5,
             })
 
             // 获取明星产品分享二维码图片
             let code_data = await shareUrl({
-                url: hostConfig.mBase + "product?productId=" + item.productId,
+                url: `${hostConfig.mBase}product?productId=${item.productId}`,
                 mode: 0,
             })
             this.setState({
@@ -265,13 +263,12 @@ class Homepage extends Component {
     async getActivityQrCode() {
         try {
             let code_data = await shareUrl({
-                url: hostConfig.mBase + 'fyRecommend/#/propaganda',
+                url: `${hostConfig.mBase}fyRecommend/#/propaganda`,
                 mode: 0,
             })
             this.setState({
                 QR_code: code_data.shareUrl,
             })
-
             // 生成推荐任务分享图片
             let url = this.props.user.userInfo.iconurl
             if (url) {
@@ -303,7 +300,7 @@ class Homepage extends Component {
     async getActivityShareUrl() {
         try {
             let share_url = await shareUrl({
-                url: hostConfig.mBase + 'fyRecommend/#/propaganda',
+                url: `${hostConfig.mBase}fyRecommend/#/propaganda`,
                 mode: 5,
             })
             this.setState({
@@ -311,7 +308,7 @@ class Homepage extends Component {
             })
             // 获取会员拉新分享二维码
             let code_data = await shareUrl({
-                url: hostConfig.mBase + 'fyRecommend/#/propaganda',
+                url: `${hostConfig.mBase}fyRecommend/#/propaganda`,
                 mode: 0,
             })
             this.setState({
@@ -409,7 +406,7 @@ class Homepage extends Component {
     // 跳转拉新产品页面
     goTolachineProduct(initialPage) {
         this.props.history.push(
-            '/lachineProduct?initialPage=' + initialPage
+            `/lachineProduct?initialPage=${initialPage}`
         )
     }
     // 跳转奖励金账户页面
@@ -501,13 +498,13 @@ class Homepage extends Component {
                         <p>做任务拿奖励金</p>
                     </div>
                     <div className="tasks-list">
-                        <ul>
+                        <ul style={{marginTop:"8px"}}>
                             <li>
                                 {
                                     this.state.task_list.map((item, index) => {
                                         return (
                                             <ul key={index}>
-                                                <li className="frist-lachine fifty" style={item.active ? { borderBottom: "1px solid #ccc" } : { borderBottom: "none" }} >
+                                                <li className="frist-lachine fifty" style={item.active ? { borderBottom: "1px solid #ccc" } : { borderBottom: "none" }, item.activityStart !== 0 ? {height:"100px"} :{height: "85px"}} >
                                                     <div className="frist-lachine-right" onClick={this.fnLachineDialog.bind(this)}>
                                                         <img style={{ width: "40px", marginTop: "0px" }} src={item.activityImgUrl} alt="" />
                                                         <div className="content">
@@ -515,10 +512,10 @@ class Homepage extends Component {
                                                             <p>{item.activityDestription}</p>
                                                         </div>
                                                     </div>
-                                                    <span style={{ padding: "3px 10px", color: "#fff" }} onClick={this.fnChangeActivity.bind(this)}>我要拉新</span>
-                                                    <div className="progressBar"><span>{item.activityStart}</span><span>/{item.activityEnd}</span></div>
-                                                    <div className="dropDown" onClick={this.fnChangeDropDownState.bind(this, index)} style={item.stageListDTOS ? {display:"block"}: {display:"none"}}>
-                                                        <Icon type={item.active ? "down" : "up"} color="#cca846" />
+                                                    <span style={{ padding: "3px 10px", color: "#7d530e" }} onClick={this.fnChangeActivity.bind(this)}>我要拉新</span>
+                                                    {item.activityStart !== 0 && <div className="progressBar"><span>{item.activityStart}</span><span>/{item.activityEnd}</span></div>}
+                                                    <div className="dropDown" onClick={this.fnChangeDropDownState.bind(this, index)} style={item.stageListDTOS ? { display: "block" } : { display: "none" }}>
+                                                        <Icon type={item.active ? "down" : "up"} color="rgb(125, 83, 14)" />
                                                     </div>
                                                 </li>
                                                 <li style={item.active ? { display: "none" } : { display: "block" }} className="dropDownBox">
@@ -552,7 +549,7 @@ class Homepage extends Component {
                             </li>
                             <li className="frist-lachine receive-tasks" >
                                 <div className="frist-lachine-right" >
-                                    <img style={{ width: "40px", marginTop: "0px" }} src="http://image.fosunholiday.com/h5/spread/lALPDeC2uIKalK7NBljNAu4_750_1624_03.png" alt="" />
+                                    <img style={{ width: "40px", marginTop: "0px" }} src="http://image.fosunholiday.com/h5/spread/taskpic1.png" alt="" />
                                     <div className="content" onClick={this.fnRecommendDialog.bind(this)}>
                                         <p>推荐产品成功预定一次<span className="icon"></span></p>
                                         {this.state.recommend_roduct.taskStatus === 1 && <p>好友成功购买推荐产品，赚订单3%</p>}
@@ -624,14 +621,15 @@ class Homepage extends Component {
                         </li>
                     </ul>
                 </section> */}
-                <section className="innisfree integral recommended-tasks">
+                <div style={{height:"10px",backgroundColor:"#f8f8f8"}}></div>
+                <section className="innisfree integral recommended-tasks" style={{marginTop:"10px"}}>
                     <div className="integral-top  clearfix">
                         <div className="title">
                             <h3>明星产品</h3>
                             <p>推荐一下产品获取3%奖励金</p>
                         </div>
                         <p>
-                            <span onClick={this.goToStartProduct.bind(this)}>更多产品</span>
+                            <span onClick={this.goToStartProduct.bind(this)}><Icon type={"right"} color="rgb(125, 83, 14)" /></span>
                         </p>
                     </div>
                     <ul>

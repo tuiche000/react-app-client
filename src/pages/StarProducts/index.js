@@ -75,12 +75,12 @@ class StarProducts extends Component {
     async getShareUrl(item) {
         try {
             let share_url = await shareUrl({
-                url: hostConfig.mBase + "product?productId=" + item.productId,
+                url: `${hostConfig.mBase}product?productId=${item.productId}`,
                 mode: 5,
             })
 
             let code_data = await shareUrl({
-                url: hostConfig.mBase + "product?productId=" + item.productId,
+                url: `${hostConfig.mBase}product?productId=${item.productId}`,
                 mode: 0,
             })
             this.setState({
@@ -195,7 +195,7 @@ class StarProducts extends Component {
         })
     }
 
-    onEndReached =(event) => {
+    onEndReached = (event) => {
         //如果this.state.hasMore为false，说明没数据了，直接返回
         console.log(this.state.isLoading && this.state.hasMore)
         if (this.state.hasMore) {
@@ -221,9 +221,9 @@ class StarProducts extends Component {
                     <p className="amount" style={{ fontSize: "14px", padding: "0 10px" }}>
                         <span className="yen" style={{ fontSize: "14px", color: "#f5a623" }}>&yen;</span>
                         <span className="num" style={{ fontSize: "18px", color: "#f5a623" }}>{rowData.productPrice}</span>
-                        <span>起1</span>
+                        <span>起</span>
                     </p>
-                    <p className="immediately" style={{ position: "absolute", bottom: "0", right: "0", padding: "5px 10px", backgroundColor: "#f5a623", borderRadius: "20px 0 0 0", color: "#fff", fontSize: "14px" }} onClick={this.fnFooterClose.bind(this, rowData)}>立刻推荐</p>
+                    <p className="immediately" style={{ position: "absolute", bottom: "0", right: "0", padding: "5px 10px", backgroundColor: "#f0ede9", borderRadius: "20px 0 0 0", color: "#7d530e", fontSize: "14px" }} onClick={this.fnFooterClose.bind(this, rowData)}>立刻推荐</p>
                 </div>
             );
         };

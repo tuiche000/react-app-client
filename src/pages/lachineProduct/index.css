@@ -116,10 +116,16 @@ main {
   margin-left: 10px;
 }
 
+.lachine .lachine-top .picture {
+  border-radius: 100%;
+  overflow: hidden;
+}
+
 .lachine .lachine-top .picture img {
   width: 40px;
   height: auto;
-  margin-top: 8px;
+  /* margin-top: 8px; */
+  border-radius: 100%;
 }
 
 .lachine .lachine-top .characters .characters-telephone {

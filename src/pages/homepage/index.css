@@ -48,11 +48,36 @@ main {
 .aggregation {
     width: 100%;
     height: 180px;
-    background-color: #4a4138;
+    background-color: #eeca81;
     border-radius: 15px;
     margin-top: 5px;
     color: #725f33;
     position: relative;
+    overflow: hidden;
+}
+
+.aggregation::after {
+    content: "";
+    width: 30px;
+    height: 28px;
+    background-color: #fff;
+    border-radius: 100%;
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.aggregation::before {
+    content: "";
+    width: 30px;
+    height: 28px;
+    background-color: #fff;
+    border-radius: 100%;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .aggregation .bonus {
@@ -74,11 +99,11 @@ main {
 }
 
 .aggregation .bonus {
-    color: #725f33;
+    color: #bb8933;
 }
 
 .aggregation .bonus p:nth-child(2) {
-    color: #e9cf8a;
+    color: #7d530e;
 }
 
 .aggregation .bonus .num {
@@ -94,7 +119,7 @@ main {
 }
 
 .aggregation .bonus .bonusNum {
-    border-right: 1px solid #5c4d2e;
+    border-right: 1px solid #fff;
 }
 
 .aggregation .success {
@@ -104,25 +129,19 @@ main {
     top: 104px;
     left: 0;
     text-align: center;
+    color: #bb8933;
 }
 
 .aggregation .success .success-lachine {
     float: left;
     width: 50%;
     height: 100%;
-    border-right: 1px solid #5c4d2e;
+    border-right: 1px solid #fff;
     font-size: 16px;
     padding: 10px 0;
 }
 
 .aggregation .success .success-order {
-    /* float: left;
-    width: 100%;
-    height: 100%;
-    font-size: 16px;
-    padding: 10px 0;
-    position: absolute;
-    top: 20%; */
     float: left;
     width: 50%;
     height: 100%;
@@ -133,7 +152,7 @@ main {
 .aggregation .success .success-order p:nth-child(2),
 .aggregation .success .success-lachine p:nth-child(2) {
     font-size: 18px;
-    color: #cca641;
+    color: #ad7c28;
 }
 
 .recommended-tasks {
@@ -144,15 +163,16 @@ main {
 .recommended-tasks .title h3 {
     padding-left: 5px;
     line-height: 1.2;
-    border-left: 3px solid #e6c882;
+    border-left: 3px solid #ababab;
     font-size: 18px;
-    /* font-weight: 600; */
+    display: inline;
 }
 
 .recommended-tasks .title p {
     padding-left: 8px;
     font-size: 14px;
     color: #666666;
+    display: inline;
 }
 
 .recommended-tasks .tasks-list {
@@ -165,6 +185,11 @@ main {
     position: relative;
     border-bottom: 1px solid #ccc;
 }
+
+.recommended-tasks .tasks-list .receive-tasks {
+    border-bottom: none;
+}
+
 .recommended-tasks .tasks-list .fifty {
     height: 100px;
 }
@@ -200,12 +225,12 @@ main {
 }
 
 .recommended-tasks .tasks-list .receive-tasks>span {
-    background-color: #f5a623;
-    color: #fff;
+    background-color: #f7f4f0;
+    color: #7d530e;
 }
 
 .recommended-tasks .tasks-list .fifty>span {
-    background-color: #f5a623;
+    background-color: #f7f4f0;
     color: #000000;
     min-width: 65px;
     padding: 0;
@@ -216,7 +241,7 @@ main {
     font-size: 8px;
     left: 12px;
     top: -25px;
-    background-color: #f5a623;
+    background-color: #f7f4f0;
     color: #fff;
     padding: 0 7px;
     border-radius: 6px;
@@ -253,7 +278,6 @@ main {
 .recommended-tasks .tasks-list .fifty .dropDown {
     width: 46px;
     height: 46px;
-    background: linear-gradient(#f1e8d0, #fff);
     border-radius: 100%;
     position: absolute;
     bottom: -23px;
@@ -445,11 +469,11 @@ main {
 
 .innisfree .innisfree-lis {
     margin-top: 10px;
-    border: 1px solid #ebebeb;
     border-radius: 20px;
     padding: 10px;
     overflow: hidden;
     position: relative;
+    background-color: #f8f8f8;
 }
 
 .innisfree .innisfree-lis .substance {
@@ -480,8 +504,8 @@ main {
     bottom: 0;
     right: 0;
     padding: 5px 10px;
-    background-color: #f5a623;
+    background-color: #f0ede9;
     border-radius: 20px 0 0 0;
-    color: #fff;
+    color: #7d530e;
     font-size: 14px;
 }
