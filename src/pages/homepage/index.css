@@ -48,7 +48,7 @@ main {
 .aggregation {
     width: 100%;
     height: 180px;
-    background-color: #eeca81;
+    background-color: #efcb82;
     border-radius: 15px;
     margin-top: 5px;
     color: #725f33;
@@ -119,7 +119,8 @@ main {
 }
 
 .aggregation .bonus .bonusNum {
-    border-right: 1px solid #fff;
+    border-right: 1px transparent solid;
+    border-image: linear-gradient(transparent, #fff) 1 10;
 }
 
 .aggregation .success {
@@ -136,9 +137,10 @@ main {
     float: left;
     width: 50%;
     height: 100%;
-    border-right: 1px solid #fff;
     font-size: 16px;
     padding: 10px 0;
+    border-right: 1px transparent solid;
+    border-image: linear-gradient(#fff, transparent) 1 10;
 }
 
 .aggregation .success .success-order {
@@ -161,11 +163,24 @@ main {
 }
 
 .recommended-tasks .title h3 {
-    padding-left: 5px;
+    padding-left: 10px;
     line-height: 1.2;
-    border-left: 3px solid #ababab;
+    /* border-left: 3px solid #ababab; */
     font-size: 18px;
     display: inline;
+    position: relative;
+}
+
+.recommended-tasks .title h3::before {
+    content: "";
+    width: 4px;
+    height: 20px;
+    background-color: #ababab;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    transform: translate(0,-50%)
 }
 
 .recommended-tasks .title p {
@@ -198,21 +213,18 @@ main {
 .recommended-tasks .tasks-list .frist-lachine>span {
     position: absolute;
     top: 50%;
-    -webkit-transform: translate(0, -50%);
     transform: translate(0, -50%)
 }
 
 .recommended-tasks .tasks-list .fifty>span {
     position: absolute;
     top: 10%;
-    -webkit-transform: translate(0, 0);
     transform: translate(0, 0)
 }
 
 .recommended-tasks .tasks-list .fifty .frist-lachine-right {
     position: absolute;
     top: 0;
-    -webkit-transform: translate(0, 0);
     transform: translate(0, 0)
 }
 
@@ -356,7 +368,6 @@ main {
 .recommended-tasks .tasks-list .dropDownBox ul .frist-lachine>p {
     position: absolute;
     top: 50%;
-    -webkit-transform: translate(0, -50%);
     transform: translate(0, -50%);
     right: 15px;
     padding: 3px 10px;
@@ -374,7 +385,6 @@ main {
     height: 8px;
     border-right: 1px solid #756030;
     border-bottom: 1px solid #756030;
-    -webkit-transform: rotate(-45deg) translate(0, 0%);
     transform: rotate(-45deg) translate(0, 0%);
 }
 
@@ -404,7 +414,6 @@ main {
     position: absolute;
     top: 50%;
     left: 0;
-    -webkit-transform: translate(0, -50%);
     transform: translate(0, -50%)
 }
 
@@ -450,7 +459,6 @@ main {
     position: absolute;
     top: 50%;
     right: 0;
-    -webkit-transform: translate(0, -50%);
     transform: translate(0, -50%);
 }
 

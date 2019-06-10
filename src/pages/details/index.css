@@ -36,7 +36,6 @@ main {
   position: absolute;
   top: 50%;
   right: 0;
-  -webkit-transform: translate(0, -50%);
   transform: translate(0, -50%);
   color: #f08404;
 }
