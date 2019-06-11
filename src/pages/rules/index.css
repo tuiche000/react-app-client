@@ -1,6 +1,30 @@
-.Re-award{
+.Re-award {
   padding: 10px 15px;
 }
-.Re-award .plan{
+
+.Re-award .plan {
   text-align: center;
+}
+
+.rules {
+  font-size: 12px
+}
+
+.iconfo {
+  margin-left: 12px;
+  position: relative;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.iconfo::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  background-color: #000;
+  position: absolute;
+  top: 50%;
+  left: -12px;
+  transform: translate(0, -50%)
 }

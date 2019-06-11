@@ -362,10 +362,10 @@ class Homepage extends Component {
 
     // 修改推荐下拉框状态
     fnChangeDropDownState(index) {
-        let arr = this.state.task_list
-        arr[index].active = !arr[index].active
+        let taskArray = this.state.task_list
+        taskArray[index].active = !taskArray[index].active
         this.setState({
-            task_list: arr
+            task_list: taskArray
         })
     }
 
@@ -436,6 +436,23 @@ class Homepage extends Component {
             window.location.href = `${hostConfig.mBase}product?productId=${productId}`
         }
     }
+    // 跳转积分明细页
+    goToIntegral() {
+        if (window.Prius.isInsideApp) {
+            Prius.appEventCallback({
+                'callId': 'OPEN_NEW_PAGE',
+                data: {
+                    url: `${hostConfig.mBase}fyh/score`,
+                    // title: "积分明细",
+                },
+                listener: function (data) {
+                    console.log(JSON.stringify(data))
+                }
+            })
+        } else {
+            window.location.href = `${hostConfig.mBase}fyh/score`
+        }
+    }
     render() {
         return (
             <div className="homepage-main">
@@ -470,7 +487,7 @@ class Homepage extends Component {
                                     <span className="num">{this.state.totalPrize}</span>
                                 </p>
                             </div>
-                            <div className="integral">
+                            <div className="integral" onClick={this.goToIntegral.bind(this)}>
                                 <p>我的积分</p>
                                 <p>
                                     <span>
@@ -498,54 +515,55 @@ class Homepage extends Component {
                         <p>做任务拿奖励金</p>
                     </div>
                     <div className="tasks-list">
-                        <ul style={{marginTop:"8px"}}>
+                        <ul style={{ marginTop: "8px" }}>
                             <li>
                                 {
                                     this.state.task_list.map((item, index) => {
                                         return (
                                             <ul key={index}>
-                                                <li className="frist-lachine fifty" style={item.active ? { borderBottom: "1px solid #ccc" } : { borderBottom: "none" }, item.activityStart !== 0 ? {height:"100px"} :{height: "85px"}} >
+                                                <li className="frist-lachine fifty" style={item.active ? { borderBottom: "1px solid #ccc" } : { borderBottom: "none" }, item.activityStart !== 0 ? {height: "100px"} :{height: "85px"}} >
                                                     <div className="frist-lachine-right" onClick={this.fnLachineDialog.bind(this)}>
-                                                        <img style={{ width: "40px", marginTop: "0px" }} src={item.activityImgUrl} alt="" />
-                                                        <div className="content">
-                                                            <p>{item.activityName}<span className="icon"></span></p>
-                                                            <p>{item.activityDestription}</p>
-                                                        </div>
+                                                    <img style={{ width: "40px", marginTop: "0px" }} src={item.activityImgUrl} alt="" />
+                                                    <div className="content">
+                                                        <p>{item.activityName}<span className="icon"></span></p>
+                                                        <p>{item.activityDestription}</p>
                                                     </div>
-                                                    <span style={{ padding: "3px 10px", color: "#7d530e" }} onClick={this.fnChangeActivity.bind(this)}>我要拉新</span>
-                                                    {item.activityStart !== 0 && <div className="progressBar"><span>{item.activityStart}</span><span>/{item.activityEnd}</span></div>}
-                                                    <div className="dropDown" onClick={this.fnChangeDropDownState.bind(this, index)} style={item.stageListDTOS ? { display: "block" } : { display: "none" }}>
-                                                        <Icon type={item.active ? "down" : "up"} color="rgb(125, 83, 14)" />
-                                                    </div>
+                                                </div>
+                                                <span style={{ padding: "3px 10px", color: "#7d530e" }} onClick={this.fnChangeActivity.bind(this)}>我要拉新</span>
+                                                {(item.activityStart !== 0 && (item.activityEnd - item.activityStart) !== 0) && <div className="progressBar"><span style={{ width: (Math.ceil(item.activityStart / item.activityEnd * 10) * 10) + "%" }}>{item.activityStart}/</span><span style={{ width: (Math.floor((item.activityEnd - item.activityStart) / item.activityEnd * 10) * 10) + "%" }}>{item.activityEnd}</span></div>}
+                                                {(item.activityStart !== 0 && (item.activityEnd - item.activityStart) === 0) && <div style={{ backgroundColor: "#f1e8d0", textAlign: "center", borderRadius: "10px" }} className="progressBar">{item.activityStart}/{item.activityEnd}</div>}
+                                                <div className="dropDown" onClick={this.fnChangeDropDownState.bind(this, index)} style={item.stageListDTOS ? { display: "block" } : { display: "none" }}>
+                                                    <Icon type={item.active ? "down" : "up"} color="rgb(125, 83, 14)" />
+                                                </div>
                                                 </li>
-                                                <li style={item.active ? { display: "none" } : { display: "block" }} className="dropDownBox">
-                                                    <ul>
-                                                        {item.stageListDTOS && (
-                                                            item.stageListDTOS.map((items, indexx) => {
-                                                                return (
-                                                                    <li className="frist-lachine" key={indexx}>
-                                                                        <div className="frist-lachine-right">
-                                                                            {items.activityStatus === 1 && <img src="http://image.fosunholiday.com/app/3.0/recommend/notStarted.png" alt="" />}
-                                                                            {items.activityStatus === 2 && <img src="http://image.fosunholiday.com/app/3.0/recommend/ongoing.png" alt="" />}
-                                                                            {items.activityStatus === 3 && <img src="http://image.fosunholiday.com/app/3.0/recommend/complete.png" alt="" />}
-                                                                            <div className="content">
-                                                                                <p>{items.activityName}</p>
-                                                                                <p>{items.activityDestription}</p>
-                                                                            </div>
+                                            <li style={item.active ? { display: "none" } : { display: "block" }} className="dropDownBox">
+                                                <ul>
+                                                    {item.stageListDTOS && (
+                                                        item.stageListDTOS.map((items, indexx) => {
+                                                            return (
+                                                                <li className="frist-lachine" key={indexx}>
+                                                                    <div className="frist-lachine-right">
+                                                                        {items.activityStatus === 1 && <img src="http://image.fosunholiday.com/app/3.0/recommend/notStarted.png" alt="" />}
+                                                                        {items.activityStatus === 2 && <img src="http://image.fosunholiday.com/app/3.0/recommend/ongoing.png" alt="" />}
+                                                                        {items.activityStatus === 3 && <img src="http://image.fosunholiday.com/app/3.0/recommend/complete.png" alt="" />}
+                                                                        <div className="content">
+                                                                            <p>{items.activityName}</p>
+                                                                            <p>{items.activityDestription}</p>
                                                                         </div>
-                                                                        {items.activityStatus === 1 && <p>未开始</p>}
-                                                                        {items.activityStatus === 2 && <p style={{ color: "#f5a623" }}>进行中</p>}
-                                                                        {items.activityStatus === 3 && <p style={{ color: '#7ed321' }}>已完成</p>}
-                                                                    </li>
-                                                                )
-                                                            })
-                                                        )}
-                                                    </ul>
-                                                </li>
+                                                                    </div>
+                                                                    {items.activityStatus === 1 && <p>未开始</p>}
+                                                                    {items.activityStatus === 2 && <p style={{ color: "#f5a623" }}>进行中</p>}
+                                                                    {items.activityStatus === 3 && <p style={{ color: '#7ed321' }}>已完成</p>}
+                                                                </li>
+                                                            )
+                                                        })
+                                                    )}
+                                                </ul>
+                                            </li>
                                             </ul>
-                                        )
-                                    })
-                                }
+)
+})
+}
                             </li>
                             <li className="frist-lachine receive-tasks" >
                                 <div className="frist-lachine-right" >
@@ -621,8 +639,8 @@ class Homepage extends Component {
                         </li>
                     </ul>
                 </section> */}
-                <div style={{height:"10px",backgroundColor:"#f8f8f8"}}></div>
-                <section className="innisfree integral recommended-tasks" style={{marginTop:"10px"}}>
+                <div style={{ height: "10px", backgroundColor: "#f8f8f8" }}></div>
+                <section className="innisfree integral recommended-tasks" style={{ marginTop: "10px" }}>
                     <div className="integral-top  clearfix">
                         <div className="title">
                             <h3>明星产品</h3>

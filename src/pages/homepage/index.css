@@ -66,6 +66,7 @@ main {
     top: -14px;
     left: 50%;
     transform: translate(-50%, 0);
+    z-index: 10;
 }
 
 .aggregation::before {
@@ -78,6 +79,7 @@ main {
     top: 100%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 10;
 }
 
 .aggregation .bonus {
@@ -119,8 +121,17 @@ main {
 }
 
 .aggregation .bonus .bonusNum {
-    border-right: 1px transparent solid;
-    border-image: linear-gradient(transparent, #fff) 1 10;
+    position: relative;
+}
+
+.aggregation .bonus .bonusNum::after {
+    content: "";
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    right: 1px;
+    top: 0;
+    background: linear-gradient(rgba(255,255,255,0),#fff);
 }
 
 .aggregation .success {
@@ -139,8 +150,17 @@ main {
     height: 100%;
     font-size: 16px;
     padding: 10px 0;
-    border-right: 1px transparent solid;
-    border-image: linear-gradient(#fff, transparent) 1 10;
+    position: relative;
+}
+
+.aggregation .success .success-lachine::after {
+    content: "";
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    right: 1px;
+    top: 0;
+    background: linear-gradient(#fff, rgba(255,255,255,0));
 }
 
 .aggregation .success .success-order {
@@ -180,7 +200,7 @@ main {
     position: absolute;
     top: 50%;
     left: 0px;
-    transform: translate(0,-50%)
+    transform: translate(0, -50%)
 }
 
 .recommended-tasks .title p {
