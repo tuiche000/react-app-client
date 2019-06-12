@@ -1,27 +1,16 @@
 import React, { Component } from 'react';
 import "./index.css";
-import { shareUrl } from '@/pages/api/homePage'
-import hostConfig from '@/hostConfig'
 
 class Propaganda extends Component {
   constructor(...args) {
     super(...args)
     this.state = {
-      share_url: ""
+      share_url: this.props.location.search.split("loginUrl=")[1]
     }
   }
 
   componentDidMount() {
-    this.getShareUrl()
-  }
-  async getShareUrl() {
-    let share_url = await shareUrl({
-      url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
-      mode: 5,
-    })
-    this.setState({
-      share_url: share_url.shareUrl
-    })
+    
   }
   goLogins() {
     window.location.href = this.state.share_url

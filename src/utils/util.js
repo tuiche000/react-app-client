@@ -310,7 +310,7 @@ export function lachineImgCanvas(obj = {
     let image;
     const canvas = this.refCanvas.current
     canvas.width = 592
-    canvas.height = 833
+    canvas.height = 726
 
     if (canvas.getContext) {
         let ctx = canvas.getContext("2d");
@@ -405,7 +405,7 @@ export function lachineImgCanvas(obj = {
 
             ctx.fillStyle = '#ff7700';
             ctx.font = '30px Adobe Ming Std';
-            ctx.fillText("总获取6800积分", 180, 650);
+            ctx.fillText("总获取6700积分", 180, 650);
 
             image = new Image();
             image.src = canvas.toDataURL("image/png");

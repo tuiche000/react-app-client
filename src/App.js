@@ -92,6 +92,10 @@ class App extends Component {
       else {
         let folidayToken = this.props.user.folidayToken || localStorage.getItem(SET_FOLIDAY_TOKEN)
         // redux上没有folidayToken 或者 storeage里没有 folidayToken
+        // 如果扫码跳转到宣传页不用登陆
+        if (this.props.location.pathname === "/propaganda") {
+          return
+        }
         if (!folidayToken) {
           // query上有token
           if (Token) {
@@ -126,7 +130,7 @@ class App extends Component {
   }
 
   render() {
-    if (Object.keys(this.props.user.userInfo).length) {
+    if (Object.keys(this.props.user.userInfo).length || this.props.location.pathname === "/propaganda") {
       return (
         <div className="App">
           {

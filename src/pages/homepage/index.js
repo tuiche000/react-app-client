@@ -41,9 +41,9 @@ class Homepage extends Component {
             recMemberCount: 0, // 推荐会员数
             recOrderCount: 0, // 推荐下单数
             totalPrize: 0, // 用户奖励金
+            totalIntegral: 0, // 用户积分
             share_url: "", // 分享地址
             Activityshare_url: '',
-            task_list_summary: {},// 推荐主任务列表数据
             task_list: [], // 推荐子任务列表数据
             iconurl: '',// 用户icon地址 
             recommend_roduct: [], // 推荐任务中的推荐产品列表
@@ -130,11 +130,12 @@ class Homepage extends Component {
     async getReConut() {
         try {
             let Recount = await reCount()
-            let { recMemberCount, recOrderCount, totalPrize, } = Recount
+            let { recMemberCount, recOrderCount, totalPrize, totalIntegral } = Recount
             this.setState({
                 recMemberCount,
                 recOrderCount,
                 totalPrize,
+                totalIntegral,
             })
         }
         catch (e) {
@@ -221,8 +222,10 @@ class Homepage extends Component {
             })
             let { result } = task_list
             result.map((item) => {
-                item.active = true
+                return item.active = true
             })
+            // result[0].activityStart = 40
+            // result[0].activityEnd = 50
             this.setState({
                 task_list: result,
             })
@@ -262,8 +265,13 @@ class Homepage extends Component {
     // 获取会员拉新二维码图片
     async getActivityQrCode() {
         try {
+            // 获取会员拉新得到的地址
+            let login_url = await shareUrl({
+                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
+                mode: 5,
+            })
             let code_data = await shareUrl({
-                url: `${hostConfig.mBase}fyRecommend/#/propaganda`,
+                url: `${hostConfig.mBase}fyRecommend/#/propaganda?loginUrl=${login_url.shareUrl}`,
                 mode: 0,
             })
             this.setState({
@@ -299,20 +307,23 @@ class Homepage extends Component {
     // 设置会员拉新APP分享 
     async getActivityShareUrl() {
         try {
-            let share_url = await shareUrl({
-                url: `${hostConfig.mBase}fyRecommend/#/propaganda`,
+            // 获取会员拉新得到的地址
+            let login_url = await shareUrl({
+                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
                 mode: 5,
             })
-            this.setState({
-                Activityshare_url: share_url.shareUrl,
+            let share_url = await shareUrl({
+                url: `${hostConfig.mBase}fyRecommend/#/propaganda?loginUrl=${login_url.shareUrl}`,
+                mode: 5,
             })
             // 获取会员拉新分享二维码
             let code_data = await shareUrl({
-                url: `${hostConfig.mBase}fyRecommend/#/propaganda`,
+                url: `${hostConfig.mBase}fyRecommend/#/propaganda?loginUrl=${login_url.shareUrl}`,
                 mode: 0,
             })
             this.setState({
                 QR_code: code_data.shareUrl,
+                Activityshare_url: share_url.shareUrl,
             })
             // 设置分享功能
             Prius.appEventCallback({
@@ -446,7 +457,7 @@ class Homepage extends Component {
                     // title: "积分明细",
                 },
                 listener: function (data) {
-                    console.log(JSON.stringify(data))
+                    // console.log(JSON.stringify(data))
                 }
             })
         } else {
@@ -493,7 +504,7 @@ class Homepage extends Component {
                                     <span>
                                         <img src={IntegralImg} style={{ width: "15px", marginRight: "3px", marginBottom: "4px" }} alt="" />
                                     </span>
-                                    <span className="num">{this.state.totalPrize}</span>
+                                    <span className="num">{this.state.totalIntegral}</span>
                                 </p>
                             </div>
                         </div>
@@ -530,8 +541,9 @@ class Homepage extends Component {
                                                     </div>
                                                 </div>
                                                 <span style={{ padding: "3px 10px", color: "#7d530e" }} onClick={this.fnChangeActivity.bind(this)}>我要拉新</span>
-                                                {(item.activityStart !== 0 && (item.activityEnd - item.activityStart) !== 0) && <div className="progressBar"><span style={{ width: (Math.ceil(item.activityStart / item.activityEnd * 10) * 10) + "%" }}>{item.activityStart}/</span><span style={{ width: (Math.floor((item.activityEnd - item.activityStart) / item.activityEnd * 10) * 10) + "%" }}>{item.activityEnd}</span></div>}
-                                                {(item.activityStart !== 0 && (item.activityEnd - item.activityStart) === 0) && <div style={{ backgroundColor: "#f1e8d0", textAlign: "center", borderRadius: "10px" }} className="progressBar">{item.activityStart}/{item.activityEnd}</div>}
+                                                {(item.activityStart !== 0 && (item.activityStart / item.activityEnd * 10) < 9) && <div className="progressBar"><span style={{ width: (Math.ceil(item.activityStart / item.activityEnd * 10) * 10) + "%" }}>{item.activityStart}/</span><span style={{ width: (Math.floor((item.activityEnd - item.activityStart) / item.activityEnd * 10) * 10) + "%" }}>{item.activityEnd}</span></div>}
+                                                {(item.activityStart !== 0 && (item.activityStart / item.activityEnd * 10) >= 9) && <div className="progressBar"><span style={{ width: "90%" }}>{item.activityStart}/</span><span style={{ width: "10%" }}>{item.activityEnd}</span></div>}
+                                                {(item.activityStart !== 0 && (item.activityStart / item.activityEnd * 10) === 10) && <div style={{ backgroundColor: "#f1e8d0", textAlign: "center", borderRadius: "10px" }} className="progressBar">{item.activityStart}/{item.activityEnd}</div>}
                                                 <div className="dropDown" onClick={this.fnChangeDropDownState.bind(this, index)} style={item.stageListDTOS ? { display: "block" } : { display: "none" }}>
                                                     <Icon type={item.active ? "down" : "up"} color="rgb(125, 83, 14)" />
                                                 </div>
