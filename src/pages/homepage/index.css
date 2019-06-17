@@ -48,7 +48,7 @@ main {
 .aggregation {
     width: 100%;
     height: 180px;
-    background-color: #eac67d;
+    background-color: #f6d288;
     border-radius: 15px;
     margin-top: 5px;
     color: #725f33;
@@ -131,7 +131,7 @@ main {
     position: absolute;
     right: 1px;
     top: 0;
-    background: linear-gradient(rgba(255,255,255,0),#fff);
+    background: linear-gradient(rgba(255, 255, 255, 0), #fff);
 }
 
 .aggregation .success {
@@ -160,7 +160,7 @@ main {
     position: absolute;
     right: 1px;
     top: 0;
-    background: linear-gradient(#fff, rgba(255,255,255,0));
+    background: linear-gradient(#fff, rgba(255, 255, 255, 0));
 }
 
 .aggregation .success .success-order {

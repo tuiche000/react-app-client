@@ -20,7 +20,7 @@ class Propaganda extends Component {
     return (
       <div className="propaganda">
         <img src="https://foliday-img.oss-cn-shanghai.aliyuncs.com/propaganda.png" alt="" />
-        <p onClick={this.goLogins.bind(this)}>我要加入</p>
+        <p onClick={this.goLogins.bind(this)}>立即加入</p>
       </div>
     );
   }

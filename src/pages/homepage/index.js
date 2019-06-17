@@ -70,6 +70,7 @@ class Homepage extends Component {
     // H5明星产品推荐图片
     async getQrCode(item) {
         try {
+            // 获取分享二维码图片
             let code_data = await shareUrl({
                 url: `${hostConfig.mBase}product?productId=${item.productId}`,
                 mode: 0,
@@ -126,7 +127,7 @@ class Homepage extends Component {
             // console.log(e)
         }
     }
-    // 获取拉新会员数以及下单成功数
+    // 获取拉新会员数以及下单成功数（首页头部信息）
     async getReConut() {
         try {
             let Recount = await reCount()
@@ -151,7 +152,7 @@ class Homepage extends Component {
         } else {
             url = head_defult
         }
-        // 获取app分享地址
+        // 获取明星产品app分享地址
         try {
             let share_url = await shareUrl({
                 url: `${hostConfig.mBase}product?productId=${item.productId}`,
@@ -200,7 +201,7 @@ class Homepage extends Component {
             // console.log(e)
         }
     }
-    // 获取推荐任务中的推荐产品列表
+    // 获取推荐任务中的推荐产品列表数据
     async getRecommendProduct() {
         try {
             let recommend_roduct = await recommendProduct({
@@ -213,7 +214,7 @@ class Homepage extends Component {
             // console.log(e)
         }
     }
-    // 获取推荐任务列表
+    // 获取推荐任务列表数据
     async getTasklist() {
         try {
             let task_list = await tasklist({
