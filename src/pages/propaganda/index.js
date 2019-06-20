@@ -13,6 +13,7 @@ class Propaganda extends Component {
 
   }
   goLogins() {
+    // console.log("1")
     window.location.href = this.state.share_url
   }
 
