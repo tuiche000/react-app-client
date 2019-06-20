@@ -267,12 +267,12 @@ class Homepage extends Component {
     async getActivityQrCode() {
         try {
             // 获取会员拉新得到的地址
-            let login_url = await shareUrl({
-                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
-                mode: 5,
-            })
+            // let login_url = await shareUrl({
+            //     url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
+            //     mode: 5,
+            // })
             let code_data = await shareUrl({
-                url: `${hostConfig.mBase}fyRecommend/#/propaganda?loginUrl=${login_url.shareUrl}`,
+                url: `${hostConfig.mBase}fyRecommend/#/propaganda?loginUrl=${hostConfig.mBase}logins?redirect=${hostConfig.mBase}`,
                 mode: 0,
             })
             this.setState({
@@ -309,17 +309,17 @@ class Homepage extends Component {
     async getActivityShareUrl() {
         try {
             // 获取会员拉新得到的地址
-            let login_url = await shareUrl({
-                url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
-                mode: 5,
-            })
+            // let login_url = await shareUrl({
+            //     url: hostConfig.mBase + 'logins?redirect=' + hostConfig.mBase,
+            //     mode: 5,
+            // })
             let share_url = await shareUrl({
-                url: `${hostConfig.mBase}fyRecommend/#/propaganda?loginUrl=${login_url.shareUrl}`,
+                url: `${hostConfig.mBase}fyRecommend/#/propaganda?loginUrl=${hostConfig.mBase}logins?redirect=${hostConfig.mBase}`,
                 mode: 5,
             })
             // 获取会员拉新分享二维码
             let code_data = await shareUrl({
-                url: `${hostConfig.mBase}fyRecommend/#/propaganda?loginUrl=${login_url.shareUrl}`,
+                url: `${hostConfig.mBase}fyRecommend/#/propaganda?loginUrl=${hostConfig.mBase}logins?redirect=${hostConfig.mBase}`,
                 mode: 0,
             })
             this.setState({

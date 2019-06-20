@@ -197,7 +197,7 @@ class StarProducts extends Component {
 
     onEndReached = (event) => {
         //如果this.state.hasMore为false，说明没数据了，直接返回
-        console.log(this.state.isLoading && this.state.hasMore)
+        // console.log(this.state.isLoading && this.state.hasMore)
         if (this.state.hasMore) {
             return;
         }
